@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <h1>{{ name }}</h1>
+    </section>
+
+    <section class="about">
+        <h2>À propos</h2>
+        {% for paragraph in about %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
+    </section>
+{% endblock %}

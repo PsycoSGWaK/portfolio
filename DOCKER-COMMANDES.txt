@@ -1,0 +1,197 @@
+===========================================================
+ GUIDE DOCKER - PROJET PORTFOLIO (SYMFONY)
+===========================================================
+
+C'est quoi les 3 services qu'on a :
+  - php      -> le conteneur qui fait tourner Symfony (port 8000)
+  - database -> MySQL 8 (la base de donnees)
+  - mailer   -> Mailpit, pour voir les emails envoyes en dev
+               (interface web sur http://localhost:8025)
+
+-----------------------------------------------------------
+1. DEMARRER LE PROJET
+-----------------------------------------------------------
+
+Se placer dans le dossier du projet, puis :
+
+  docker compose up -d
+
+  -> "-d" = en arriere-plan (detached), tu recuperes la main
+     dans ton terminal.
+
+La toute premiere fois (ou apres avoir modifie le Dockerfile) :
+
+  docker compose up -d --build
+
+  -> force la reconstruction de l'image PHP avant de demarrer.
+
+Une fois lance, le site est accessible sur :
+
+  http://localhost:8000
+
+Mailpit (boite mail de test) :
+
+  http://localhost:8025
+
+-----------------------------------------------------------
+2. VOIR CE QUI SE PASSE (LOGS)
+-----------------------------------------------------------
+
+Voir les logs de tous les services :
+
+  docker compose logs -f
+
+Voir juste les logs du conteneur php :
+
+  docker compose logs -f php
+
+("-f" = suivre en direct, comme un "tail -f". Ctrl+C pour sortir)
+
+Voir l'etat des conteneurs (lances ou pas) :
+
+  docker compose ps
+
+-----------------------------------------------------------
+3. ARRETER / REDEMARRER
+-----------------------------------------------------------
+
+Arreter les conteneurs (sans supprimer les donnees) :
+
+  docker compose stop
+
+Relancer apres un stop :
+
+  docker compose start
+
+Arreter ET supprimer les conteneurs (les volumes/donnees restent) :
+
+  docker compose down
+
+Tout supprimer, y compris les donnees de la base MySQL
+(remise a zero complete) :
+
+  docker compose down -v
+
+  -> A utiliser seulement si tu veux repartir de zero,
+     ca efface le contenu de la base de donnees !
+
+-----------------------------------------------------------
+4. LANCER DES COMMANDES SYMFONY (bin/console)
+-----------------------------------------------------------
+
+Toutes les commandes Symfony doivent etre executees
+A L'INTERIEUR du conteneur php, avec ce prefixe :
+
+  docker compose exec php php bin/console <commande>
+
+Exemples utiles :
+
+  docker compose exec php php bin/console list
+  -> liste toutes les commandes disponibles
+
+  docker compose exec php php bin/console make:controller NomDuController
+  -> cree un nouveau controller
+
+  docker compose exec php php bin/console make:entity NomEntite
+  -> cree une nouvelle entite (table en base)
+
+  docker compose exec php php bin/console doctrine:migrations:diff
+  -> genere une migration a partir des changements d'entites
+
+  docker compose exec php php bin/console doctrine:migrations:migrate
+  -> applique les migrations en base de donnees
+
+  docker compose exec php php bin/console cache:clear
+  -> vide le cache Symfony
+
+-----------------------------------------------------------
+5. GERER LES DEPENDANCES (COMPOSER)
+-----------------------------------------------------------
+
+Ajouter une dependance PHP (equivalent de "npm install") :
+
+  docker compose exec php composer require nom/du-package
+
+Ajouter une dependance de dev :
+
+  docker compose exec php composer require --dev nom/du-package
+
+Mettre a jour les dependances :
+
+  docker compose exec php composer update
+
+-----------------------------------------------------------
+6. ENTRER "DANS" LE CONTENEUR (TERMINAL)
+-----------------------------------------------------------
+
+Si tu veux avoir un terminal directement dans le conteneur
+(pratique pour enchainer plusieurs commandes sans repeter
+"docker compose exec php ...") :
+
+  docker compose exec php bash
+
+Tu es alors dans le conteneur, dans /app (= le dossier du
+projet). Tu peux taper directement :
+
+  php bin/console list
+  composer require ...
+
+Pour sortir du conteneur :
+
+  exit
+
+-----------------------------------------------------------
+7. ACCEDER A LA BASE DE DONNEES
+-----------------------------------------------------------
+
+Se connecter en ligne de commande MySQL dans le conteneur :
+
+  docker compose exec database mysql -u app -p app
+
+  -> mot de passe demande : !ChangeMe!
+     (defini dans compose.yaml / .env, a changer en prod)
+
+Sinon, avec un outil graphique (TablePlus, DBeaver, etc.)
+sur ta machine, se connecter avec :
+
+  Host     : 127.0.0.1
+  Port     : 3306 (le port change a chaque "up", voir avec
+             "docker compose port database 3306")
+  User     : app
+  Password : !ChangeMe!
+  Database : app
+
+-----------------------------------------------------------
+8. PROBLEMES COURANTS
+-----------------------------------------------------------
+
+- "port is already allocated" au demarrage :
+  Un autre programme utilise deja le port 8000 (ou 3306).
+  Ferme l'autre programme, ou change le port dans
+  compose.yaml (partie "ports:").
+
+- Modif du Dockerfile pas prise en compte :
+  Il faut rebuilder :
+    docker compose up -d --build
+
+- "Connection refused" vers la base de donnees juste apres
+  un "docker compose up" :
+  MySQL met quelques secondes a demarrer, attends un peu ou
+  regarde les logs : docker compose logs -f database
+
+- Reset complet si plus rien ne va :
+    docker compose down -v
+    docker compose up -d --build
+
+-----------------------------------------------------------
+9. RESUME - LES COMMANDES A CONNAITRE PAR COEUR
+-----------------------------------------------------------
+
+  docker compose up -d          -> demarrer
+  docker compose down           -> arreter
+  docker compose logs -f php    -> voir les logs
+  docker compose exec php bash  -> ouvrir un terminal dedans
+  docker compose exec php php bin/console <cmd>  -> commande Symfony
+  docker compose exec php composer require <pkg> -> ajouter une lib
+
+===========================================================
