@@ -1,3 +1,73 @@
+:root {
+    --color-bg: #F0EEE9;
+    --color-text: #201E1B;
+    --color-accent: #7AB6D9;
+    --color-accent-dark: #496275;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: skyblue;
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.hero h1::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 0.3rem;
+    margin-top: 1.25rem;
+    background-color: var(--color-accent);
+    border-radius: 999px;
+}
+
+a {
+    color: var(--color-accent-dark);
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+.about {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem;
+}
+
+.about h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dark);
+    margin: 0 0 1.5rem;
+}
+
+.about p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
+}
+
+.about p:last-child {
+    margin-bottom: 0;
 }
