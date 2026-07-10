@@ -23,3 +23,6 @@
 .DS_Store
 .idea/
 .vscode/
+
+# Claude Code project context (local only, not shared publicly)
+/CLAUDE.md
