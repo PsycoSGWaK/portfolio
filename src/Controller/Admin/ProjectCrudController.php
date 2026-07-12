@@ -36,10 +36,12 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('description', 'Description');
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
-        yield UrlField::new('externalUrl', 'Lien externe (GitHub, démo...)')->hideOnIndex();
+        yield UrlField::new('githubUrl', 'Lien GitHub')->hideOnIndex();
+        yield UrlField::new('demoUrl', 'Lien démo')->hideOnIndex();
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');
-        yield IntegerField::new('position', 'Ordre d\'affichage');
+        yield IntegerField::new('position', 'Ordre d\'affichage')
+            ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();
     }
 }

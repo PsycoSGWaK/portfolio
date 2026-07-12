@@ -10,6 +10,7 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -33,7 +34,10 @@ class Project
     private ?string $stack = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $externalUrl = null;
+    private ?string $githubUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $demoUrl = null;
 
     #[ORM\Column]
     private bool $featured = false;
@@ -42,6 +46,7 @@ class Project
     private bool $published = false;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(message: 'L\'ordre d\'affichage ne peut pas être négatif.')]
     private int $position = 0;
 
     #[ORM\Column]
@@ -121,14 +126,26 @@ class Project
         return array_filter(array_map('trim', explode(',', (string) $this->stack)));
     }
 
-    public function getExternalUrl(): ?string
+    public function getGithubUrl(): ?string
     {
-        return $this->externalUrl;
+        return $this->githubUrl;
     }
 
-    public function setExternalUrl(?string $externalUrl): static
+    public function setGithubUrl(?string $githubUrl): static
     {
-        $this->externalUrl = $externalUrl;
+        $this->githubUrl = $githubUrl;
+
+        return $this;
+    }
+
+    public function getDemoUrl(): ?string
+    {
+        return $this->demoUrl;
+    }
+
+    public function setDemoUrl(?string $demoUrl): static
+    {
+        $this->demoUrl = $demoUrl;
 
         return $this;
     }

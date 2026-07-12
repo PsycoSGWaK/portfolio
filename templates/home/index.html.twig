@@ -42,9 +42,14 @@
                                     <li>{{ tech }}</li>
                                 {% endfor %}
                             </ul>
-                            {% if project.externalUrl %}
-                                <a href="{{ project.externalUrl }}" target="_blank" rel="noopener">Voir le projet →</a>
-                            {% endif %}
+                            <div class="project-card__links">
+                                {% if project.githubUrl %}
+                                    <a href="{{ project.githubUrl }}" target="_blank" rel="noopener">GitHub →</a>
+                                {% endif %}
+                                {% if project.demoUrl %}
+                                    <a href="{{ project.demoUrl }}" target="_blank" rel="noopener">Démo →</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </article>
                 {% endfor %}

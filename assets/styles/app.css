@@ -174,3 +174,8 @@ a:hover {
     background-color: rgba(73, 98, 117, 0.12);
     color: var(--color-accent-dark);
 }
+
+.project-card__links {
+    display: flex;
+    gap: 1.25rem;
+}

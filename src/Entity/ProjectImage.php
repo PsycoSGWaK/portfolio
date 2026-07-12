@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProjectImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectImageRepository::class)]
 class ProjectImage
@@ -21,6 +22,7 @@ class ProjectImage
     private ?string $imageName = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(message: 'L\'ordre ne peut pas être négatif.')]
     private int $position = 0;
 
     public function getId(): ?int
