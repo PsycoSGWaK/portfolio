@@ -20,7 +20,8 @@ Se placer dans le dossier du projet, puis :
      dans ton terminal.
 
 La toute premiere fois (ou apres avoir modifie le Dockerfile) :
-
+  
+  composer install
   docker compose up -d --build
 
   -> force la reconstruction de l'image PHP avant de demarrer.

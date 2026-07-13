@@ -1,0 +1,144 @@
+===========================================================
+ GUIDE SYMFONY CLI - PROJET PORTFOLIO (WINDOWS / WAMP NATIF)
+===========================================================
+
+Depuis qu'on a quitte Docker sur Windows, PHP tourne en natif
+via WAMP (PHP 8.4.15), et on utilise le Symfony CLI pour lancer
+le serveur local (au lieu de "docker compose exec php ...").
+
+Le binaire "symfony" est installe dans :
+  C:\wamp64\bin\symfony-cli\symfony.exe
+  -> ajoute au PATH utilisateur, donc tu peux juste taper "symfony"
+     (redemarre ton terminal si la commande n'est pas reconnue)
+
+Le fichier ".php-version" a la racine du projet force PHP 8.4.15
+(sinon Symfony CLI prend la version la plus recente installee
+dans WAMP, ce qui peut poser probleme avec des versions trop
+neuves comme la 8.5).
+
+-----------------------------------------------------------
+1. DEMARRER LE SERVEUR
+-----------------------------------------------------------
+
+Se placer dans le dossier du projet, puis :
+
+  symfony serve --no-tls
+
+  -> lance le serveur au premier plan (Ctrl+C pour arreter)
+     "--no-tls" = pas de HTTPS local (evite les certificats
+     auto-signes, plus simple pour du dev basique)
+
+Le site est accessible sur :
+
+  http://127.0.0.1:8000
+
+IMPORTANT (bug connu sur cette machine) :
+Le mode detache "-d" (symfony serve -d) plante a cause d'un
+souci de rotation de logs Windows. Utilise plutot "symfony serve"
+au premier plan dans un terminal dedie que tu laisses ouvert.
+
+-----------------------------------------------------------
+2. ARRETER LE SERVEUR
+-----------------------------------------------------------
+
+Si lance au premier plan : Ctrl+C dans le terminal
+
+Sinon, pour tuer un serveur qui tourne en arriere-plan :
+
+  symfony server:stop
+
+-----------------------------------------------------------
+3. VOIR L'ETAT DU SERVEUR
+-----------------------------------------------------------
+
+  symfony server:status
+
+  -> affiche si le serveur tourne, sur quel port, avec quelle
+     version de PHP
+
+-----------------------------------------------------------
+4. LANCER DES COMMANDES SYMFONY (bin/console)
+-----------------------------------------------------------
+
+Comme "php" est dans le PATH (WAMP 8.4.15), tu peux lancer les
+commandes directement, sans passer par "docker compose exec" :
+
+  php bin/console list
+  -> liste toutes les commandes disponibles
+
+  php bin/console make:controller NomDuController
+  -> cree un nouveau controller
+
+  php bin/console make:entity NomEntite
+  -> cree une nouvelle entite (table en base)
+
+  php bin/console doctrine:migrations:diff
+  -> genere une migration a partir des changements d'entites
+
+  php bin/console doctrine:migrations:migrate
+  -> applique les migrations en base de donnees
+
+  php bin/console cache:clear
+  -> vide le cache Symfony
+
+  php bin/console app:create-admin-user
+  -> cree ou met a jour un compte admin (voir plus bas)
+
+Astuce : "symfony run" fait la meme chose mais s'assure d'utiliser
+la bonne version de PHP / les bonnes variables d'environnement :
+
+  symfony run php bin/console list
+
+-----------------------------------------------------------
+5. BASE DE DONNEES (MySQL natif WAMP)
+-----------------------------------------------------------
+
+MySQL 8.4.7 tourne en natif (pas dans Docker). Voir aussi
+COMPOSER-COMMANDES.txt / notes du projet pour le detail, mais
+en resume :
+
+  Host     : 127.0.0.1
+  Port     : 3306
+  User     : app
+  Password : !ChangeMe!
+  Database : app
+
+Le service Windows "wampmysqld64" necessite les droits admin
+pour etre demarre via Start-Service / net start. En attendant,
+il peut etre lance manuellement (sans admin) avec :
+
+  cd C:\wamp64\bin\mysql\mysql8.4.7\bin
+  mysqld.exe --defaults-file="C:\wamp64\bin\mysql\mysql8.4.7\my.ini"
+
+-----------------------------------------------------------
+6. PROBLEMES COURANTS
+-----------------------------------------------------------
+
+- "symfony: command not found" juste apres l'installation :
+  Redemarre ton terminal (le PATH est mis a jour au niveau
+  utilisateur, il faut une nouvelle session pour le voir).
+
+- Erreur "remove ...log: le processus ne peut pas acceder au
+  fichier" au demarrage de "symfony serve -d" :
+  Bug connu du mode detache sur Windows. Utilise "symfony serve"
+  (sans -d) au premier plan a la place.
+
+- Le serveur prend la mauvaise version de PHP (8.5 au lieu de
+  8.4.15) :
+  Verifie que le fichier ".php-version" existe bien a la racine
+  du projet avec "8.4.15" dedans.
+
+- "Connection refused" vers MySQL :
+  Verifie que mysqld.exe tourne (voir section 5).
+
+-----------------------------------------------------------
+7. RESUME - LES COMMANDES A CONNAITRE PAR COEUR
+-----------------------------------------------------------
+
+  symfony serve --no-tls        -> demarrer le site (localhost:8000)
+  Ctrl+C                        -> arreter (si lance au premier plan)
+  symfony server:status         -> voir si ca tourne
+  php bin/console <cmd>         -> commande Symfony
+  php bin/console app:create-admin-user  -> creer un compte admin
+
+===========================================================
