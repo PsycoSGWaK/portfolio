@@ -1,0 +1,96 @@
+===========================================================
+ GUIDE COMPOSER - PROJET PORTFOLIO (WINDOWS / WAMP NATIF)
+===========================================================
+
+Depuis qu'on a quitte Docker sur Windows, Composer tourne en
+natif avec le PHP de WAMP (8.4.15), au lieu de passer par
+"docker compose exec php composer ...".
+
+Composer est installe dans :
+  C:\wamp64\bin\composer\composer.phar
+  + un wrapper "composer.bat" dans le meme dossier
+  -> le dossier est ajoute au PATH utilisateur, donc tu peux
+     juste taper "composer" (redemarre ton terminal si la
+     commande n'est pas reconnue)
+
+-----------------------------------------------------------
+1. INSTALLER LES DEPENDANCES (premiere fois / apres un clone)
+-----------------------------------------------------------
+
+  composer install
+
+  -> lit composer.lock et installe exactement les memes
+     versions que celles utilisees par les autres devs
+     (rapide en natif : ~15s, contre plusieurs secondes de
+     lenteur en plus avec Docker sur Windows)
+
+-----------------------------------------------------------
+2. AJOUTER UNE DEPENDANCE
+-----------------------------------------------------------
+
+Ajouter une dependance PHP (equivalent de "npm install") :
+
+  composer require nom/du-package
+
+Ajouter une dependance de dev (tests, outils de dev...) :
+
+  composer require --dev nom/du-package
+
+-----------------------------------------------------------
+3. METTRE A JOUR LES DEPENDANCES
+-----------------------------------------------------------
+
+Tout mettre a jour (respecte les contraintes de composer.json) :
+
+  composer update
+
+Mettre a jour un seul package :
+
+  composer update nom/du-package
+
+-----------------------------------------------------------
+4. AUTRES COMMANDES UTILES
+-----------------------------------------------------------
+
+  composer dump-autoload
+  -> regenere les fichiers d'autoload (utile si ca "ne trouve
+     pas" une classe apres un renommage/deplacement)
+
+  composer validate
+  -> verifie que composer.json est valide
+
+  composer show
+  -> liste tous les packages installes et leur version
+
+  composer outdated
+  -> montre quels packages ont une version plus recente dispo
+
+-----------------------------------------------------------
+5. PROBLEMES COURANTS
+-----------------------------------------------------------
+
+- "composer: command not found" juste apres l'installation :
+  Redemarre ton terminal (le PATH est mis a jour au niveau
+  utilisateur, il faut une nouvelle session pour le voir).
+  En attendant, tu peux toujours utiliser le chemin complet :
+    C:\wamp64\bin\php\php8.4.15\php.exe C:\wamp64\bin\composer\composer.phar install
+
+- Erreur de version PHP ("your PHP version does not satisfy..") :
+  Verifie que c'est bien le PHP 8.4.15 de WAMP qui est utilise
+  (voir SYMFONY-COMMANDES.txt, fichier ".php-version").
+
+- Apres un "composer install", le site plante encore :
+  Pense a lancer les migrations :
+    php bin/console doctrine:migrations:migrate
+
+-----------------------------------------------------------
+6. RESUME - LES COMMANDES A CONNAITRE PAR COEUR
+-----------------------------------------------------------
+
+  composer install                -> installer les dependances
+  composer require <pkg>          -> ajouter une lib
+  composer require --dev <pkg>    -> ajouter une lib de dev
+  composer update                 -> tout mettre a jour
+  composer dump-autoload           -> regenerer l'autoload
+
+===========================================================

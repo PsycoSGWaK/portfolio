@@ -33,6 +33,7 @@ class ProjectImageCrudController extends AbstractCrudController
             ->setBasePath('/uploads/projects')
             ->setUploadDir('public/uploads/projects')
             ->setUploadedFileNamePattern('[randomhash].[extension]');
-        yield IntegerField::new('position', 'Ordre');
+        yield IntegerField::new('position', 'Ordre')
+            ->setFormTypeOption('attr', ['min' => 0]);
     }
 }
