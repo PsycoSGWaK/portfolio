@@ -18,7 +18,8 @@
         <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
         {% endif %}
     </head>
-    <body>
+    <body data-controller="site-nav">
+        {% block nav %}{% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>
