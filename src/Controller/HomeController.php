@@ -12,12 +12,27 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(ProjectRepository $projectRepository): Response
     {
+        $skills = ['PHP', 'Symfony', 'JavaScript', 'Angular', 'Git', 'Agile/Scrum'];
+
         return $this->render('home/index.html.twig', [
             'name' => 'Guillaume Hurard',
             'about' => [
-                "Développeur chez Safran Aircraft Engines depuis 2022, je conçois des outils numériques qui simplifient le quotidien des équipes : d'une application de contrôle qualité qui a fait chuter les non-conformités, à la migration complète de notre outil de gestion de processus vers Iterop — livrée en moins de cinq mois et qui a fait passer notre disponibilité de 90 % à 99,99 %. Avant Safran, j'ai fait mes armes chez CentraleSupélec Alumni en développant des outils d'analyse de données en JavaScript, puis chez Bel où j'ai conçu en Angular une application de supervision pour toute la DSI, tout en assurant le support technique quotidien des utilisateurs.",
-                "Formé à l'IRIS École Supérieure d'Informatique jusqu'au Mastère Expert IT, développement et big data, j'aime autant écrire du code que piloter un projet de bout en bout — cadrage des besoins, méthode agile, livraison. Mon terrain de jeu technique : PHP, Symfony, JavaScript, avec Git comme réflexe. En dehors du travail, je code aussi pour le plaisir : des applications qui optimisent la stratégie dans mes jeux vidéo préférés.",
+                "Développeur et gestionnaire de projet passionné par les solutions digitales innovantes, je combine expertise technique et vision stratégique pour concevoir des outils performants et adaptés aux besoins utilisateurs. Avec une expérience solide en développement d'applications (JavaScript, PHP, Angular) et en gestion de projet Agile, j'ai contribué à des projets ambitieux, comme la migration d'outils vers un environnement commun chez Safran Aircraft Engines, ou la création d'une application de monitoring pour le service DSI de Bel.",
+                "Mon parcours académique (Mastère Expert IT, Licence Développeur de solutions digitales) et mes alternances chez Safran, CentraleSupélec Alumni et Bel m'ont permis d'acquérir une expertise en planification, coordination et livraison de projets, toujours dans le respect des délais et des attentes clients. Je m'épanouis dans des environnements dynamiques où la créativité et la rigueur se rencontrent pour résoudre des problèmes concrets.",
+                "En dehors du code, je cultive ma passion pour les jeux vidéo en développant des applications dédiées, et j'aime partager mes connaissances (BAFA, certifications Iterop).",
             ],
+            'highlights' => [
+                'Développement full-stack (JavaScript, PHP, Angular, SQL)',
+                'Méthodologies Agile (Scrum, Kanban) et Cycle en V',
+                'Gestion de projet et migration technologique',
+                'Résolution de problèmes et optimisation de processus',
+            ],
+            'stats' => [
+                ['number' => ((int) date('Y') - 2022) . '+', 'label' => 'ans chez Safran Aircraft Engines'],
+                ['number' => '99,99 %', 'label' => 'de disponibilité obtenue sur Iterop'],
+                ['number' => (string) count($skills), 'label' => 'technologies maîtrisées'],
+            ],
+            'skills' => $skills,
             'projects' => $projectRepository->findPublishedOrderedByPosition(),
         ]);
     }
