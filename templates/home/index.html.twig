@@ -8,6 +8,9 @@
             <span class="site-nav__name">{{ name }}</span>
             <nav class="site-nav__links">
                 <a href="#about">À propos</a>
+                {% if educations|length > 0 %}
+                    <a href="#education">Formation</a>
+                {% endif %}
                 {% if projects|length > 0 %}
                     <a href="#projects">Projets</a>
                 {% endif %}
@@ -63,6 +66,33 @@
             </ul>
         {% endif %}
     </section>
+
+    {% if educations|length > 0 %}
+        <section class="education" id="education">
+            <h2>Parcours académique</h2>
+            <div class="education__list">
+                {% for education in educations %}
+                    <article class="education-item">
+                        <div class="education-item__marker" aria-hidden="true"></div>
+                        <div class="education-item__body">
+                            <p class="education-item__period">{{ education.period }}</p>
+                            <h3>{{ education.degree }}</h3>
+                            <p class="education-item__school">
+                                {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}
+                            </p>
+                            {% if education.descriptionLines|length > 0 %}
+                                <ul class="education-item__description">
+                                    {% for line in education.descriptionLines %}
+                                        <li>{{ line }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 
     {% if projects|length > 0 %}
         <section class="projects" id="projects">
