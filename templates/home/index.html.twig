@@ -11,6 +11,9 @@
                 {% if projects|length > 0 %}
                     <a href="#projects">Projets</a>
                 {% endif %}
+                {% if certificates|length > 0 %}
+                    <a href="#certificates">Certificats</a>
+                {% endif %}
             </nav>
         </div>
     </header>
@@ -92,6 +95,35 @@
                                     <a href="{{ project.demoUrl }}" target="_blank" rel="noopener">Démo →</a>
                                 {% endif %}
                             </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    {% if certificates|length > 0 %}
+        <section class="certificates" id="certificates">
+            <h2>Certificats</h2>
+            <div class="certificates__list">
+                {% for certificate in certificates %}
+                    <article class="certificate-card">
+                        <div class="certificate-card__badge">
+                            {% if certificate.badgeImageName %}
+                                <img src="{{ asset('uploads/certificates/' ~ certificate.badgeImageName) }}" alt="">
+                            {% else %}
+                                <span class="certificate-card__initial">{{ certificate.title|first|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="certificate-card__body">
+                            <h3>{{ certificate.title }}</h3>
+                            <p class="certificate-card__issuer">{{ certificate.issuer }}</p>
+                            {% if certificate.issueDate %}
+                                <p class="certificate-card__date">{{ certificate.issueDate|date('F Y') }}</p>
+                            {% endif %}
+                            {% if certificate.credentialUrl %}
+                                <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">Vérifier →</a>
+                            {% endif %}
                         </div>
                     </article>
                 {% endfor %}

@@ -23,6 +23,10 @@
 /public/uploads/projects/*
 !/public/uploads/projects/.gitkeep
 
+# Uploaded certificate badges
+/public/uploads/certificates/*
+!/public/uploads/certificates/.gitkeep
+
 # OS / editor
 .DS_Store
 .idea/
