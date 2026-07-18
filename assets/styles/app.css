@@ -133,12 +133,35 @@ a:hover {
 }
 
 .about {
-    max-width: 640px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 6rem 1.5rem;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-areas:
+        "photo   content"
+        "stats   content"
+        "stats   skills";
+    column-gap: 3.5rem;
+    row-gap: 2.5rem;
+    align-items: start;
 }
 
-.about h2 {
+.about-photo {
+    grid-area: photo;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    justify-self: center;
+}
+
+.about-content {
+    grid-area: content;
+}
+
+.about-content h2 {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -146,14 +169,97 @@ a:hover {
     margin: 0 0 1.5rem;
 }
 
-.about p {
+.about-content p {
     font-size: 1.15rem;
     line-height: 1.7;
     margin: 0 0 1.25rem;
 }
 
-.about p:last-child {
+.about-content p:last-child {
     margin-bottom: 0;
+}
+
+.about-highlights {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.about-highlights li {
+    position: relative;
+    padding-left: 1.75rem;
+    line-height: 1.5;
+}
+
+.about-highlights li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-dark);
+    font-weight: 600;
+}
+
+.about-stats {
+    grid-area: stats;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(32, 30, 27, 0.08);
+}
+
+.about-stats__item {
+    text-align: center;
+}
+
+.about-stats__number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-accent-dark);
+}
+
+.about-stats__label {
+    display: block;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.about-skills {
+    grid-area: skills;
+    justify-content: flex-start;
+    align-self: start;
+}
+
+@media (max-width: 860px) {
+    .about {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "photo"
+            "content"
+            "stats"
+            "skills";
+    }
+}
+
+@media (max-width: 640px) {
+    .about {
+        text-align: center;
+    }
+
+    .about-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgba(32, 30, 27, 0.08);
+    }
+
+    .about-skills {
+        justify-content: center;
+    }
 }
 
 .projects {
@@ -174,6 +280,14 @@ a:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+}
+
+@media (min-width: 1600px) {
+    .site-nav__inner,
+    .about,
+    .projects {
+        max-width: 1440px;
+    }
 }
 
 .project-card {

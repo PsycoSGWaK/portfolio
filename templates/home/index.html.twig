@@ -25,10 +25,40 @@
     </section>
 
     <section class="about" id="about">
-        <h2>À propos</h2>
-        {% for paragraph in about %}
-            <p>{{ paragraph }}</p>
-        {% endfor %}
+        <img class="about-photo" src="{{ asset('images/profile.png') }}" alt="Photo de {{ name }}">
+
+        <div class="about-content">
+            <h2>À propos de moi</h2>
+            {% for paragraph in about %}
+                <p>{{ paragraph }}</p>
+            {% endfor %}
+            {% if highlights|length > 0 %}
+                <ul class="about-highlights">
+                    {% for highlight in highlights %}
+                        <li>{{ highlight }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        {% if stats|length > 0 %}
+            <div class="about-stats">
+                {% for stat in stats %}
+                    <div class="about-stats__item">
+                        <span class="about-stats__number">{{ stat.number }}</span>
+                        <span class="about-stats__label">{{ stat.label }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if skills|length > 0 %}
+            <ul class="project-card__stack about-skills">
+                {% for skill in skills %}
+                    <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </section>
 
     {% if projects|length > 0 %}
