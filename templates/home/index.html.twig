@@ -6,21 +6,24 @@
     <header class="site-nav">
         <div class="site-nav__inner">
             <span class="site-nav__name">{{ name }}</span>
-            <nav class="site-nav__links">
-                <a href="#about">À propos</a>
-                {% if experiences|length > 0 %}
-                    <a href="#experience">Expérience</a>
-                {% endif %}
-                {% if educations|length > 0 %}
-                    <a href="#education">Formation</a>
-                {% endif %}
-                {% if projects|length > 0 %}
-                    <a href="#projects">Projets</a>
-                {% endif %}
-                {% if certificates|length > 0 %}
-                    <a href="#certificates">Certificats</a>
-                {% endif %}
-            </nav>
+            <div class="site-nav__right">
+                <nav class="site-nav__links">
+                    <a href="#about">À propos</a>
+                    {% if experiences|length > 0 %}
+                        <a href="#experience">Expérience</a>
+                    {% endif %}
+                    {% if educations|length > 0 %}
+                        <a href="#education">Formation</a>
+                    {% endif %}
+                    {% if projects|length > 0 %}
+                        <a href="#projects">Projets</a>
+                    {% endif %}
+                    {% if certificates|length > 0 %}
+                        <a href="#certificates">Certificats</a>
+                    {% endif %}
+                </nav>
+                {{ include('_theme_toggle.html.twig') }}
+            </div>
         </div>
     </header>
 {% endblock %}
