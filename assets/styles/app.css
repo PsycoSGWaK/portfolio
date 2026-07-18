@@ -307,15 +307,31 @@ a:hover {
     background-color: rgba(32, 30, 27, 0.12);
 }
 
+.education-item__card {
+    flex: 1 1 auto;
+    min-width: 0;
+    background-color: rgba(32, 30, 27, 0.03);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.education-item__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .education-item__logo {
     flex: 0 0 auto;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    object-fit: contain;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
     background-color: var(--color-bg);
-    padding: 0.3rem;
-    border: 1px solid rgba(32, 30, 27, 0.08);
+}
+
+.education-item__heading {
+    min-width: 0;
 }
 
 .education-item__period {
@@ -327,19 +343,19 @@ a:hover {
     letter-spacing: 0.05em;
 }
 
-.education-item__body h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.15rem;
+.education-item__heading h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.1rem;
 }
 
 .education-item__school {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .education-item__description {
     list-style: none;
-    margin: 0.75rem 0 0;
+    margin: 1rem 0 0;
     padding: 0;
     display: grid;
     gap: 0.5rem;
@@ -408,15 +424,31 @@ a:hover {
     background-color: rgba(32, 30, 27, 0.12);
 }
 
+.experience-item__card {
+    flex: 1 1 auto;
+    min-width: 0;
+    background-color: rgba(32, 30, 27, 0.03);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.experience-item__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .experience-item__logo {
     flex: 0 0 auto;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    object-fit: contain;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
     background-color: var(--color-bg);
-    padding: 0.3rem;
-    border: 1px solid rgba(32, 30, 27, 0.08);
+}
+
+.experience-item__heading {
+    min-width: 0;
 }
 
 .experience-item__period {
@@ -428,19 +460,19 @@ a:hover {
     letter-spacing: 0.05em;
 }
 
-.experience-item__body h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.15rem;
+.experience-item__heading h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.1rem;
 }
 
 .experience-item__company {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .experience-item__description {
     list-style: none;
-    margin: 0.75rem 0 0;
+    margin: 1rem 0 0;
     padding: 0;
     display: grid;
     gap: 0.5rem;

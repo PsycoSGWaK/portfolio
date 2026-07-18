@@ -29,6 +29,9 @@ class Experience
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logoName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logoUrl = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -99,6 +102,18 @@ class Experience
     public function setLogoName(?string $logoName): static
     {
         $this->logoName = $logoName;
+
+        return $this;
+    }
+
+    public function getLogoUrl(): ?string
+    {
+        return $this->logoUrl;
+    }
+
+    public function setLogoUrl(?string $logoUrl): static
+    {
+        $this->logoUrl = $logoUrl;
 
         return $this;
     }

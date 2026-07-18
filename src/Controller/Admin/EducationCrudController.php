@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class EducationCrudController extends AbstractCrudController
 {
@@ -35,10 +36,13 @@ class EducationCrudController extends AbstractCrudController
         yield TextField::new('period', 'Période')
             ->setHelp('Texte libre, ex : 2022 - 2024');
         yield TextField::new('location', 'Lieu')->hideOnIndex();
-        yield ImageField::new('logoName', 'Logo (optionnel)')
+        yield ImageField::new('logoName', 'Logo à uploader (optionnel)')
             ->setBasePath('/uploads/logos')
             ->setUploadDir('public/uploads/logos')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->hideOnIndex();
+        yield UrlField::new('logoUrl', 'ou lien vers un logo')
+            ->setHelp('Alternative à l\'upload : URL d\'une image déjà hébergée ailleurs. Prioritaire sur le logo uploadé si les deux sont renseignés.')
             ->hideOnIndex();
         yield TextareaField::new('description', 'Description')
             ->setHelp('Une puce par ligne.')
