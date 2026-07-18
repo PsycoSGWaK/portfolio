@@ -44,7 +44,9 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('description', 'Description');
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
-        yield UrlField::new('githubUrl', 'Lien GitHub')->hideOnIndex();
+        yield UrlField::new('sourceUrl', 'Lien code source')
+            ->setHelp('GitHub, GitLab, ou un autre dépôt — l\'icône affichée sur le site s\'adapte automatiquement.')
+            ->hideOnIndex();
         yield UrlField::new('demoUrl', 'Lien démo')->hideOnIndex();
         yield FileField::new('coverVideoName', 'Vidéo de couverture (optionnelle)')
             ->setBasePath('/uploads/projects')

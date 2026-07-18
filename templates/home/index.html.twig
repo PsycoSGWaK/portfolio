@@ -162,12 +162,7 @@
                                 {% endfor %}
                             </ul>
                             <div class="project-card__links">
-                                {% if project.githubUrl %}
-                                    <a href="{{ project.githubUrl }}" target="_blank" rel="noopener">GitHub →</a>
-                                {% endif %}
-                                {% if project.demoUrl %}
-                                    <a href="{{ project.demoUrl }}" target="_blank" rel="noopener">Démo →</a>
-                                {% endif %}
+                                {{ include('project/_links.html.twig', {project: project}) }}
                             </div>
                         </div>
                     </article>
