@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Experience;
+use App\Service\PositionReorderer;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -15,6 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
 class ExperienceCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly PositionReorderer $positionReorderer)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return Experience::class;
@@ -50,5 +56,23 @@ class ExperienceCrudController extends AbstractCrudController
         yield BooleanField::new('published', 'Publié');
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void
+    {
+        \assert($entityInstance instanceof Experience);
+        $this->positionReorderer->makeRoomForInsert(Experience::class, $entityInstance->getPosition());
+
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, object $entityInstance): void
+    {
+        \assert($entityInstance instanceof Experience);
+        $originalData = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
+        $oldPosition = $originalData['position'] ?? $entityInstance->getPosition();
+        $this->positionReorderer->moveExisting(Experience::class, $entityInstance->getId(), $oldPosition, $entityInstance->getPosition());
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
