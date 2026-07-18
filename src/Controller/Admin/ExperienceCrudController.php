@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -34,6 +35,11 @@ class ExperienceCrudController extends AbstractCrudController
         yield TextField::new('period', 'Période')
             ->setHelp('Texte libre, ex : 2022 - Présent');
         yield TextField::new('location', 'Lieu')->hideOnIndex();
+        yield ImageField::new('logoName', 'Logo (optionnel)')
+            ->setBasePath('/uploads/logos')
+            ->setUploadDir('public/uploads/logos')
+            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->hideOnIndex();
         yield TextareaField::new('description', 'Description')
             ->setHelp('Une puce par ligne.')
             ->hideOnIndex();

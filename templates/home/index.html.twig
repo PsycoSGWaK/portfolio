@@ -76,7 +76,13 @@
             <div class="experience__list">
                 {% for experience in experiences %}
                     <article class="experience-item">
-                        <div class="experience-item__marker" aria-hidden="true"></div>
+                        <div class="experience-item__marker" aria-hidden="true">
+                            {% if experience.logoName %}
+                                <img src="{{ asset('uploads/logos/' ~ experience.logoName) }}" alt="">
+                            {% else %}
+                                <span class="experience-item__marker-dot"></span>
+                            {% endif %}
+                        </div>
                         <div class="experience-item__body">
                             <p class="experience-item__period">{{ experience.period }}</p>
                             <h3>{{ experience.role }}</h3>
@@ -103,7 +109,13 @@
             <div class="education__list">
                 {% for education in educations %}
                     <article class="education-item">
-                        <div class="education-item__marker" aria-hidden="true"></div>
+                        <div class="education-item__marker" aria-hidden="true">
+                            {% if education.logoName %}
+                                <img src="{{ asset('uploads/logos/' ~ education.logoName) }}" alt="">
+                            {% else %}
+                                <span class="education-item__marker-dot"></span>
+                            {% endif %}
+                        </div>
                         <div class="education-item__body">
                             <p class="education-item__period">{{ education.period }}</p>
                             <h3>{{ education.degree }}</h3>
