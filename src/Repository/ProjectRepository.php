@@ -28,4 +28,14 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOnePublishedBySlug(string $slug): ?Project
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->andWhere('p.published = true')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

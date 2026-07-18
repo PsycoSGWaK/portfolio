@@ -36,23 +36,18 @@
             <h2>Projets</h2>
             <div class="projects__list">
                 {% for project in projects %}
+                    {% set coverImage = project.images|length > 0 ? project.images|first : null %}
                     <article class="project-card">
-                        {% if project.images|length > 0 %}
-                            <div class="project-card__carousel" data-controller="carousel">
-                                <div class="project-card__track" data-carousel-target="track">
-                                    {% for image in project.images %}
-                                        <img class="project-card__image" src="{{ asset('uploads/projects/' ~ image.imageName) }}" alt="{{ project.title }}" loading="lazy">
-                                    {% endfor %}
-                                </div>
-                                {% if project.images|length > 1 %}
-                                    <button type="button" class="project-card__nav project-card__nav--prev" data-action="carousel#prev" aria-label="Image précédente">‹</button>
-                                    <button type="button" class="project-card__nav project-card__nav--next" data-action="carousel#next" aria-label="Image suivante">›</button>
-                                {% endif %}
-                            </div>
+                        {% if project.coverVideoName %}
+                            <video class="project-card__image" data-controller="cover-video"
+                                   src="{{ asset('uploads/projects/' ~ project.coverVideoName) }}"
+                                   autoplay muted loop playsinline></video>
+                        {% elseif coverImage %}
+                            <img class="project-card__image" src="{{ asset('uploads/projects/' ~ coverImage.imageName) }}" alt="{{ project.title }}" loading="lazy">
                         {% endif %}
 
                         <div class="project-card__body">
-                            <h3>{{ project.title }}</h3>
+                            <h3><a href="{{ path('project_show', {slug: project.slug}) }}" class="project-card__stretched-link">{{ project.title }}</a></h3>
                             <p>{{ project.description }}</p>
                             <ul class="project-card__stack">
                                 {% for tech in project.stackList %}

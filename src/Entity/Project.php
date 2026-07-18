@@ -39,6 +39,9 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $demoUrl = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $coverVideoName = null;
+
     #[ORM\Column]
     private bool $featured = false;
 
@@ -146,6 +149,18 @@ class Project
     public function setDemoUrl(?string $demoUrl): static
     {
         $this->demoUrl = $demoUrl;
+
+        return $this;
+    }
+
+    public function getCoverVideoName(): ?string
+    {
+        return $this->coverVideoName;
+    }
+
+    public function setCoverVideoName(?string $coverVideoName): static
+    {
+        $this->coverVideoName = $coverVideoName;
 
         return $this;
     }

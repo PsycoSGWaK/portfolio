@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block nav %}
+    <header class="site-nav">
+        <div class="site-nav__inner">
+            <a href="{{ path('home') }}" class="site-nav__name">Guillaume Hurard</a>
+        </div>
+    </header>
+{% endblock %}
+
+{% block body %}
+    <article class="project-detail">
+        <a href="{{ path('home') }}" class="project-detail__back">← Retour aux projets</a>
+        <h1>{{ project.title }}</h1>
+
+        {% if project.images|length > 0 %}
+            <div class="project-gallery" data-controller="carousel">
+                <div class="project-gallery__track" data-carousel-target="track">
+                    {% for image in project.images %}
+                        <img class="project-gallery__image" src="{{ asset('uploads/projects/' ~ image.imageName) }}" alt="{{ project.title }}" loading="lazy">
+                    {% endfor %}
+                </div>
+                {% if project.images|length > 1 %}
+                    <button type="button" class="project-gallery__nav project-gallery__nav--prev" data-action="carousel#prev" aria-label="Image précédente">‹</button>
+                    <button type="button" class="project-gallery__nav project-gallery__nav--next" data-action="carousel#next" aria-label="Image suivante">›</button>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <p class="project-detail__description">{{ project.description }}</p>
+
+        <ul class="project-card__stack">
+            {% for tech in project.stackList %}
+                <li>{{ tech }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="project-card__links">
+            {% if project.githubUrl %}
+                <a href="{{ project.githubUrl }}" target="_blank" rel="noopener">GitHub →</a>
+            {% endif %}
+            {% if project.demoUrl %}
+                <a href="{{ project.demoUrl }}" target="_blank" rel="noopener">Démo →</a>
+            {% endif %}
+        </div>
+    </article>
+{% endblock %}
