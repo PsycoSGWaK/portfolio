@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CertificateRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository): Response
     {
         $skills = ['PHP', 'Symfony', 'JavaScript', 'Angular', 'Git', 'Agile/Scrum'];
 
@@ -34,6 +35,7 @@ class HomeController extends AbstractController
             ],
             'skills' => $skills,
             'projects' => $projectRepository->findPublishedOrderedByPosition(),
+            'certificates' => $certificateRepository->findPublishedOrderedByPosition(),
         ]);
     }
 }

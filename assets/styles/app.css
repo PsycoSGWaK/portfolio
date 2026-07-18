@@ -282,12 +282,78 @@ a:hover {
     gap: 2rem;
 }
 
-@media (min-width: 1600px) {
-    .site-nav__inner,
-    .about,
-    .projects {
-        max-width: 1440px;
-    }
+.certificates {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+}
+
+.certificates h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dark);
+    margin: 0 0 1.5rem;
+}
+
+.certificates__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.certificate-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: rgba(32, 30, 27, 0.03);
+    border-radius: 0.75rem;
+}
+
+.certificate-card__badge {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: rgba(73, 98, 117, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.certificate-card__badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.certificate-card__initial {
+    font-weight: 600;
+    color: var(--color-accent-dark);
+}
+
+.certificate-card__body h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+}
+
+.certificate-card__issuer {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.certificate-card__date {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+}
+
+.certificate-card__link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
 }
 
 .project-card {
@@ -427,4 +493,14 @@ a:hover {
 .project-detail__description {
     line-height: 1.6;
     margin: 0 0 1.5rem;
+}
+
+@media (min-width: 1600px) {
+    .site-nav__inner,
+    .about,
+    .projects,
+    .certificates,
+    .project-detail {
+        max-width: 1440px;
+    }
 }
