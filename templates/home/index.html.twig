@@ -8,6 +8,9 @@
             <span class="site-nav__name">{{ name }}</span>
             <nav class="site-nav__links">
                 <a href="#about">À propos</a>
+                {% if experiences|length > 0 %}
+                    <a href="#experience">Expérience</a>
+                {% endif %}
                 {% if projects|length > 0 %}
                     <a href="#projects">Projets</a>
                 {% endif %}
@@ -63,6 +66,33 @@
             </ul>
         {% endif %}
     </section>
+
+    {% if experiences|length > 0 %}
+        <section class="experience" id="experience">
+            <h2>Expérience</h2>
+            <div class="experience__list">
+                {% for experience in experiences %}
+                    <article class="experience-item">
+                        <div class="experience-item__marker" aria-hidden="true"></div>
+                        <div class="experience-item__body">
+                            <p class="experience-item__period">{{ experience.period }}</p>
+                            <h3>{{ experience.role }}</h3>
+                            <p class="experience-item__company">
+                                {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
+                            </p>
+                            {% if experience.descriptionLines|length > 0 %}
+                                <ul class="experience-item__description">
+                                    {% for line in experience.descriptionLines %}
+                                        <li>{{ line }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 
     {% if projects|length > 0 %}
         <section class="projects" id="projects">
