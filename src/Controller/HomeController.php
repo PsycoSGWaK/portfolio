@@ -13,8 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository): Response
-    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, EducationRepository $educationRepository): Response
+    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository): Response
     {
         $skills = ['PHP', 'Symfony', 'JavaScript', 'Angular', 'Git', 'Agile/Scrum'];
 
