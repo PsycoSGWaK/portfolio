@@ -277,34 +277,67 @@ a:hover {
 }
 
 .education__list {
+    position: relative;
     display: grid;
     gap: 2rem;
 }
 
 .education-item {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.education-item__marker {
-    flex: 0 0 auto;
-    width: 0.6rem;
-    height: 0.6rem;
-    margin-top: 0.5rem;
-    border-radius: 50%;
-    background-color: var(--color-accent);
     position: relative;
 }
 
-.education-item:not(:last-child) .education-item__marker::after {
-    content: "";
-    position: absolute;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: calc(100% + 1.5rem);
-    background-color: rgba(32, 30, 27, 0.12);
+@media (min-width: 640px) {
+    .education__list::before {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        top: 1.75rem;
+        bottom: 1.75rem;
+        width: 1px;
+        transform: translateX(-50%);
+        background-color: rgba(32, 30, 27, 0.12);
+    }
+
+    .education-item {
+        padding-left: 2.75rem;
+    }
+
+    .education-item::before {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        top: 1.75rem;
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        background-color: var(--color-accent);
+    }
+}
+
+.education-item__card {
+    background-color: rgba(32, 30, 27, 0.03);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.education-item__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.education-item__logo {
+    flex: 0 0 auto;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--color-bg);
+}
+
+.education-item__heading {
+    min-width: 0;
 }
 
 .education-item__period {
@@ -316,19 +349,19 @@ a:hover {
     letter-spacing: 0.05em;
 }
 
-.education-item__body h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.15rem;
+.education-item__heading h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.1rem;
 }
 
 .education-item__school {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .education-item__description {
     list-style: none;
-    margin: 0.75rem 0 0;
+    margin: 1rem 0 0;
     padding: 0;
     display: grid;
     gap: 0.5rem;
@@ -367,34 +400,67 @@ a:hover {
 }
 
 .experience__list {
+    position: relative;
     display: grid;
     gap: 2rem;
 }
 
 .experience-item {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.experience-item__marker {
-    flex: 0 0 auto;
-    width: 0.6rem;
-    height: 0.6rem;
-    margin-top: 0.5rem;
-    border-radius: 50%;
-    background-color: var(--color-accent);
     position: relative;
 }
 
-.experience-item:not(:last-child) .experience-item__marker::after {
-    content: "";
-    position: absolute;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: calc(100% + 1.5rem);
-    background-color: rgba(32, 30, 27, 0.12);
+@media (min-width: 640px) {
+    .experience__list::before {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        top: 1.75rem;
+        bottom: 1.75rem;
+        width: 1px;
+        transform: translateX(-50%);
+        background-color: rgba(32, 30, 27, 0.12);
+    }
+
+    .experience-item {
+        padding-left: 2.75rem;
+    }
+
+    .experience-item::before {
+        content: "";
+        position: absolute;
+        left: 1.25rem;
+        top: 1.75rem;
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        background-color: var(--color-accent);
+    }
+}
+
+.experience-item__card {
+    background-color: rgba(32, 30, 27, 0.03);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.experience-item__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.experience-item__logo {
+    flex: 0 0 auto;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--color-bg);
+}
+
+.experience-item__heading {
+    min-width: 0;
 }
 
 .experience-item__period {
@@ -406,19 +472,19 @@ a:hover {
     letter-spacing: 0.05em;
 }
 
-.experience-item__body h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.15rem;
+.experience-item__heading h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.1rem;
 }
 
 .experience-item__company {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .experience-item__description {
     list-style: none;
-    margin: 0.75rem 0 0;
+    margin: 1rem 0 0;
     padding: 0;
     display: grid;
     gap: 0.5rem;

@@ -75,14 +75,21 @@
             <h2>Expérience</h2>
             <div class="experience__list">
                 {% for experience in experiences %}
+                    {% set logoSrc = experience.logoUrl ?: (experience.logoName ? asset('uploads/logos/' ~ experience.logoName) : null) %}
                     <article class="experience-item">
-                        <div class="experience-item__marker" aria-hidden="true"></div>
-                        <div class="experience-item__body">
-                            <p class="experience-item__period">{{ experience.period }}</p>
-                            <h3>{{ experience.role }}</h3>
-                            <p class="experience-item__company">
-                                {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
-                            </p>
+                        <div class="experience-item__card">
+                            <div class="experience-item__header">
+                                {% if logoSrc %}
+                                    <img class="experience-item__logo" src="{{ logoSrc }}" alt="">
+                                {% endif %}
+                                <div class="experience-item__heading">
+                                    <p class="experience-item__period">{{ experience.period }}</p>
+                                    <h3>{{ experience.role }}</h3>
+                                    <p class="experience-item__company">
+                                        {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
+                                    </p>
+                                </div>
+                            </div>
                             {% if experience.descriptionLines|length > 0 %}
                                 <ul class="experience-item__description">
                                     {% for line in experience.descriptionLines %}
@@ -102,14 +109,21 @@
             <h2>Parcours académique</h2>
             <div class="education__list">
                 {% for education in educations %}
+                    {% set logoSrc = education.logoUrl ?: (education.logoName ? asset('uploads/logos/' ~ education.logoName) : null) %}
                     <article class="education-item">
-                        <div class="education-item__marker" aria-hidden="true"></div>
-                        <div class="education-item__body">
-                            <p class="education-item__period">{{ education.period }}</p>
-                            <h3>{{ education.degree }}</h3>
-                            <p class="education-item__school">
-                                {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}
-                            </p>
+                        <div class="education-item__card">
+                            <div class="education-item__header">
+                                {% if logoSrc %}
+                                    <img class="education-item__logo" src="{{ logoSrc }}" alt="">
+                                {% endif %}
+                                <div class="education-item__heading">
+                                    <p class="education-item__period">{{ education.period }}</p>
+                                    <h3>{{ education.degree }}</h3>
+                                    <p class="education-item__school">
+                                        {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}
+                                    </p>
+                                </div>
+                            </div>
                             {% if education.descriptionLines|length > 0 %}
                                 <ul class="education-item__description">
                                     {% for line in education.descriptionLines %}
