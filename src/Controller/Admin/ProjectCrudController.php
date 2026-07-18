@@ -7,11 +7,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FileField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectCrudController extends AbstractCrudController
 {
@@ -38,6 +40,13 @@ class ProjectCrudController extends AbstractCrudController
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
         yield UrlField::new('githubUrl', 'Lien GitHub')->hideOnIndex();
         yield UrlField::new('demoUrl', 'Lien démo')->hideOnIndex();
+        yield FileField::new('coverVideoName', 'Vidéo de couverture (optionnelle)')
+            ->setBasePath('/uploads/projects')
+            ->setUploadDir('public/uploads/projects')
+            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->setFileConstraints(new Assert\File(mimeTypes: ['video/mp4', 'video/webm']))
+            ->setHelp('Court clip en boucle (mp4/webm), affiché à la place de l\'image sur la carte d\'accueil.')
+            ->hideOnIndex();
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');
         yield IntegerField::new('position', 'Ordre d\'affichage')
