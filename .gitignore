@@ -27,6 +27,10 @@
 /public/uploads/certificates/*
 !/public/uploads/certificates/.gitkeep
 
+# Uploaded company/school logos
+/public/uploads/logos/*
+!/public/uploads/logos/.gitkeep
+
 # OS / editor
 .DS_Store
 .idea/

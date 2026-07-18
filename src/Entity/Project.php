@@ -34,7 +34,7 @@ class Project
     private ?string $stack = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $githubUrl = null;
+    private ?string $sourceUrl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $demoUrl = null;
@@ -129,14 +129,14 @@ class Project
         return array_filter(array_map('trim', explode(',', (string) $this->stack)));
     }
 
-    public function getGithubUrl(): ?string
+    public function getSourceUrl(): ?string
     {
-        return $this->githubUrl;
+        return $this->sourceUrl;
     }
 
-    public function setGithubUrl(?string $githubUrl): static
+    public function setSourceUrl(?string $sourceUrl): static
     {
-        $this->githubUrl = $githubUrl;
+        $this->sourceUrl = $sourceUrl;
 
         return $this;
     }

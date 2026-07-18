@@ -2,20 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Certificate;
+use App\Entity\Experience;
 use App\Service\PositionReorderer;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 
-class CertificateCrudController extends AbstractCrudController
+class ExperienceCrudController extends AbstractCrudController
 {
     public function __construct(private readonly PositionReorderer $positionReorderer)
     {
@@ -23,28 +23,35 @@ class CertificateCrudController extends AbstractCrudController
 
     public static function getEntityFqcn(): string
     {
-        return Certificate::class;
+        return Experience::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Certificat')
-            ->setEntityLabelInPlural('Certificats')
-            ->setDefaultSort(['position' => 'ASC', 'issueDate' => 'DESC']);
+            ->setEntityLabelInSingular('Expérience')
+            ->setEntityLabelInPlural('Expériences')
+            ->setDefaultSort(['position' => 'ASC']);
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('title', 'Titre');
-        yield TextField::new('issuer', 'Organisme');
-        yield DateField::new('issueDate', 'Date d\'obtention')->hideOnIndex();
-        yield UrlField::new('credentialUrl', 'Lien de vérification')->hideOnIndex();
-        yield ImageField::new('badgeImageName', 'Badge / logo (optionnel)')
-            ->setBasePath('/uploads/certificates')
-            ->setUploadDir('public/uploads/certificates')
+        yield TextField::new('company', 'Entreprise');
+        yield TextField::new('role', 'Poste');
+        yield TextField::new('period', 'Période')
+            ->setHelp('Texte libre, ex : 2022 - Présent');
+        yield TextField::new('location', 'Lieu')->hideOnIndex();
+        yield ImageField::new('logoName', 'Logo à uploader (optionnel)')
+            ->setBasePath('/uploads/logos')
+            ->setUploadDir('public/uploads/logos')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->hideOnIndex();
+        yield UrlField::new('logoUrl', 'ou lien vers un logo')
+            ->setHelp('Alternative à l\'upload : URL d\'une image déjà hébergée ailleurs. Prioritaire sur le logo uploadé si les deux sont renseignés.')
+            ->hideOnIndex();
+        yield TextareaField::new('description', 'Description')
+            ->setHelp('Une puce par ligne.')
             ->hideOnIndex();
         yield BooleanField::new('published', 'Publié');
         yield IntegerField::new('position', 'Ordre d\'affichage')
@@ -53,18 +60,18 @@ class CertificateCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void
     {
-        \assert($entityInstance instanceof Certificate);
-        $this->positionReorderer->makeRoomForInsert(Certificate::class, $entityInstance->getPosition());
+        \assert($entityInstance instanceof Experience);
+        $this->positionReorderer->makeRoomForInsert(Experience::class, $entityInstance->getPosition());
 
         parent::persistEntity($entityManager, $entityInstance);
     }
 
     public function updateEntity(EntityManagerInterface $entityManager, object $entityInstance): void
     {
-        \assert($entityInstance instanceof Certificate);
+        \assert($entityInstance instanceof Experience);
         $originalData = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
         $oldPosition = $originalData['position'] ?? $entityInstance->getPosition();
-        $this->positionReorderer->moveExisting(Certificate::class, $entityInstance->getId(), $oldPosition, $entityInstance->getPosition());
+        $this->positionReorderer->moveExisting(Experience::class, $entityInstance->getId(), $oldPosition, $entityInstance->getPosition());
 
         parent::updateEntity($entityManager, $entityInstance);
     }

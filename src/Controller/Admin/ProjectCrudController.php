@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Project;
+use App\Service\PositionReorderer;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -17,6 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly PositionReorderer $positionReorderer)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return Project::class;
@@ -38,7 +44,9 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('description', 'Description');
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
-        yield UrlField::new('githubUrl', 'Lien GitHub')->hideOnIndex();
+        yield UrlField::new('sourceUrl', 'Lien code source')
+            ->setHelp('GitHub, GitLab, ou un autre dépôt — l\'icône affichée sur le site s\'adapte automatiquement.')
+            ->hideOnIndex();
         yield UrlField::new('demoUrl', 'Lien démo')->hideOnIndex();
         yield FileField::new('coverVideoName', 'Vidéo de couverture (optionnelle)')
             ->setBasePath('/uploads/projects')
@@ -52,5 +60,23 @@ class ProjectCrudController extends AbstractCrudController
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void
+    {
+        \assert($entityInstance instanceof Project);
+        $this->positionReorderer->makeRoomForInsert(Project::class, $entityInstance->getPosition());
+
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, object $entityInstance): void
+    {
+        \assert($entityInstance instanceof Project);
+        $originalData = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
+        $oldPosition = $originalData['position'] ?? $entityInstance->getPosition();
+        $this->positionReorderer->moveExisting(Project::class, $entityInstance->getId(), $oldPosition, $entityInstance->getPosition());
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
