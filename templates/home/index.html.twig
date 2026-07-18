@@ -77,7 +77,6 @@
                 {% for experience in experiences %}
                     {% set logoSrc = experience.logoUrl ?: (experience.logoName ? asset('uploads/logos/' ~ experience.logoName) : null) %}
                     <article class="experience-item">
-                        <div class="experience-item__marker" aria-hidden="true"></div>
                         <div class="experience-item__card">
                             <div class="experience-item__header">
                                 {% if logoSrc %}
@@ -112,7 +111,6 @@
                 {% for education in educations %}
                     {% set logoSrc = education.logoUrl ?: (education.logoName ? asset('uploads/logos/' ~ education.logoName) : null) %}
                     <article class="education-item">
-                        <div class="education-item__marker" aria-hidden="true"></div>
                         <div class="education-item__card">
                             <div class="education-item__header">
                                 {% if logoSrc %}
