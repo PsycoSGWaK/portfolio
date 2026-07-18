@@ -31,6 +31,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkTo(ExperienceCrudController::class, 'Expériences', 'fa fa-briefcase');
+        yield MenuItem::linkTo(EducationCrudController::class, 'Parcours académique', 'fa fa-graduation-cap');
         yield MenuItem::linkTo(ProjectCrudController::class, 'Projets', 'fa fa-diagram-project');
         yield MenuItem::linkTo(ProjectImageCrudController::class, 'Images', 'fa fa-images');
         yield MenuItem::linkTo(CertificateCrudController::class, 'Certificats', 'fa fa-certificate');

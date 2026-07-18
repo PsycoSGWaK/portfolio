@@ -262,6 +262,96 @@ a:hover {
     }
 }
 
+.education {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+}
+
+.education h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dark);
+    margin: 0 0 1.5rem;
+}
+
+.education__list {
+    display: grid;
+    gap: 2rem;
+}
+
+.education-item {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.education-item__marker {
+    flex: 0 0 auto;
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    position: relative;
+}
+
+.education-item:not(:last-child) .education-item__marker::after {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: calc(100% + 1.5rem);
+    background-color: rgba(32, 30, 27, 0.12);
+}
+
+.education-item__period {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    color: var(--color-accent-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.education-item__body h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.15rem;
+}
+
+.education-item__school {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.education-item__description {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.education-item__description li {
+    position: relative;
+    padding-left: 1.25rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.education-item__description li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background-color: rgba(73, 98, 117, 0.4);
+}
+
 .experience {
     max-width: 1080px;
     margin: 0 auto;
@@ -588,6 +678,7 @@ a:hover {
 @media (min-width: 1600px) {
     .site-nav__inner,
     .about,
+    .education,
     .experience,
     .projects,
     .certificates,
