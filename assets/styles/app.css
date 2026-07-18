@@ -283,47 +283,39 @@ a:hover {
 
 .education-item {
     display: flex;
-    align-items: flex-start;
     gap: 1.5rem;
 }
 
 .education-item__marker {
     flex: 0 0 auto;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 50%;
-    background-color: rgba(73, 98, 117, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-}
-
-.education-item__marker img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 0.4rem;
-    background-color: var(--color-bg);
-}
-
-.education-item__marker-dot {
     width: 0.6rem;
     height: 0.6rem;
+    margin-top: 0.5rem;
     border-radius: 50%;
     background-color: var(--color-accent);
+    position: relative;
 }
 
 .education-item:not(:last-child) .education-item__marker::after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: 1rem;
     left: 50%;
     transform: translateX(-50%);
     width: 1px;
-    height: 2rem;
+    height: calc(100% + 1.5rem);
     background-color: rgba(32, 30, 27, 0.12);
+}
+
+.education-item__logo {
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    object-fit: contain;
+    background-color: var(--color-bg);
+    padding: 0.3rem;
+    border: 1px solid rgba(32, 30, 27, 0.08);
 }
 
 .education-item__period {
@@ -392,47 +384,39 @@ a:hover {
 
 .experience-item {
     display: flex;
-    align-items: flex-start;
     gap: 1.5rem;
 }
 
 .experience-item__marker {
     flex: 0 0 auto;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 50%;
-    background-color: rgba(73, 98, 117, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-}
-
-.experience-item__marker img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 0.4rem;
-    background-color: var(--color-bg);
-}
-
-.experience-item__marker-dot {
     width: 0.6rem;
     height: 0.6rem;
+    margin-top: 0.5rem;
     border-radius: 50%;
     background-color: var(--color-accent);
+    position: relative;
 }
 
 .experience-item:not(:last-child) .experience-item__marker::after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: 1rem;
     left: 50%;
     transform: translateX(-50%);
     width: 1px;
-    height: 2rem;
+    height: calc(100% + 1.5rem);
     background-color: rgba(32, 30, 27, 0.12);
+}
+
+.experience-item__logo {
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    object-fit: contain;
+    background-color: var(--color-bg);
+    padding: 0.3rem;
+    border: 1px solid rgba(32, 30, 27, 0.08);
 }
 
 .experience-item__period {
