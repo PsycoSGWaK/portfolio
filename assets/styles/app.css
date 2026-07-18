@@ -1,8 +1,39 @@
 :root {
     --color-bg: #F0EEE9;
+    --color-bg-rgb: 240, 238, 233;
     --color-text: #201E1B;
+    --color-text-rgb: 32, 30, 27;
     --color-accent: #7AB6D9;
     --color-accent-dark: #496275;
+    --color-accent-dark-rgb: 73, 98, 117;
+    --color-accent-strong: #2E4759;
+    --color-btn-primary-text: #14181C;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --color-bg: #15191D;
+        --color-bg-rgb: 21, 25, 29;
+        --color-text: #EDEDEA;
+        --color-text-rgb: 237, 237, 234;
+        --color-accent: #7AB6D9;
+        --color-accent-dark: #9CCBE8;
+        --color-accent-dark-rgb: 156, 203, 232;
+        --color-accent-strong: #2E4759;
+        --color-btn-primary-text: #14181C;
+    }
+}
+
+:root[data-theme="dark"] {
+    --color-bg: #15191D;
+    --color-bg-rgb: 21, 25, 29;
+    --color-text: #EDEDEA;
+    --color-text-rgb: 237, 237, 234;
+    --color-accent: #7AB6D9;
+    --color-accent-dark: #9CCBE8;
+    --color-accent-dark-rgb: 156, 203, 232;
+    --color-accent-strong: #2E4759;
+    --color-btn-primary-text: #14181C;
 }
 
 * {
@@ -14,6 +45,7 @@ body {
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .site-nav {
@@ -22,9 +54,9 @@ body {
     left: 0;
     right: 0;
     z-index: 10;
-    background-color: rgba(240, 238, 233, 0.85);
+    background-color: rgba(var(--color-bg-rgb),0.85);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(32, 30, 27, 0.08);
+    border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);
     transform: translateY(-100%);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -42,21 +74,83 @@ body.has-scrolled-past-hero .site-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-width: 0;
 }
 
 .site-nav__name {
     font-weight: 600;
     letter-spacing: -0.01em;
+    flex-shrink: 0;
+}
+
+.site-nav__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
 }
 
 .site-nav__links {
     display: flex;
+    align-items: center;
     gap: 1.5rem;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.site-nav__links::-webkit-scrollbar {
+    display: none;
 }
 
 .site-nav__links a {
+    flex-shrink: 0;
     font-size: 0.9rem;
     text-decoration: none;
+}
+
+.theme-toggle {
+    position: relative;
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-left: 1.5rem;
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
+    border-radius: 50%;
+    background-color: rgba(var(--color-text-rgb), 0.03);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(var(--color-text-rgb), 0.08);
+}
+
+.theme-toggle__icon {
+    position: absolute;
+    display: flex;
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle__icon--moon {
+    opacity: 0;
+    transform: scale(0.5) rotate(90deg);
+}
+
+[data-theme="dark"] .theme-toggle__icon--sun {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+}
+
+[data-theme="dark"] .theme-toggle__icon--moon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
 }
 
 .hero {
@@ -207,7 +301,7 @@ a:hover {
     flex-direction: column;
     gap: 1.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(32, 30, 27, 0.08);
+    border-top: 1px solid rgba(var(--color-text-rgb),0.08);
 }
 
 .about-stats__item {
@@ -254,7 +348,7 @@ a:hover {
         flex-wrap: wrap;
         justify-content: center;
         padding: 1.5rem 0;
-        border-bottom: 1px solid rgba(32, 30, 27, 0.08);
+        border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);
     }
 
     .about-skills {
@@ -295,7 +389,7 @@ a:hover {
         bottom: 1.75rem;
         width: 1px;
         transform: translateX(-50%);
-        background-color: rgba(32, 30, 27, 0.12);
+        background-color: rgba(var(--color-text-rgb),0.12);
     }
 
     .education-item {
@@ -316,7 +410,7 @@ a:hover {
 }
 
 .education-item__card {
-    background-color: rgba(32, 30, 27, 0.03);
+    background-color: rgba(var(--color-text-rgb),0.03);
     border-radius: 0.75rem;
     padding: 1.5rem;
 }
@@ -382,7 +476,7 @@ a:hover {
     width: 0.35rem;
     height: 0.35rem;
     border-radius: 50%;
-    background-color: rgba(73, 98, 117, 0.4);
+    background-color: rgba(var(--color-accent-dark-rgb),0.4);
 }
 
 .experience {
@@ -418,7 +512,7 @@ a:hover {
         bottom: 1.75rem;
         width: 1px;
         transform: translateX(-50%);
-        background-color: rgba(32, 30, 27, 0.12);
+        background-color: rgba(var(--color-text-rgb),0.12);
     }
 
     .experience-item {
@@ -439,7 +533,7 @@ a:hover {
 }
 
 .experience-item__card {
-    background-color: rgba(32, 30, 27, 0.03);
+    background-color: rgba(var(--color-text-rgb),0.03);
     border-radius: 0.75rem;
     padding: 1.5rem;
 }
@@ -505,7 +599,7 @@ a:hover {
     width: 0.35rem;
     height: 0.35rem;
     border-radius: 50%;
-    background-color: rgba(73, 98, 117, 0.4);
+    background-color: rgba(var(--color-accent-dark-rgb),0.4);
 }
 
 .projects {
@@ -553,7 +647,7 @@ a:hover {
     align-items: flex-start;
     gap: 1rem;
     padding: 1.5rem;
-    background-color: rgba(32, 30, 27, 0.03);
+    background-color: rgba(var(--color-text-rgb),0.03);
     border-radius: 0.75rem;
 }
 
@@ -563,7 +657,7 @@ a:hover {
     height: 48px;
     border-radius: 50%;
     overflow: hidden;
-    background-color: rgba(73, 98, 117, 0.12);
+    background-color: rgba(var(--color-accent-dark-rgb),0.12);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -604,7 +698,7 @@ a:hover {
 
 .project-card {
     position: relative;
-    background-color: rgba(32, 30, 27, 0.03);
+    background-color: rgba(var(--color-text-rgb),0.03);
     border-radius: 0.75rem;
     overflow: hidden;
 }
@@ -655,7 +749,7 @@ a:hover {
     font-size: 0.8rem;
     padding: 0.25rem 0.65rem;
     border-radius: 999px;
-    background-color: rgba(73, 98, 117, 0.12);
+    background-color: rgba(var(--color-accent-dark-rgb),0.12);
     color: var(--color-accent-dark);
 }
 
@@ -689,11 +783,11 @@ a:hover {
 
 .btn--primary {
     background-color: var(--color-accent);
-    color: var(--color-text);
+    color: var(--color-btn-primary-text);
 }
 
 .btn--primary:hover {
-    background-color: var(--color-accent-dark);
+    background-color: var(--color-accent-strong);
     color: #fff;
 }
 
@@ -704,7 +798,7 @@ a:hover {
 }
 
 .btn--secondary:hover {
-    background-color: rgba(73, 98, 117, 0.08);
+    background-color: rgba(var(--color-accent-dark-rgb),0.08);
     color: var(--color-accent-dark);
 }
 
@@ -728,7 +822,7 @@ a:hover {
     width: 100%;
     max-height: 65vh;
     object-fit: contain;
-    background-color: rgba(32, 30, 27, 0.03);
+    background-color: rgba(var(--color-text-rgb),0.03);
     scroll-snap-align: start;
 }
 
@@ -740,7 +834,7 @@ a:hover {
     height: 2rem;
     border: none;
     border-radius: 999px;
-    background-color: rgba(240, 238, 233, 0.85);
+    background-color: rgba(var(--color-bg-rgb),0.85);
     color: var(--color-text);
     font-size: 1.25rem;
     line-height: 1;
