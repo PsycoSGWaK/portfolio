@@ -1,0 +1,20 @@
+{% import '_icon.html.twig' as icons %}
+
+{% if project.demoUrl %}
+    <a href="{{ project.demoUrl }}" target="_blank" rel="noopener" class="btn btn--primary">
+        {{ icons.render('open-outline') }}
+        Démo
+    </a>
+{% endif %}
+{% if project.sourceUrl %}
+    <a href="{{ project.sourceUrl }}" target="_blank" rel="noopener" class="btn btn--secondary">
+        {% if 'gitlab.com' in project.sourceUrl %}
+            {{ icons.render('logo-gitlab') }}
+        {% elseif 'github.com' in project.sourceUrl %}
+            {{ icons.render('logo-github') }}
+        {% else %}
+            {{ icons.render('code-slash-outline') }}
+        {% endif %}
+        Source
+    </a>
+{% endif %}
