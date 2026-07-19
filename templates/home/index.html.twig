@@ -182,7 +182,7 @@
                             {% else %}
                                 <h3><a href="{{ path('project_show', {slug: project.slug}) }}" class="project-card__stretched-link">{{ project.title }}</a></h3>
                             {% endif %}
-                            <p>{{ project.description }}</p>
+                            <p>{{ project.getLocalizedDescription(app.request.locale) }}</p>
                             <ul class="project-card__stack">
                                 {% for tech in project.stackList %}
                                     <li>{{ tech }}</li>

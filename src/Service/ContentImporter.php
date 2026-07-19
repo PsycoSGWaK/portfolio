@@ -89,10 +89,14 @@ final class ContentImporter
             $project->setTitle($row['title'] ?? '');
             $project->setSlug($row['slug'] ?? null);
             $project->setDescription($row['description'] ?? '');
+            $project->setDescriptionEn($row['descriptionEn'] ?? null);
             $project->setContext($row['context'] ?? null);
+            $project->setContextEn($row['contextEn'] ?? null);
             $project->setRole($row['role'] ?? null);
             $project->setObjectives($row['objectives'] ?? null);
+            $project->setObjectivesEn($row['objectivesEn'] ?? null);
             $project->setFeatures($row['features'] ?? null);
+            $project->setFeaturesEn($row['featuresEn'] ?? null);
             $project->setStack($row['stack'] ?? '');
             $project->setTools($row['tools'] ?? null);
             $project->setSourceUrl($row['sourceUrl'] ?? null);

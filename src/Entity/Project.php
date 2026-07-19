@@ -45,11 +45,17 @@ class Project
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $descriptionEn = null;
+
     #[ORM\Column(length: 255)]
     private ?string $stack = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $context = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $contextEn = null;
 
     /**
      * @var string[]|null
@@ -61,7 +67,13 @@ class Project
     private ?string $objectives = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $objectivesEn = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $features = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $featuresEn = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tools = null;
@@ -148,6 +160,27 @@ class Project
         return $this;
     }
 
+    public function getDescriptionEn(): ?string
+    {
+        return $this->descriptionEn;
+    }
+
+    public function setDescriptionEn(?string $descriptionEn): static
+    {
+        $this->descriptionEn = $descriptionEn;
+
+        return $this;
+    }
+
+    public function getLocalizedDescription(string $locale): string
+    {
+        if ('en' === $locale && $this->descriptionEn) {
+            return $this->descriptionEn;
+        }
+
+        return $this->description ?? '';
+    }
+
     public function getStack(): ?string
     {
         return $this->stack;
@@ -178,6 +211,27 @@ class Project
         $this->context = $context;
 
         return $this;
+    }
+
+    public function getContextEn(): ?string
+    {
+        return $this->contextEn;
+    }
+
+    public function setContextEn(?string $contextEn): static
+    {
+        $this->contextEn = $contextEn;
+
+        return $this;
+    }
+
+    public function getLocalizedContext(string $locale): ?string
+    {
+        if ('en' === $locale && $this->contextEn) {
+            return $this->contextEn;
+        }
+
+        return $this->context;
     }
 
     /**
@@ -218,6 +272,28 @@ class Project
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->objectives))));
     }
 
+    public function getObjectivesEn(): ?string
+    {
+        return $this->objectivesEn;
+    }
+
+    public function setObjectivesEn(?string $objectivesEn): static
+    {
+        $this->objectivesEn = $objectivesEn;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLocalizedObjectiveLines(string $locale): array
+    {
+        $text = ('en' === $locale && $this->objectivesEn) ? $this->objectivesEn : $this->objectives;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
+    }
+
     public function getFeatures(): ?string
     {
         return $this->features;
@@ -236,6 +312,28 @@ class Project
     public function getFeatureLines(): array
     {
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->features))));
+    }
+
+    public function getFeaturesEn(): ?string
+    {
+        return $this->featuresEn;
+    }
+
+    public function setFeaturesEn(?string $featuresEn): static
+    {
+        $this->featuresEn = $featuresEn;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLocalizedFeatureLines(string $locale): array
+    {
+        $text = ('en' === $locale && $this->featuresEn) ? $this->featuresEn : $this->features;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
     }
 
     public function getTools(): ?string
