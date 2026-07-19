@@ -34,6 +34,7 @@ class ProjectRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->andWhere('p.slug = :slug')
             ->andWhere('p.published = true')
+            ->andWhere('p.wip = false')
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult();

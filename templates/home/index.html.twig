@@ -154,7 +154,11 @@
                         {% endif %}
 
                         <div class="project-card__body">
-                            <h3><a href="{{ path('project_show', {slug: project.slug}) }}" class="project-card__stretched-link">{{ project.title }}</a></h3>
+                            {% if project.wip %}
+                                <h3>{{ project.title }} - Work in progress</h3>
+                            {% else %}
+                                <h3><a href="{{ path('project_show', {slug: project.slug}) }}" class="project-card__stretched-link">{{ project.title }}</a></h3>
+                            {% endif %}
                             <p>{{ project.description }}</p>
                             <ul class="project-card__stack">
                                 {% for tech in project.stackList %}

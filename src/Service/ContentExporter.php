@@ -73,6 +73,7 @@ final class ContentExporter
                 'techDocName' => $project->getTechDocName(),
                 'featured' => $project->isFeatured(),
                 'published' => $project->isPublished(),
+                'wip' => $project->isWip(),
                 'position' => $project->getPosition(),
                 'createdAt' => $project->getCreatedAt()?->format(\DATE_ATOM),
                 'images' => array_map(static fn ($image) => [
