@@ -48,8 +48,8 @@ class ProjectCrudController extends AbstractCrudController
         yield TextField::new('role', 'Rôle')
             ->setHelp('Ton rôle sur le projet, ex : Projet personnel, Projet de fin d\'études, Stage...')
             ->hideOnIndex();
-        yield TextareaField::new('approach', 'Démarche')
-            ->setHelp('Une puce par ligne : étapes clés ou défis techniques résolus.')
+        yield TextareaField::new('objectives', 'Objectifs / Cahier des charges')
+            ->setHelp('Une puce par ligne : ce que le projet devait accomplir, les besoins ou contraintes à respecter (pas les étapes déjà réalisées).')
             ->hideOnIndex();
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
@@ -63,6 +63,13 @@ class ProjectCrudController extends AbstractCrudController
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setFileConstraints(new Assert\File(mimeTypes: ['video/mp4', 'video/webm']))
             ->setHelp('Court clip en boucle (mp4/webm), affiché à la place de l\'image sur la carte d\'accueil.')
+            ->hideOnIndex();
+        yield FileField::new('techDocName', 'Documentation technique (PDF, optionnelle)')
+            ->setBasePath('/uploads/projects')
+            ->setUploadDir('public/uploads/projects')
+            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->setFileConstraints(new Assert\File(mimeTypes: ['application/pdf']))
+            ->setHelp('Affiche un bouton de téléchargement à côté du lien source sur la page détail.')
             ->hideOnIndex();
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');

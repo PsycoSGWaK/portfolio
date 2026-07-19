@@ -40,13 +40,16 @@ class Project
     private ?string $role = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $approach = null;
+    private ?string $objectives = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sourceUrl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $demoUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $techDocName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $coverVideoName = null;
@@ -162,14 +165,14 @@ class Project
         return $this;
     }
 
-    public function getApproach(): ?string
+    public function getObjectives(): ?string
     {
-        return $this->approach;
+        return $this->objectives;
     }
 
-    public function setApproach(?string $approach): static
+    public function setObjectives(?string $objectives): static
     {
-        $this->approach = $approach;
+        $this->objectives = $objectives;
 
         return $this;
     }
@@ -177,9 +180,9 @@ class Project
     /**
      * @return string[]
      */
-    public function getApproachLines(): array
+    public function getObjectiveLines(): array
     {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->approach))));
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->objectives))));
     }
 
     public function getSourceUrl(): ?string
@@ -214,6 +217,18 @@ class Project
     public function setCoverVideoName(?string $coverVideoName): static
     {
         $this->coverVideoName = $coverVideoName;
+
+        return $this;
+    }
+
+    public function getTechDocName(): ?string
+    {
+        return $this->techDocName;
+    }
+
+    public function setTechDocName(?string $techDocName): static
+    {
+        $this->techDocName = $techDocName;
 
         return $this;
     }

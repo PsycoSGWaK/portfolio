@@ -18,3 +18,9 @@
         Source
     </a>
 {% endif %}
+{% if project.techDocName %}
+    <a href="{{ asset('uploads/projects/' ~ project.techDocName) }}" download class="btn btn--secondary">
+        {{ icons.render('download-outline') }}
+        Doc technique
+    </a>
+{% endif %}

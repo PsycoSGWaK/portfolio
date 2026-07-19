@@ -915,12 +915,6 @@ a:hover {
     max-width: 720px;
 }
 
-.project-detail__description {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin: 0 0 1.5rem;
-}
-
 .project-detail__section-title {
     font-size: 0.8rem;
     text-transform: uppercase;
