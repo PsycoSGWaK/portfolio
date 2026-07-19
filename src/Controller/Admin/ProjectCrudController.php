@@ -50,6 +50,7 @@ class ProjectCrudController extends AbstractCrudController
             ->setChoices($this->buildRoleChoices())
             ->allowMultipleChoices()
             ->renderExpanded()
+            ->setCssClass('project-role-checkboxes')
             ->setHelp('Coche tous les rôles applicables à ce projet.')
             ->hideOnIndex();
         yield TextareaField::new('objectives', 'Objectifs / Cahier des charges')

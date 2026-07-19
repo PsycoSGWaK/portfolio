@@ -1,0 +1,15 @@
+/* EasyAdmin backoffice overrides. Loaded only on /admin, separate from the public site's app.css. */
+
+.project-role-checkboxes {
+    columns: 2 260px;
+    column-gap: 2rem;
+}
+
+.project-role-checkboxes fieldset {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+}
+
+.project-role-checkboxes .form-check {
+    break-inside: avoid;
+}
