@@ -2,24 +2,44 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Certificate;
+use App\Entity\Education;
+use App\Entity\Experience;
+use App\Entity\Project;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
-    public function index(): RedirectResponse
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        $url = $this->container->get(AdminUrlGenerator::class)
-            ->setController(ProjectCrudController::class)
-            ->generateUrl();
+    }
 
-        return $this->redirect($url);
+    public function index(): Response
+    {
+        $stats = [];
+        foreach ([
+            'Projets' => [Project::class, ProjectCrudController::class],
+            'Certificats' => [Certificate::class, CertificateCrudController::class],
+            'Expériences' => [Experience::class, ExperienceCrudController::class],
+            'Parcours académique' => [Education::class, EducationCrudController::class],
+        ] as $label => [$entityClass, $crudController]) {
+            $repository = $this->entityManager->getRepository($entityClass);
+            $stats[] = [
+                'label' => $label,
+                'total' => $repository->count([]),
+                'published' => $repository->count(['published' => true]),
+                'crudController' => $crudController,
+            ];
+        }
+
+        return $this->render('admin/dashboard.html.twig', ['stats' => $stats]);
     }
 
     public function configureDashboard(): Dashboard

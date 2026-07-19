@@ -1,0 +1,15 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Tableau de bord{% endblock %}
+
+{% block main %}
+    <div class="dashboard-stats">
+        {% for stat in stats %}
+            <a class="dashboard-stat" href="{{ ea_url().setController(stat.crudController).setAction('index').generateUrl() }}">
+                <span class="dashboard-stat__label">{{ stat.label }}</span>
+                <span class="dashboard-stat__number">{{ stat.published }}<span class="dashboard-stat__total">/ {{ stat.total }}</span></span>
+                <span class="dashboard-stat__hint">publiés / total</span>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
