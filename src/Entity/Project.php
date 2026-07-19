@@ -33,6 +33,15 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $stack = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $context = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $role = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $approach = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sourceUrl = null;
 
@@ -127,6 +136,50 @@ class Project
     public function getStackList(): array
     {
         return array_filter(array_map('trim', explode(',', (string) $this->stack)));
+    }
+
+    public function getContext(): ?string
+    {
+        return $this->context;
+    }
+
+    public function setContext(?string $context): static
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getApproach(): ?string
+    {
+        return $this->approach;
+    }
+
+    public function setApproach(?string $approach): static
+    {
+        $this->approach = $approach;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getApproachLines(): array
+    {
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->approach))));
     }
 
     public function getSourceUrl(): ?string
