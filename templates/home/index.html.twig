@@ -7,7 +7,7 @@
         <div class="site-nav__inner">
             <span class="site-nav__name">{{ name }}</span>
             <div class="site-nav__right">
-                <nav class="site-nav__links">
+                <nav class="site-nav__links" data-turbo="false">
                     <a href="#about">À propos</a>
                     {% if experiences|length > 0 %}
                         <a href="#experience">Expérience</a>
