@@ -31,6 +31,10 @@
 /public/uploads/logos/*
 !/public/uploads/logos/.gitkeep
 
+# Uploaded profile photo
+/public/uploads/profile/*
+!/public/uploads/profile/.gitkeep
+
 # OS / editor
 .DS_Store
 .idea/

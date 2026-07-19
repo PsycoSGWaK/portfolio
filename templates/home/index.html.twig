@@ -37,7 +37,11 @@
     </section>
 
     <section class="about" id="about">
-        <img class="about-photo" src="{{ asset('images/profile.png') }}" alt="Photo de {{ name }}">
+        {% if profile and profile.photoName %}
+            <img class="about-photo" src="{{ asset('uploads/profile/' ~ profile.photoName) }}" alt="Photo de {{ name }}">
+        {% else %}
+            <img class="about-photo" src="{{ asset('images/profile.png') }}" alt="Photo de {{ name }}">
+        {% endif %}
 
         <div class="about-content">
             <h2>À propos de moi</h2>
