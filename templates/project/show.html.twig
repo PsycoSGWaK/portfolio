@@ -49,19 +49,19 @@
         {% if project.description or project.role or project.stackList|length > 0 or project.toolsList|length > 0 %}
             <div class="project-detail__meta project-detail__meta--grid">
                 {% if project.description %}
-                    <div class="project-detail__meta-item project-detail__meta-item--full">
+                    <div class="project-detail__meta-item project-detail__meta-item--description">
                         <h2>Description</h2>
                         <p>{{ project.description }}</p>
                     </div>
                 {% endif %}
                 {% if project.role %}
-                    <div class="project-detail__meta-item">
+                    <div class="project-detail__meta-item project-detail__meta-item--role">
                         <h2>Rôle</h2>
                         <p>{{ project.role }}</p>
                     </div>
                 {% endif %}
                 {% if project.stackList|length > 0 %}
-                    <div class="project-detail__meta-item project-detail__meta-item--col2">
+                    <div class="project-detail__meta-item project-detail__meta-item--stack">
                         <h2>Stack technique</h2>
                         <ul class="tech-chip-list">
                             {% for tech in project.stackList %}
@@ -75,7 +75,7 @@
                     </div>
                 {% endif %}
                 {% if project.toolsList|length > 0 %}
-                    <div class="project-detail__meta-item project-detail__meta-item--col2">
+                    <div class="project-detail__meta-item project-detail__meta-item--stack">
                         <h2>Outils</h2>
                         <ul class="tech-chip-list">
                             {% for tool in project.toolsList %}
