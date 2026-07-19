@@ -18,9 +18,7 @@
 
         <header class="project-detail__header">
             <div class="project-detail__heading">
-                <p class="project-detail__eyebrow">
-                    Projet{% if project.createdAt %} · {{ project.createdAt|format_date(pattern: 'MMMM yyyy') }}{% endif %}
-                </p>
+                <p class="project-detail__eyebrow">Projet</p>
                 <h1>{{ project.title }}</h1>
             </div>
             <div class="project-detail__actions">

@@ -3,9 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Project;
+use App\Entity\ProjectImage;
 use App\Service\PositionReorderer;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -16,6 +20,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ProjectCrudController extends AbstractCrudController
@@ -35,6 +41,58 @@ class ProjectCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Projet')
             ->setEntityLabelInPlural('Projets')
             ->setDefaultSort(['position' => 'ASC', 'createdAt' => 'DESC']);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $duplicate = Action::new('duplicate', 'Dupliquer', 'fa fa-copy')
+            ->linkToCrudAction('duplicate');
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $duplicate)
+            ->add(Crud::PAGE_DETAIL, $duplicate);
+    }
+
+    public function duplicate(AdminContext $context, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $original = $context->getEntity()->getInstance();
+        \assert($original instanceof Project);
+
+        $duplicate = new Project();
+        $duplicate->setTitle($original->getTitle() . ' (copie)');
+        $duplicate->setDescription($original->getDescription());
+        $duplicate->setContext($original->getContext());
+        $duplicate->setRole($original->getRole());
+        $duplicate->setObjectives($original->getObjectives());
+        $duplicate->setFeatures($original->getFeatures());
+        $duplicate->setStack($original->getStack());
+        $duplicate->setTools($original->getTools());
+        $duplicate->setSourceUrl($original->getSourceUrl());
+        $duplicate->setDemoUrl($original->getDemoUrl());
+        $duplicate->setCoverVideoName($original->getCoverVideoName());
+        $duplicate->setTechDocName($original->getTechDocName());
+        $duplicate->setFeatured(false);
+        $duplicate->setPublished(false);
+        $duplicate->setPosition($original->getPosition() + 1);
+
+        foreach ($original->getImages() as $image) {
+            $duplicateImage = new ProjectImage();
+            $duplicateImage->setImageName($image->getImageName());
+            $duplicateImage->setPosition($image->getPosition());
+            $duplicate->addImage($duplicateImage);
+        }
+
+        $this->positionReorderer->makeRoomForInsert(Project::class, $duplicate->getPosition());
+        $entityManager->persist($duplicate);
+        $entityManager->flush();
+
+        $url = $this->container->get(AdminUrlGenerator::class)
+            ->setController(self::class)
+            ->setAction(Action::EDIT)
+            ->setEntityId($duplicate->getId())
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 
     public function configureFields(string $pageName): iterable
