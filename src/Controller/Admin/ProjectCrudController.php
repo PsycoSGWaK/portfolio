@@ -42,6 +42,15 @@ class ProjectCrudController extends AbstractCrudController
         yield TextField::new('title', 'Titre');
         yield TextField::new('slug')->hideOnForm();
         yield TextareaField::new('description', 'Description');
+        yield TextareaField::new('context', 'Contexte')
+            ->setHelp('Pourquoi ce projet, pour qui (perso, scolaire, stage...).')
+            ->hideOnIndex();
+        yield TextField::new('role', 'Rôle')
+            ->setHelp('Ton rôle sur le projet, ex : Projet personnel, Projet de fin d\'études, Stage...')
+            ->hideOnIndex();
+        yield TextareaField::new('approach', 'Démarche')
+            ->setHelp('Une puce par ligne : étapes clés ou défis techniques résolus.')
+            ->hideOnIndex();
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
         yield UrlField::new('sourceUrl', 'Lien code source')

@@ -45,8 +45,34 @@
             </div>
         {% endif %}
 
+        {% if project.context or project.role %}
+            <div class="project-detail__meta">
+                {% if project.context %}
+                    <div class="project-detail__meta-item">
+                        <h2>Contexte</h2>
+                        <p>{{ project.context }}</p>
+                    </div>
+                {% endif %}
+                {% if project.role %}
+                    <div class="project-detail__meta-item">
+                        <h2>Rôle</h2>
+                        <p>{{ project.role }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <div class="project-detail__body">
             <p class="project-detail__description">{{ project.description }}</p>
+
+            {% if project.approachLines|length > 0 %}
+                <h2 class="project-detail__section-title">Démarche</h2>
+                <ul class="project-detail__list">
+                    {% for step in project.approachLines %}
+                        <li>{{ step }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
             {% if project.stackList|length > 0 %}
                 <ul class="project-card__stack">
