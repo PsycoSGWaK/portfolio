@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\CertificateRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\EducationRepository;
+use App\Repository\ProfileRepository;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository): Response
+    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository): Response
     {
         $skills = ['PHP', 'Symfony', 'JavaScript', 'Angular', 'Git', 'Agile/Scrum'];
 
@@ -36,6 +37,7 @@ class HomeController extends AbstractController
                 ['number' => (string) count($skills), 'label' => 'technologies maîtrisées'],
             ],
             'skills' => $skills,
+            'profile' => $profileRepository->getSingleton(),
             'experiences' => $experienceRepository->findPublishedOrderedByPosition(),
             'educations' => $educationRepository->findPublishedOrderedByPosition(),
             'projects' => $projectRepository->findPublishedOrderedByPosition(),
