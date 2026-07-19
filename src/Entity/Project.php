@@ -16,6 +16,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Project
 {
+    /**
+     * Fixed, closed list of roles — grouped for display in the admin as checkboxes.
+     * Not admin-extensible: adding a new role means adding it here.
+     *
+     * @var array<string, string[]>
+     */
+    public const ROLE_CHOICES = [
+        'Product & stratégie' => ['Product Owner', 'Product Manager', 'Business Analyst'],
+        'Design' => ['UX Designer', 'UI Designer', 'UX Researcher', 'Product Designer'],
+        'Développement' => ['Tech Lead', 'Lead Developer', 'Développeur Front-end', 'Développeur Back-end', 'Développeur Full-stack', 'Développeur Mobile'],
+        'Qualité & exploitation' => ['QA Engineer', 'Testeur', 'DevOps Engineer', 'SRE (Site Reliability Engineer)', 'Ingénieur Cloud'],
+        'Gestion & coordination' => ['Scrum Master', 'Agile Coach', 'Project Manager', 'PMO'],
+        'Autres rôles transverses' => ['Data Analyst', 'Data Scientist', 'Architecte solution', 'Expert sécurité / RSSI', 'Rédacteur technique', 'Support client', 'Customer Success'],
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,17 +51,29 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $context = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $role = null;
+    /**
+     * @var string[]|null
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $role = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $approach = null;
+    private ?string $objectives = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $features = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tools = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sourceUrl = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $demoUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $techDocName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $coverVideoName = null;
@@ -150,26 +177,32 @@ class Project
         return $this;
     }
 
-    public function getRole(): ?string
+    /**
+     * @return string[]
+     */
+    public function getRole(): array
     {
-        return $this->role;
+        return $this->role ?? [];
     }
 
-    public function setRole(?string $role): static
+    /**
+     * @param string[]|null $role
+     */
+    public function setRole(?array $role): static
     {
         $this->role = $role;
 
         return $this;
     }
 
-    public function getApproach(): ?string
+    public function getObjectives(): ?string
     {
-        return $this->approach;
+        return $this->objectives;
     }
 
-    public function setApproach(?string $approach): static
+    public function setObjectives(?string $objectives): static
     {
-        $this->approach = $approach;
+        $this->objectives = $objectives;
 
         return $this;
     }
@@ -177,9 +210,49 @@ class Project
     /**
      * @return string[]
      */
-    public function getApproachLines(): array
+    public function getObjectiveLines(): array
     {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->approach))));
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->objectives))));
+    }
+
+    public function getFeatures(): ?string
+    {
+        return $this->features;
+    }
+
+    public function setFeatures(?string $features): static
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getFeatureLines(): array
+    {
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->features))));
+    }
+
+    public function getTools(): ?string
+    {
+        return $this->tools;
+    }
+
+    public function setTools(?string $tools): static
+    {
+        $this->tools = $tools;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getToolsList(): array
+    {
+        return array_filter(array_map('trim', explode(',', (string) $this->tools)));
     }
 
     public function getSourceUrl(): ?string
@@ -214,6 +287,18 @@ class Project
     public function setCoverVideoName(?string $coverVideoName): static
     {
         $this->coverVideoName = $coverVideoName;
+
+        return $this;
+    }
+
+    public function getTechDocName(): ?string
+    {
+        return $this->techDocName;
+    }
+
+    public function setTechDocName(?string $techDocName): static
+    {
+        $this->techDocName = $techDocName;
 
         return $this;
     }
