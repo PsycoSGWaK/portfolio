@@ -898,7 +898,7 @@ a:hover {
 }
 
 .project-detail__meta--grid {
-    grid-template-columns: minmax(0, 1.8fr) minmax(140px, 0.9fr) minmax(0, 1.4fr);
+    grid-template-columns: minmax(0, 1.8fr) minmax(100px, 0.5fr) minmax(0, 1.5fr);
     align-items: start;
 }
 
@@ -914,10 +914,6 @@ a:hover {
     grid-column: 3;
 }
 
-.project-detail__meta-item--stack .tech-chip-list {
-    max-width: 320px;
-}
-
 @media (max-width: 639px) {
     .project-detail__meta--grid {
         grid-template-columns: 1fr;
@@ -927,10 +923,6 @@ a:hover {
     .project-detail__meta-item--role,
     .project-detail__meta-item--stack {
         grid-column: 1;
-    }
-
-    .project-detail__meta-item--stack .tech-chip-list {
-        max-width: none;
     }
 }
 
