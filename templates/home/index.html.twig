@@ -6,35 +6,35 @@
     <header class="site-nav">
         <div class="site-nav__inner">
             <span class="site-nav__name">{{ name }}</span>
-            <nav class="site-nav__links">
-                <a href="#about">À propos</a>
-                {% if experiences|length > 0 %}
-                    <a href="#experience">Expérience</a>
-                {% endif %}
-                {% if educations|length > 0 %}
-                    <a href="#education">Formation</a>
-                {% endif %}
-                {% if projects|length > 0 %}
-                    <a href="#projects">Projets</a>
-                {% endif %}
-                {% if certificates|length > 0 %}
-                    <a href="#certificates">Certificats</a>
-                {% endif %}
-            </nav>
+            <div class="site-nav__right">
+                <nav class="site-nav__links" data-turbo="false">
+                    <a href="#about">À propos</a>
+                    {% if experiences|length > 0 %}
+                        <a href="#experience">Expérience</a>
+                    {% endif %}
+                    {% if educations|length > 0 %}
+                        <a href="#education">Formation</a>
+                    {% endif %}
+                    {% if projects|length > 0 %}
+                        <a href="#projects">Projets</a>
+                    {% endif %}
+                    {% if certificates|length > 0 %}
+                        <a href="#certificates">Certificats</a>
+                    {% endif %}
+                </nav>
+                {{ include('_theme_toggle.html.twig') }}
+            </div>
         </div>
     </header>
 {% endblock %}
 
 {% block body %}
-    <section class="hero" data-site-nav-target="hero">
-        <h1>{{ name }}</h1>
-        <div class="scroll-cue" aria-hidden="true">
-            <span class="scroll-cue__chevron"></span>
-        </div>
-    </section>
-
     <section class="about" id="about">
-        <img class="about-photo" src="{{ asset('images/profile.png') }}" alt="Photo de {{ name }}">
+        {% if profile and profile.photoName %}
+            <img class="about-photo" src="{{ asset('uploads/profile/' ~ profile.photoName) }}" alt="Photo de {{ name }}">
+        {% else %}
+            <img class="about-photo" src="{{ asset('images/profile.png') }}" alt="Photo de {{ name }}">
+        {% endif %}
 
         <div class="about-content">
             <h2>À propos de moi</h2>
@@ -188,7 +188,7 @@
                             <h3>{{ certificate.title }}</h3>
                             <p class="certificate-card__issuer">{{ certificate.issuer }}</p>
                             {% if certificate.issueDate %}
-                                <p class="certificate-card__date">{{ certificate.issueDate|date('F Y') }}</p>
+                                <p class="certificate-card__date">{{ certificate.issueDate|format_date(pattern: 'MMMM yyyy') }}</p>
                             {% endif %}
                             {% if certificate.credentialUrl %}
                                 <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">Vérifier →</a>

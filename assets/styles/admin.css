@@ -1,0 +1,64 @@
+/* EasyAdmin backoffice overrides. Loaded only on /admin, separate from the public site's app.css. */
+
+.project-role-checkboxes {
+    column-count: 3;
+    column-gap: 2rem;
+}
+
+.project-role-checkboxes fieldset {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+}
+
+.project-role-checkboxes .form-check {
+    break-inside: avoid;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.dashboard-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.dashboard-stat:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: inherit;
+}
+
+.dashboard-stat__label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6c757d;
+}
+
+.dashboard-stat__number {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.dashboard-stat__total {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #6c757d;
+    margin-left: 0.25rem;
+}
+
+.dashboard-stat__hint {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
