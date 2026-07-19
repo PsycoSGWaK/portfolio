@@ -146,7 +146,7 @@ class ProjectCrudController extends AbstractCrudController
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');
         yield BooleanField::new('wip', 'En cours (WIP)')
-            ->setHelp('La carte affiche "Titre - WIP" et ne mène à aucune page détail.');
+            ->setHelp('La carte affiche "Titre - Work in progress" et ne mène à aucune page détail.');
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();
