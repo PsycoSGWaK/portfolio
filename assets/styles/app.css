@@ -904,13 +904,12 @@ a:hover {
 }
 
 .project-detail__meta-item--description {
-    flex: 0 0 560px;
-    max-width: 560px;
+    flex: 1 0 560px;
 }
 
 .project-detail__meta-item--role {
-    flex: 1 1 0%;
-    min-width: 80px;
+    flex: 0 1 auto;
+    max-width: 200px;
 }
 
 .project-detail__meta-item--stack {
