@@ -899,22 +899,36 @@ a:hover {
 
 .project-detail__meta--grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: flex-start;
 }
 
 .project-detail__meta-item--description {
     flex: 0 1 560px;
     max-width: 560px;
+    min-width: 240px;
 }
 
 .project-detail__meta-item--role {
-    flex: 1 1 auto;
-    min-width: 0;
+    flex: 1 1 0%;
+    min-width: 140px;
 }
 
 .project-detail__meta-item--stack {
     flex: 0 0 320px;
+}
+
+@media (max-width: 767px) {
+    .project-detail__meta--grid {
+        flex-direction: column;
+    }
+
+    .project-detail__meta-item--description,
+    .project-detail__meta-item--role,
+    .project-detail__meta-item--stack {
+        max-width: none;
+        min-width: 0;
+    }
 }
 
 .project-detail__meta-item h2 {
