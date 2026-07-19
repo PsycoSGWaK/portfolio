@@ -9,6 +9,7 @@ use App\Entity\Project;
 use App\Repository\CertificateRepository;
 use App\Repository\EducationRepository;
 use App\Repository\ExperienceRepository;
+use App\Repository\ProfileRepository;
 use App\Repository\ProjectRepository;
 
 /**
@@ -24,6 +25,7 @@ final class ContentExporter
         private readonly CertificateRepository $certificateRepository,
         private readonly ExperienceRepository $experienceRepository,
         private readonly EducationRepository $educationRepository,
+        private readonly ProfileRepository $profileRepository,
     ) {
     }
 
@@ -35,6 +37,20 @@ final class ContentExporter
             'certificates' => $this->exportCertificates(),
             'experiences' => $this->exportExperiences(),
             'educations' => $this->exportEducations(),
+            'profile' => $this->exportProfile(),
+        ];
+    }
+
+    private function exportProfile(): ?array
+    {
+        $profile = $this->profileRepository->find(1);
+
+        if (!$profile) {
+            return null;
+        }
+
+        return [
+            'photoName' => $profile->getPhotoName(),
         ];
     }
 
@@ -45,10 +61,16 @@ final class ContentExporter
                 'title' => $project->getTitle(),
                 'slug' => $project->getSlug(),
                 'description' => $project->getDescription(),
+                'context' => $project->getContext(),
+                'role' => $project->getRole(),
+                'objectives' => $project->getObjectives(),
+                'features' => $project->getFeatures(),
                 'stack' => $project->getStack(),
+                'tools' => $project->getTools(),
                 'sourceUrl' => $project->getSourceUrl(),
                 'demoUrl' => $project->getDemoUrl(),
                 'coverVideoName' => $project->getCoverVideoName(),
+                'techDocName' => $project->getTechDocName(),
                 'featured' => $project->isFeatured(),
                 'published' => $project->isPublished(),
                 'position' => $project->getPosition(),

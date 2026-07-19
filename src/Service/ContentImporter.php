@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Certificate;
 use App\Entity\Education;
 use App\Entity\Experience;
+use App\Entity\Profile;
 use App\Entity\Project;
 use App\Entity\ProjectImage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,22 @@ final class ContentImporter
             $this->importCertificates($data['certificates'] ?? []);
             $this->importExperiences($data['experiences'] ?? []);
             $this->importEducations($data['educations'] ?? []);
+            $this->importProfile($data['profile'] ?? null);
         });
+    }
+
+    private function importProfile(?array $row): void
+    {
+        if (!$row) {
+            return;
+        }
+
+        $profile = $this->entityManager->getRepository(Profile::class)->find(1);
+        if (!$profile) {
+            $profile = new Profile();
+            $this->entityManager->persist($profile);
+        }
+        $profile->setPhotoName($row['photoName'] ?? null);
     }
 
     private function importProjects(array $rows): void
@@ -44,13 +60,22 @@ final class ContentImporter
             $project->setTitle($row['title'] ?? '');
             $project->setSlug($row['slug'] ?? null);
             $project->setDescription($row['description'] ?? '');
+            $project->setContext($row['context'] ?? null);
+            $project->setRole($row['role'] ?? null);
+            $project->setObjectives($row['objectives'] ?? null);
+            $project->setFeatures($row['features'] ?? null);
             $project->setStack($row['stack'] ?? '');
+            $project->setTools($row['tools'] ?? null);
             $project->setSourceUrl($row['sourceUrl'] ?? null);
             $project->setDemoUrl($row['demoUrl'] ?? null);
             $project->setCoverVideoName($row['coverVideoName'] ?? null);
+            $project->setTechDocName($row['techDocName'] ?? null);
             $project->setFeatured($row['featured'] ?? false);
             $project->setPublished($row['published'] ?? false);
             $project->setPosition($row['position'] ?? 0);
+            if (isset($row['createdAt'])) {
+                $project->setCreatedAt(new \DateTimeImmutable($row['createdAt']));
+            }
 
             foreach ($row['images'] ?? [] as $imageRow) {
                 $image = new ProjectImage();
