@@ -60,32 +60,32 @@
                         <p>{{ project.role }}</p>
                     </div>
                 {% endif %}
-                {% if project.stackList|length > 0 %}
+                {% if project.stackList|length > 0 or project.toolsList|length > 0 %}
                     <div class="project-detail__meta-item project-detail__meta-item--stack">
-                        <h2>Stack technique</h2>
-                        <ul class="tech-chip-list">
-                            {% for tech in project.stackList %}
-                                <li class="tech-chip">
-                                    {% set slug = tech_icon_slug(tech) %}
-                                    {% if slug %}{{ techIcons.render(slug) }}{% endif %}
-                                    {{ tech }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-                {% if project.toolsList|length > 0 %}
-                    <div class="project-detail__meta-item project-detail__meta-item--stack">
-                        <h2>Outils</h2>
-                        <ul class="tech-chip-list">
-                            {% for tool in project.toolsList %}
-                                <li class="tech-chip">
-                                    {% set slug = tech_icon_slug(tool) %}
-                                    {% if slug %}{{ techIcons.render(slug) }}{% endif %}
-                                    {{ tool }}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {% if project.stackList|length > 0 %}
+                            <h2>Stack technique</h2>
+                            <ul class="tech-chip-list">
+                                {% for tech in project.stackList %}
+                                    <li class="tech-chip">
+                                        {% set slug = tech_icon_slug(tech) %}
+                                        {% if slug %}{{ techIcons.render(slug) }}{% endif %}
+                                        {{ tech }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if project.toolsList|length > 0 %}
+                            <h2{% if project.stackList|length > 0 %} class="project-detail__meta-item-heading--spaced"{% endif %}>Outils</h2>
+                            <ul class="tech-chip-list">
+                                {% for tool in project.toolsList %}
+                                    <li class="tech-chip">
+                                        {% set slug = tech_icon_slug(tool) %}
+                                        {% if slug %}{{ techIcons.render(slug) }}{% endif %}
+                                        {{ tool }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
