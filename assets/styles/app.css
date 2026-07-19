@@ -57,14 +57,6 @@ body {
     background-color: rgba(var(--color-bg-rgb),0.85);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);
-    transform: translateY(-100%);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-body.has-scrolled-past-hero .site-nav {
-    transform: translateY(0);
-    opacity: 1;
 }
 
 .site-nav__inner {
