@@ -6,6 +6,7 @@ use App\Entity\Project;
 use App\Entity\ProjectImage;
 use App\Service\PositionReorderer;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -53,6 +54,7 @@ class ProjectCrudController extends AbstractCrudController
             ->add(Crud::PAGE_DETAIL, $duplicate);
     }
 
+    #[AdminRoute('/duplicate')]
     public function duplicate(AdminContext $context, EntityManagerInterface $entityManager): RedirectResponse
     {
         $original = $context->getEntity()->getInstance();
@@ -73,6 +75,7 @@ class ProjectCrudController extends AbstractCrudController
         $duplicate->setTechDocName($original->getTechDocName());
         $duplicate->setFeatured(false);
         $duplicate->setPublished(false);
+        $duplicate->setWip($original->isWip());
         $duplicate->setPosition($original->getPosition() + 1);
 
         foreach ($original->getImages() as $image) {
@@ -142,6 +145,8 @@ class ProjectCrudController extends AbstractCrudController
             ->hideOnIndex();
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');
+        yield BooleanField::new('wip', 'En cours (WIP)')
+            ->setHelp('La carte affiche "Titre - Work in progress" et ne mène à aucune page détail.');
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();
