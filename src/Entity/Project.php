@@ -85,6 +85,9 @@ class Project
     private bool $published = false;
 
     #[ORM\Column]
+    private bool $wip = false;
+
+    #[ORM\Column]
     #[Assert\PositiveOrZero(message: 'L\'ordre d\'affichage ne peut pas être négatif.')]
     private int $position = 0;
 
@@ -323,6 +326,18 @@ class Project
     public function setPublished(bool $published): static
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function isWip(): bool
+    {
+        return $this->wip;
+    }
+
+    public function setWip(bool $wip): static
+    {
+        $this->wip = $wip;
 
         return $this;
     }

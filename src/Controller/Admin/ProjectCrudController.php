@@ -73,6 +73,7 @@ class ProjectCrudController extends AbstractCrudController
         $duplicate->setTechDocName($original->getTechDocName());
         $duplicate->setFeatured(false);
         $duplicate->setPublished(false);
+        $duplicate->setWip($original->isWip());
         $duplicate->setPosition($original->getPosition() + 1);
 
         foreach ($original->getImages() as $image) {
@@ -142,6 +143,8 @@ class ProjectCrudController extends AbstractCrudController
             ->hideOnIndex();
         yield BooleanField::new('featured', 'Mis en avant');
         yield BooleanField::new('published', 'Publié');
+        yield BooleanField::new('wip', 'En cours (WIP)')
+            ->setHelp('La carte affiche "Titre - WIP" et ne mène à aucune page détail.');
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();

@@ -72,6 +72,7 @@ final class ContentImporter
             $project->setTechDocName($row['techDocName'] ?? null);
             $project->setFeatured($row['featured'] ?? false);
             $project->setPublished($row['published'] ?? false);
+            $project->setWip($row['wip'] ?? false);
             $project->setPosition($row['position'] ?? 0);
             if (isset($row['createdAt'])) {
                 $project->setCreatedAt(new \DateTimeImmutable($row['createdAt']));
