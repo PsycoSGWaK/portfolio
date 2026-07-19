@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProjectController extends AbstractController
 {
-    #[Route('/projets/{slug}', name: 'project_show')]
+    #[Route(path: ['fr' => '/projets/{slug}', 'en' => '/en/projects/{slug}'], name: 'project_show')]
     public function show(string $slug, ProjectRepository $projectRepository): Response
     {
         $project = $projectRepository->findOnePublishedBySlug($slug);

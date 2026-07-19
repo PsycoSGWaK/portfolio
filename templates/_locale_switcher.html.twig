@@ -1,0 +1,9 @@
+{% set currentLocale = app.request.locale %}
+{% set otherLocale = currentLocale == 'en' ? 'fr' : 'en' %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% if currentRoute %}
+    {% set routeParams = app.request.attributes.get('_route_params')|default({})|merge({_locale: otherLocale}) %}
+    <a href="{{ path(currentRoute, routeParams) }}" class="locale-switcher" hreflang="{{ otherLocale }}" data-turbo="false">
+        {{ otherLocale|upper }}
+    </a>
+{% endif %}

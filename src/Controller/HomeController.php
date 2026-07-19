@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route(path: ['fr' => '/', 'en' => '/en'], name: 'home')]
     public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository, SkillCategoryRepository $skillCategoryRepository): Response
     {
         $profile = $profileRepository->getSingleton();

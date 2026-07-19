@@ -8,23 +8,24 @@
             <span class="site-nav__name">{{ name }}</span>
             <div class="site-nav__right">
                 <nav class="site-nav__links" data-turbo="false">
-                    <a href="#about">À propos</a>
+                    <a href="#about">{{ 'À propos'|trans }}</a>
                     {% if skillCategories|length > 0 %}
-                        <a href="#skills">Compétences</a>
+                        <a href="#skills">{{ 'Compétences'|trans }}</a>
                     {% endif %}
                     {% if experiences|length > 0 %}
-                        <a href="#experience">Expérience</a>
+                        <a href="#experience">{{ 'Expérience'|trans }}</a>
                     {% endif %}
                     {% if educations|length > 0 %}
-                        <a href="#education">Formation</a>
+                        <a href="#education">{{ 'Formation'|trans }}</a>
                     {% endif %}
                     {% if projects|length > 0 %}
-                        <a href="#projects">Projets</a>
+                        <a href="#projects">{{ 'Projets'|trans }}</a>
                     {% endif %}
                     {% if certificates|length > 0 %}
-                        <a href="#certificates">Certificats</a>
+                        <a href="#certificates">{{ 'Certificats'|trans }}</a>
                     {% endif %}
                 </nav>
+                {{ include('_locale_switcher.html.twig') }}
                 {{ include('_theme_toggle.html.twig') }}
             </div>
         </div>
@@ -40,7 +41,7 @@
         {% endif %}
 
         <div class="about-content">
-            <h2>À propos de moi</h2>
+            <h2>{{ 'À propos de moi'|trans }}</h2>
             {% for paragraph in about %}
                 <p>{{ paragraph }}</p>
             {% endfor %}
@@ -68,7 +69,7 @@
 
     {% if skillCategories|length > 0 %}
         <section class="skills" id="skills">
-            <h2>Compétences</h2>
+            <h2>{{ 'Compétences'|trans }}</h2>
             <div class="skills__grid">
                 {% for category in skillCategories %}
                     {% if category.skills|length > 0 %}
@@ -94,7 +95,7 @@
 
     {% if experiences|length > 0 %}
         <section class="experience" id="experience">
-            <h2>Expérience</h2>
+            <h2>{{ 'Expérience'|trans }}</h2>
             <div class="experience__list">
                 {% for experience in experiences %}
                     {% set logoSrc = experience.logoUrl ?: (experience.logoName ? asset('uploads/logos/' ~ experience.logoName) : null) %}
@@ -128,7 +129,7 @@
 
     {% if educations|length > 0 %}
         <section class="education" id="education">
-            <h2>Parcours académique</h2>
+            <h2>{{ 'Parcours académique'|trans }}</h2>
             <div class="education__list">
                 {% for education in educations %}
                     {% set logoSrc = education.logoUrl ?: (education.logoName ? asset('uploads/logos/' ~ education.logoName) : null) %}
@@ -162,7 +163,7 @@
 
     {% if projects|length > 0 %}
         <section class="projects" id="projects">
-            <h2>Projets</h2>
+            <h2>{{ 'Projets'|trans }}</h2>
             <div class="projects__list">
                 {% for project in projects %}
                     {% set coverImage = project.images|length > 0 ? project.images|first : null %}
@@ -199,7 +200,7 @@
 
     {% if certificates|length > 0 %}
         <section class="certificates" id="certificates">
-            <h2>Certificats</h2>
+            <h2>{{ 'Certificats'|trans }}</h2>
             <div class="certificates__list">
                 {% for certificate in certificates %}
                     <article class="certificate-card">
@@ -217,7 +218,7 @@
                                 <p class="certificate-card__date">{{ certificate.issueDate|format_date(pattern: 'MMMM yyyy') }}</p>
                             {% endif %}
                             {% if certificate.credentialUrl %}
-                                <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">Vérifier →</a>
+                                <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">{{ 'Vérifier'|trans }} →</a>
                             {% endif %}
                         </div>
                     </article>

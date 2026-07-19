@@ -1,0 +1,27 @@
+# Translation keys are the French UI text itself (Symfony falls back to
+# displaying the key verbatim when no catalogue matches, so French needs no
+# catalogue of its own). This file only needs the English override.
+'À propos': About
+'Compétences': Skills
+'Expérience': Experience
+'Formation': Education
+'Projets': Projects
+'Certificats': Certificates
+'À propos de moi': About me
+'Parcours académique': Academic background
+'Vérifier': Verify
+'Changer de thème': Toggle theme
+'Retour aux projets': Back to projects
+'Projet': Project
+'Image précédente': Previous image
+'Image suivante': Next image
+'Description': Description
+'Rôle': Role
+'Stack technique': Tech stack
+'Outils': Tools
+'Contexte': Context
+'Objectifs': Objectives
+'Fonctionnalités importantes': Key features
+'Démo': Demo
+'Source': Source
+'Doc technique': Technical documentation

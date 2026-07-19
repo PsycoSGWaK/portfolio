@@ -3,7 +3,7 @@
 {% if project.demoUrl %}
     <a href="{{ project.demoUrl }}" target="_blank" rel="noopener" class="btn btn--primary">
         {{ icons.render('open-outline') }}
-        Démo
+        {{ 'Démo'|trans }}
     </a>
 {% endif %}
 {% if project.sourceUrl %}
@@ -15,12 +15,12 @@
         {% else %}
             {{ icons.render('code-slash-outline') }}
         {% endif %}
-        Source
+        {{ 'Source'|trans }}
     </a>
 {% endif %}
 {% if project.techDocName %}
     <a href="{{ asset('uploads/projects/' ~ project.techDocName) }}" download class="btn btn--secondary">
         {{ icons.render('download-outline') }}
-        Doc technique
+        {{ 'Doc technique'|trans }}
     </a>
 {% endif %}
