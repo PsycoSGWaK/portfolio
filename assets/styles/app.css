@@ -904,8 +904,8 @@ a:hover {
 }
 
 .project-detail__meta-item--description {
-    flex: 0 1 420px;
-    max-width: 420px;
+    flex: 0 1 560px;
+    max-width: 560px;
 }
 
 .project-detail__meta-item--role {
