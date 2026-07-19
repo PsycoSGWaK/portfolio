@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FileField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -45,8 +46,11 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('context', 'Contexte')
             ->setHelp('Pourquoi ce projet, pour qui (perso, scolaire, stage...).')
             ->hideOnIndex();
-        yield TextField::new('role', 'Rôle')
-            ->setHelp('Ton rôle sur le projet, ex : Projet personnel, Projet de fin d\'études, Stage...')
+        yield ChoiceField::new('role', 'Rôle')
+            ->setChoices($this->buildRoleChoices())
+            ->allowMultipleChoices()
+            ->renderExpanded()
+            ->setHelp('Coche tous les rôles applicables à ce projet.')
             ->hideOnIndex();
         yield TextareaField::new('objectives', 'Objectifs / Cahier des charges')
             ->setHelp('Une puce par ligne : ce que le projet devait accomplir, les besoins ou contraintes à respecter (pas les étapes déjà réalisées).')
@@ -82,6 +86,19 @@ class ProjectCrudController extends AbstractCrudController
         yield IntegerField::new('position', 'Ordre d\'affichage')
             ->setFormTypeOption('attr', ['min' => 0]);
         yield AssociationField::new('images', 'Images')->onlyOnIndex();
+    }
+
+    /**
+     * @return array<string, array<string, string>>
+     */
+    private function buildRoleChoices(): array
+    {
+        $choices = [];
+        foreach (Project::ROLE_CHOICES as $group => $roles) {
+            $choices[$group] = array_combine($roles, $roles);
+        }
+
+        return $choices;
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, object $entityInstance): void

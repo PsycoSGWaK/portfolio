@@ -16,6 +16,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Project
 {
+    /**
+     * Fixed, closed list of roles — grouped for display in the admin as checkboxes.
+     * Not admin-extensible: adding a new role means adding it here.
+     *
+     * @var array<string, string[]>
+     */
+    public const ROLE_CHOICES = [
+        'Product & stratégie' => ['Product Owner', 'Product Manager', 'Business Analyst'],
+        'Design' => ['UX Designer', 'UI Designer', 'UX Researcher', 'Product Designer'],
+        'Développement' => ['Tech Lead', 'Lead Developer', 'Développeur Front-end', 'Développeur Back-end', 'Développeur Full-stack', 'Développeur Mobile'],
+        'Qualité & exploitation' => ['QA Engineer', 'Testeur', 'DevOps Engineer', 'SRE (Site Reliability Engineer)', 'Ingénieur Cloud'],
+        'Gestion & coordination' => ['Scrum Master', 'Agile Coach', 'Project Manager', 'PMO'],
+        'Autres rôles transverses' => ['Data Analyst', 'Data Scientist', 'Architecte solution', 'Expert sécurité / RSSI', 'Rédacteur technique', 'Support client', 'Customer Success'],
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,8 +51,11 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $context = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $role = null;
+    /**
+     * @var string[]|null
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $role = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $objectives = null;
@@ -159,12 +177,18 @@ class Project
         return $this;
     }
 
-    public function getRole(): ?string
+    /**
+     * @return string[]
+     */
+    public function getRole(): array
     {
-        return $this->role;
+        return $this->role ?? [];
     }
 
-    public function setRole(?string $role): static
+    /**
+     * @param string[]|null $role
+     */
+    public function setRole(?array $role): static
     {
         $this->role = $role;
 

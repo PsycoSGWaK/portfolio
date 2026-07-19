@@ -46,7 +46,7 @@
             </div>
         {% endif %}
 
-        {% if project.description or project.role or project.stackList|length > 0 or project.toolsList|length > 0 %}
+        {% if project.description or project.role|length > 0 or project.stackList|length > 0 or project.toolsList|length > 0 %}
             <div class="project-detail__meta project-detail__meta--grid">
                 {% if project.description %}
                     <div class="project-detail__meta-item project-detail__meta-item--description">
@@ -54,10 +54,12 @@
                         <p>{{ project.description }}</p>
                     </div>
                 {% endif %}
-                {% if project.role %}
+                {% if project.role|length > 0 %}
                     <div class="project-detail__meta-item project-detail__meta-item--role">
                         <h2>Rôle</h2>
-                        <p>{{ project.role }}</p>
+                        {% for r in project.role %}
+                            <p>{{ r }}</p>
+                        {% endfor %}
                     </div>
                 {% endif %}
                 {% if project.stackList|length > 0 or project.toolsList|length > 0 %}

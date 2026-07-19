@@ -947,6 +947,10 @@ a:hover {
     line-height: 1.5;
 }
 
+.project-detail__meta-item--role p + p {
+    margin-top: 0.35rem;
+}
+
 .project-detail__body {
     max-width: 720px;
 }
