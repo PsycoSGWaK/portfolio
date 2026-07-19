@@ -14,7 +14,18 @@
 {% block body %}
     <article class="project-detail">
         <a href="{{ path('home') }}" class="project-detail__back">← Retour aux projets</a>
-        <h1>{{ project.title }}</h1>
+
+        <header class="project-detail__header">
+            <div class="project-detail__heading">
+                <p class="project-detail__eyebrow">
+                    Projet{% if project.createdAt %} · {{ project.createdAt|format_date(pattern: 'MMMM yyyy') }}{% endif %}
+                </p>
+                <h1>{{ project.title }}</h1>
+            </div>
+            <div class="project-detail__actions">
+                {{ include('project/_links.html.twig', {project: project}) }}
+            </div>
+        </header>
 
         {% if project.images|length > 0 %}
             <div class="project-gallery" data-controller="carousel">
@@ -28,18 +39,22 @@
                     <button type="button" class="project-gallery__nav project-gallery__nav--next" data-action="carousel#next" aria-label="Image suivante">›</button>
                 {% endif %}
             </div>
+        {% elseif project.coverVideoName %}
+            <div class="project-gallery">
+                <video class="project-gallery__image" src="{{ asset('uploads/projects/' ~ project.coverVideoName) }}" autoplay muted loop playsinline></video>
+            </div>
         {% endif %}
 
-        <p class="project-detail__description">{{ project.description }}</p>
+        <div class="project-detail__body">
+            <p class="project-detail__description">{{ project.description }}</p>
 
-        <ul class="project-card__stack">
-            {% for tech in project.stackList %}
-                <li>{{ tech }}</li>
-            {% endfor %}
-        </ul>
-
-        <div class="project-card__links">
-            {{ include('project/_links.html.twig', {project: project}) }}
+            {% if project.stackList|length > 0 %}
+                <ul class="project-card__stack">
+                    {% for tech in project.stackList %}
+                        <li>{{ tech }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </article>
 {% endblock %}

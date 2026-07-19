@@ -191,7 +191,7 @@
                             <h3>{{ certificate.title }}</h3>
                             <p class="certificate-card__issuer">{{ certificate.issuer }}</p>
                             {% if certificate.issueDate %}
-                                <p class="certificate-card__date">{{ certificate.issueDate|date('F Y') }}</p>
+                                <p class="certificate-card__date">{{ certificate.issueDate|format_date(pattern: 'MMMM yyyy') }}</p>
                             {% endif %}
                             {% if certificate.credentialUrl %}
                                 <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">Vérifier →</a>
