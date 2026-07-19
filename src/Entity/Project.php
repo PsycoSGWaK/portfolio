@@ -42,6 +42,12 @@ class Project
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $objectives = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $features = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tools = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $sourceUrl = null;
 
@@ -183,6 +189,46 @@ class Project
     public function getObjectiveLines(): array
     {
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->objectives))));
+    }
+
+    public function getFeatures(): ?string
+    {
+        return $this->features;
+    }
+
+    public function setFeatures(?string $features): static
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getFeatureLines(): array
+    {
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->features))));
+    }
+
+    public function getTools(): ?string
+    {
+        return $this->tools;
+    }
+
+    public function setTools(?string $tools): static
+    {
+        $this->tools = $tools;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getToolsList(): array
+    {
+        return array_filter(array_map('trim', explode(',', (string) $this->tools)));
     }
 
     public function getSourceUrl(): ?string

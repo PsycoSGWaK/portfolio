@@ -51,8 +51,14 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('objectives', 'Objectifs / Cahier des charges')
             ->setHelp('Une puce par ligne : ce que le projet devait accomplir, les besoins ou contraintes à respecter (pas les étapes déjà réalisées).')
             ->hideOnIndex();
+        yield TextareaField::new('features', 'Fonctionnalités importantes')
+            ->setHelp('Une puce par ligne : les fonctionnalités clés livrées.')
+            ->hideOnIndex();
         yield TextField::new('stack', 'Stack technique')
-            ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker');
+            ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker. Un logo s\'affiche automatiquement pour les technos reconnues.');
+        yield TextField::new('tools', 'Outils / logiciels utilisés')
+            ->setHelp('Séparée par des virgules, ex : Figma, Postman, Docker, VS Code. Un logo s\'affiche automatiquement pour les outils reconnus.')
+            ->hideOnIndex();
         yield UrlField::new('sourceUrl', 'Lien code source')
             ->setHelp('GitHub, GitLab, ou un autre dépôt — l\'icône affichée sur le site s\'adapte automatiquement.')
             ->hideOnIndex();

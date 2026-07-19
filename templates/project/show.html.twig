@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import '_tech_icon.html.twig' as techIcons %}
 
 {% block title %}{{ project.title }}{% endblock %}
 
@@ -81,10 +82,37 @@
                 </ul>
             {% endif %}
 
+            {% if project.featureLines|length > 0 %}
+                <h2 class="project-detail__section-title">Fonctionnalités importantes</h2>
+                <ul class="project-detail__list">
+                    {% for item in project.featureLines %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             {% if project.stackList|length > 0 %}
-                <ul class="project-card__stack">
+                <h2 class="project-detail__section-title">Stack technique</h2>
+                <ul class="tech-chip-list">
                     {% for tech in project.stackList %}
-                        <li>{{ tech }}</li>
+                        <li class="tech-chip">
+                            {% set slug = tech_icon_slug(tech) %}
+                            {% if slug %}{{ techIcons.render(slug) }}{% endif %}
+                            {{ tech }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if project.toolsList|length > 0 %}
+                <h2 class="project-detail__section-title">Outils</h2>
+                <ul class="tech-chip-list">
+                    {% for tool in project.toolsList %}
+                        <li class="tech-chip">
+                            {% set slug = tech_icon_slug(tool) %}
+                            {% if slug %}{{ techIcons.render(slug) }}{% endif %}
+                            {{ tool }}
+                        </li>
                     {% endfor %}
                 </ul>
             {% endif %}
