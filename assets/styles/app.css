@@ -179,8 +179,7 @@ a:hover {
     grid-template-columns: 240px 1fr;
     grid-template-areas:
         "photo   content"
-        "stats   content"
-        "stats   skills";
+        "stats   content";
     column-gap: 3.5rem;
     row-gap: 2.5rem;
     align-items: start;
@@ -266,20 +265,13 @@ a:hover {
     margin-top: 0.25rem;
 }
 
-.about-skills {
-    grid-area: skills;
-    justify-content: flex-start;
-    align-self: start;
-}
-
 @media (max-width: 860px) {
     .about {
         grid-template-columns: 1fr;
         grid-template-areas:
             "photo"
             "content"
-            "stats"
-            "skills";
+            "stats";
     }
 }
 
@@ -295,10 +287,83 @@ a:hover {
         padding: 1.5rem 0;
         border-bottom: 1px solid rgba(var(--color-text-rgb),0.08);
     }
+}
 
-    .about-skills {
-        justify-content: center;
-    }
+.skills {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+}
+
+.skills h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dark);
+    margin: 0 0 1.5rem;
+}
+
+.skills__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-category {
+    background-color: rgba(var(--color-text-rgb),0.03);
+    border: 1px solid rgba(var(--color-text-rgb),0.08);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.skill-category__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.skill-category__header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.skill-category__icon {
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    background-color: var(--skill-category-color);
+}
+
+.skill-category__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+}
+
+.skill-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--skill-category-color);
+    color: var(--skill-category-color);
+}
+
+.skill-pill__check {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
 }
 
 .education {

@@ -9,6 +9,9 @@
             <div class="site-nav__right">
                 <nav class="site-nav__links" data-turbo="false">
                     <a href="#about">À propos</a>
+                    {% if skillCategories|length > 0 %}
+                        <a href="#skills">Compétences</a>
+                    {% endif %}
                     {% if experiences|length > 0 %}
                         <a href="#experience">Expérience</a>
                     {% endif %}
@@ -61,14 +64,33 @@
             </div>
         {% endif %}
 
-        {% if skills|length > 0 %}
-            <ul class="project-card__stack about-skills">
-                {% for skill in skills %}
-                    <li>{{ skill }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
     </section>
+
+    {% if skillCategories|length > 0 %}
+        <section class="skills" id="skills">
+            <h2>Compétences</h2>
+            <div class="skills__grid">
+                {% for category in skillCategories %}
+                    {% if category.skills|length > 0 %}
+                        <article class="skill-category" style="--skill-category-color: {{ skillCategoryColor(loop.index0) }}">
+                            <div class="skill-category__header">
+                                <span class="skill-category__icon">{{ category.icon|default('🔧') }}</span>
+                                <h3>{{ category.label }}</h3>
+                            </div>
+                            <ul class="skill-category__list">
+                                {% for skill in category.skills %}
+                                    <li class="skill-pill">
+                                        <svg class="skill-pill__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+                                        {{ skill.label }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 
     {% if experiences|length > 0 %}
         <section class="experience" id="experience">

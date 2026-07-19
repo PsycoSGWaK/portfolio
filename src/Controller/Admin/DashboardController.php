@@ -6,6 +6,7 @@ use App\Entity\Certificate;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Project;
+use App\Entity\SkillCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -29,6 +30,7 @@ class DashboardController extends AbstractDashboardController
             'Certificats' => [Certificate::class, CertificateCrudController::class],
             'Expériences' => [Experience::class, ExperienceCrudController::class],
             'Parcours académique' => [Education::class, EducationCrudController::class],
+            'Catégories de compétences' => [SkillCategory::class, SkillCategoryCrudController::class],
         ] as $label => [$entityClass, $crudController]) {
             $repository = $this->entityManager->getRepository($entityClass);
             $stats[] = [
@@ -57,9 +59,11 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkTo(ProfileCrudController::class, 'Photo de profil', 'fa fa-image')
+        yield MenuItem::linkTo(ProfileCrudController::class, 'Profil / À propos', 'fa fa-user')
             ->setAction('edit')
             ->setEntityId(1);
+        yield MenuItem::linkTo(SkillCategoryCrudController::class, 'Compétences — Catégories', 'fa fa-layer-group');
+        yield MenuItem::linkTo(SkillCrudController::class, 'Compétences', 'fa fa-check');
         yield MenuItem::linkTo(ExperienceCrudController::class, 'Expériences', 'fa fa-briefcase');
         yield MenuItem::linkTo(EducationCrudController::class, 'Parcours académique', 'fa fa-graduation-cap');
         yield MenuItem::linkTo(ProjectCrudController::class, 'Projets', 'fa fa-diagram-project');
