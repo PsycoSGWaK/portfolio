@@ -106,7 +106,7 @@
                                     <img class="experience-item__logo" src="{{ logoSrc }}" alt="">
                                 {% endif %}
                                 <div class="experience-item__heading">
-                                    <p class="experience-item__period">{{ experience.period }}</p>
+                                    <p class="experience-item__period">{{ experience.getLocalizedPeriod(app.request.locale) }}</p>
                                     <h3>{{ experience.getLocalizedRole(app.request.locale) }}</h3>
                                     <p class="experience-item__company">
                                         {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
@@ -141,7 +141,7 @@
                                     <img class="education-item__logo" src="{{ logoSrc }}" alt="">
                                 {% endif %}
                                 <div class="education-item__heading">
-                                    <p class="education-item__period">{{ education.period }}</p>
+                                    <p class="education-item__period">{{ education.getLocalizedPeriod(app.request.locale) }}</p>
                                     <h3>{{ education.getLocalizedDegree(app.request.locale) }}</h3>
                                     <p class="education-item__school">
                                         {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}

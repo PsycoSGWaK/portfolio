@@ -64,14 +64,6 @@ class Profile
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getAboutParagraphs(): array
-    {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->aboutText))));
-    }
-
     public function getAboutTextEn(): ?string
     {
         return $this->aboutTextEn;
@@ -106,14 +98,6 @@ class Profile
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getHighlightLines(): array
-    {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->highlights))));
-    }
-
     public function getHighlightsEn(): ?string
     {
         return $this->highlightsEn;
@@ -146,14 +130,6 @@ class Profile
         $this->stats = $stats;
 
         return $this;
-    }
-
-    /**
-     * @return array<int, array{number: string, label: string}>
-     */
-    public function getStatsList(): array
-    {
-        return self::parseStats($this->stats);
     }
 
     public function getStatsEn(): ?string

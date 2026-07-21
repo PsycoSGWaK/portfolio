@@ -264,14 +264,6 @@ class Project
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getObjectiveLines(): array
-    {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->objectives))));
-    }
-
     public function getObjectivesEn(): ?string
     {
         return $this->objectivesEn;
@@ -304,14 +296,6 @@ class Project
         $this->features = $features;
 
         return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getFeatureLines(): array
-    {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->features))));
     }
 
     public function getFeaturesEn(): ?string

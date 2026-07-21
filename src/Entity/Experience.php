@@ -109,6 +109,19 @@ class Experience
         return $this;
     }
 
+    /**
+     * La période est saisie en français ("2022 - Présent") et reste volontairement
+     * un champ unique : seul le mot "Présent" a besoin d'être traduit.
+     */
+    public function getLocalizedPeriod(string $locale): string
+    {
+        if ('en' === $locale) {
+            return str_ireplace('Présent', 'Now', (string) $this->period);
+        }
+
+        return $this->period ?? '';
+    }
+
     public function getLocation(): ?string
     {
         return $this->location;
@@ -155,14 +168,6 @@ class Experience
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getDescriptionLines(): array
-    {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->description))));
     }
 
     public function getDescriptionEn(): ?string
