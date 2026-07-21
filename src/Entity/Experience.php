@@ -20,6 +20,9 @@ class Experience
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $roleEn = null;
+
     #[ORM\Column(length: 255)]
     private ?string $period = null;
 
@@ -34,6 +37,9 @@ class Experience
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $descriptionEn = null;
 
     #[ORM\Column]
     private bool $published = false;
@@ -68,6 +74,27 @@ class Experience
         $this->role = $role;
 
         return $this;
+    }
+
+    public function getRoleEn(): ?string
+    {
+        return $this->roleEn;
+    }
+
+    public function setRoleEn(?string $roleEn): static
+    {
+        $this->roleEn = $roleEn;
+
+        return $this;
+    }
+
+    public function getLocalizedRole(string $locale): string
+    {
+        if ('en' === $locale && $this->roleEn) {
+            return $this->roleEn;
+        }
+
+        return $this->role ?? '';
     }
 
     public function getPeriod(): ?string
@@ -136,6 +163,28 @@ class Experience
     public function getDescriptionLines(): array
     {
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->description))));
+    }
+
+    public function getDescriptionEn(): ?string
+    {
+        return $this->descriptionEn;
+    }
+
+    public function setDescriptionEn(?string $descriptionEn): static
+    {
+        $this->descriptionEn = $descriptionEn;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLocalizedDescriptionLines(string $locale): array
+    {
+        $text = ('en' === $locale && $this->descriptionEn) ? $this->descriptionEn : $this->description;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
     }
 
     public function isPublished(): bool

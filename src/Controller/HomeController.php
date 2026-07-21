@@ -9,14 +9,16 @@ use App\Repository\ProfileRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\SkillCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
     #[Route(path: ['fr' => '/', 'en' => '/en'], name: 'home')]
-    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository, SkillCategoryRepository $skillCategoryRepository): Response
+    public function index(Request $request, ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository, SkillCategoryRepository $skillCategoryRepository): Response
     {
+        $locale = $request->getLocale();
         $profile = $profileRepository->getSingleton();
         $skillCategories = $skillCategoryRepository->findPublishedOrderedByPosition();
         $skillCount = array_sum(array_map(static fn ($category) => $category->getSkills()->count(), $skillCategories));
@@ -40,9 +42,9 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'name' => 'Guillaume Hurard',
-            'about' => $profile && $profile->getAboutParagraphs() ? $profile->getAboutParagraphs() : $defaultAbout,
-            'highlights' => $profile && $profile->getHighlightLines() ? $profile->getHighlightLines() : $defaultHighlights,
-            'stats' => $profile && $profile->getStatsList() ? $profile->getStatsList() : $defaultStats,
+            'about' => $profile && $profile->getLocalizedAboutParagraphs($locale) ? $profile->getLocalizedAboutParagraphs($locale) : $defaultAbout,
+            'highlights' => $profile && $profile->getLocalizedHighlightLines($locale) ? $profile->getLocalizedHighlightLines($locale) : $defaultHighlights,
+            'stats' => $profile && $profile->getLocalizedStatsList($locale) ? $profile->getLocalizedStatsList($locale) : $defaultStats,
             'skillCategories' => $skillCategories,
             'profile' => $profile,
             'experiences' => $experienceRepository->findPublishedOrderedByPosition(),

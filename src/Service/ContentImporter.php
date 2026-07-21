@@ -47,6 +47,7 @@ final class ContentImporter
         foreach ($rows as $row) {
             $category = new SkillCategory();
             $category->setLabel($row['label'] ?? '');
+            $category->setLabelEn($row['labelEn'] ?? null);
             $category->setIcon($row['icon'] ?? null);
             $category->setPublished($row['published'] ?? false);
             $category->setPosition($row['position'] ?? 0);
@@ -75,8 +76,11 @@ final class ContentImporter
         }
         $profile->setPhotoName($row['photoName'] ?? null);
         $profile->setAboutText($row['aboutText'] ?? null);
+        $profile->setAboutTextEn($row['aboutTextEn'] ?? null);
         $profile->setHighlights($row['highlights'] ?? null);
+        $profile->setHighlightsEn($row['highlightsEn'] ?? null);
         $profile->setStats($row['stats'] ?? null);
+        $profile->setStatsEn($row['statsEn'] ?? null);
     }
 
     private function importProjects(array $rows): void
@@ -148,11 +152,13 @@ final class ContentImporter
             $experience = new Experience();
             $experience->setCompany($row['company'] ?? '');
             $experience->setRole($row['role'] ?? '');
+            $experience->setRoleEn($row['roleEn'] ?? null);
             $experience->setPeriod($row['period'] ?? '');
             $experience->setLocation($row['location'] ?? null);
             $experience->setLogoName($row['logoName'] ?? null);
             $experience->setLogoUrl($row['logoUrl'] ?? null);
             $experience->setDescription($row['description'] ?? null);
+            $experience->setDescriptionEn($row['descriptionEn'] ?? null);
             $experience->setPublished($row['published'] ?? false);
             $experience->setPosition($row['position'] ?? 0);
 
@@ -168,11 +174,13 @@ final class ContentImporter
             $education = new Education();
             $education->setSchool($row['school'] ?? '');
             $education->setDegree($row['degree'] ?? '');
+            $education->setDegreeEn($row['degreeEn'] ?? null);
             $education->setPeriod($row['period'] ?? '');
             $education->setLocation($row['location'] ?? null);
             $education->setLogoName($row['logoName'] ?? null);
             $education->setLogoUrl($row['logoUrl'] ?? null);
             $education->setDescription($row['description'] ?? null);
+            $education->setDescriptionEn($row['descriptionEn'] ?? null);
             $education->setPublished($row['published'] ?? false);
             $education->setPosition($row['position'] ?? 0);
 

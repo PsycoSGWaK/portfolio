@@ -76,7 +76,7 @@
                         <article class="skill-category" style="--skill-category-color: {{ skillCategoryColor(loop.index0) }}">
                             <div class="skill-category__header">
                                 <span class="skill-category__icon">{{ category.icon|default('🔧') }}</span>
-                                <h3>{{ category.label }}</h3>
+                                <h3>{{ category.getLocalizedLabel(app.request.locale) }}</h3>
                             </div>
                             <ul class="skill-category__list">
                                 {% for skill in category.skills %}
@@ -107,15 +107,16 @@
                                 {% endif %}
                                 <div class="experience-item__heading">
                                     <p class="experience-item__period">{{ experience.period }}</p>
-                                    <h3>{{ experience.role }}</h3>
+                                    <h3>{{ experience.getLocalizedRole(app.request.locale) }}</h3>
                                     <p class="experience-item__company">
                                         {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
                                     </p>
                                 </div>
                             </div>
-                            {% if experience.descriptionLines|length > 0 %}
+                            {% set experienceLines = experience.getLocalizedDescriptionLines(app.request.locale) %}
+                            {% if experienceLines|length > 0 %}
                                 <ul class="experience-item__description">
-                                    {% for line in experience.descriptionLines %}
+                                    {% for line in experienceLines %}
                                         <li>{{ line }}</li>
                                     {% endfor %}
                                 </ul>
@@ -141,15 +142,16 @@
                                 {% endif %}
                                 <div class="education-item__heading">
                                     <p class="education-item__period">{{ education.period }}</p>
-                                    <h3>{{ education.degree }}</h3>
+                                    <h3>{{ education.getLocalizedDegree(app.request.locale) }}</h3>
                                     <p class="education-item__school">
                                         {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}
                                     </p>
                                 </div>
                             </div>
-                            {% if education.descriptionLines|length > 0 %}
+                            {% set educationLines = education.getLocalizedDescriptionLines(app.request.locale) %}
+                            {% if educationLines|length > 0 %}
                                 <ul class="education-item__description">
-                                    {% for line in education.descriptionLines %}
+                                    {% for line in educationLines %}
                                         <li>{{ line }}</li>
                                     {% endfor %}
                                 </ul>

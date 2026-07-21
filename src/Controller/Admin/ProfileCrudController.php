@@ -42,9 +42,16 @@ class ProfileCrudController extends AbstractCrudController
         yield TextareaField::new('aboutText', 'Texte « À propos »')
             ->setHelp('Un paragraphe par ligne. Laisse vide pour garder le texte par défaut.')
             ->setFormTypeOption('attr', ['rows' => 10]);
+        yield TextareaField::new('aboutTextEn', 'Texte « À propos » (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
+            ->setFormTypeOption('attr', ['rows' => 10]);
         yield TextareaField::new('highlights', 'Points forts')
             ->setHelp('Une puce par ligne. Laisse vide pour garder la liste par défaut.');
+        yield TextareaField::new('highlightsEn', 'Points forts (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.');
         yield TextareaField::new('stats', 'Statistiques')
             ->setHelp('Une statistique par ligne, au format "nombre | libellé", ex : 3+ | ans chez Safran Aircraft Engines. Laisse vide pour garder les stats par défaut.');
+        yield TextareaField::new('statsEn', 'Statistiques (EN)')
+            ->setHelp('Optionnel — même format "nombre | libellé". Le site anglais affiche les stats françaises si ce champ est vide.');
     }
 }

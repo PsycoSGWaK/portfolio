@@ -21,10 +21,19 @@ class Profile
     private ?string $aboutText = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $aboutTextEn = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $highlights = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $highlightsEn = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stats = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $statsEn = null;
 
     public function getId(): ?int
     {
@@ -63,6 +72,28 @@ class Profile
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->aboutText))));
     }
 
+    public function getAboutTextEn(): ?string
+    {
+        return $this->aboutTextEn;
+    }
+
+    public function setAboutTextEn(?string $aboutTextEn): static
+    {
+        $this->aboutTextEn = $aboutTextEn;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLocalizedAboutParagraphs(string $locale): array
+    {
+        $text = ('en' === $locale && $this->aboutTextEn) ? $this->aboutTextEn : $this->aboutText;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
+    }
+
     public function getHighlights(): ?string
     {
         return $this->highlights;
@@ -83,6 +114,28 @@ class Profile
         return array_values(array_filter(array_map('trim', explode("\n", (string) $this->highlights))));
     }
 
+    public function getHighlightsEn(): ?string
+    {
+        return $this->highlightsEn;
+    }
+
+    public function setHighlightsEn(?string $highlightsEn): static
+    {
+        $this->highlightsEn = $highlightsEn;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLocalizedHighlightLines(string $locale): array
+    {
+        $text = ('en' === $locale && $this->highlightsEn) ? $this->highlightsEn : $this->highlights;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
+    }
+
     public function getStats(): ?string
     {
         return $this->stats;
@@ -100,7 +153,35 @@ class Profile
      */
     public function getStatsList(): array
     {
-        $lines = array_values(array_filter(array_map('trim', explode("\n", (string) $this->stats))));
+        return self::parseStats($this->stats);
+    }
+
+    public function getStatsEn(): ?string
+    {
+        return $this->statsEn;
+    }
+
+    public function setStatsEn(?string $statsEn): static
+    {
+        $this->statsEn = $statsEn;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, array{number: string, label: string}>
+     */
+    public function getLocalizedStatsList(string $locale): array
+    {
+        return self::parseStats(('en' === $locale && $this->statsEn) ? $this->statsEn : $this->stats);
+    }
+
+    /**
+     * @return array<int, array{number: string, label: string}>
+     */
+    private static function parseStats(?string $stats): array
+    {
+        $lines = array_values(array_filter(array_map('trim', explode("\n", (string) $stats))));
 
         return array_values(array_filter(array_map(static function (string $line): ?array {
             $parts = explode('|', $line, 2);
