@@ -8,6 +8,8 @@ use App\Entity\Experience;
 use App\Entity\Profile;
 use App\Entity\Project;
 use App\Entity\ProjectImage;
+use App\Entity\Skill;
+use App\Entity\SkillCategory;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -33,7 +35,31 @@ final class ContentImporter
             $this->importExperiences($data['experiences'] ?? []);
             $this->importEducations($data['educations'] ?? []);
             $this->importProfile($data['profile'] ?? null);
+            $this->importSkillCategories($data['skillCategories'] ?? []);
         });
+    }
+
+    private function importSkillCategories(array $rows): void
+    {
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Skill')->execute();
+        $this->entityManager->createQuery('DELETE FROM App\Entity\SkillCategory')->execute();
+
+        foreach ($rows as $row) {
+            $category = new SkillCategory();
+            $category->setLabel($row['label'] ?? '');
+            $category->setIcon($row['icon'] ?? null);
+            $category->setPublished($row['published'] ?? false);
+            $category->setPosition($row['position'] ?? 0);
+
+            foreach ($row['skills'] ?? [] as $skillRow) {
+                $skill = new Skill();
+                $skill->setLabel($skillRow['label'] ?? '');
+                $skill->setPosition($skillRow['position'] ?? 0);
+                $category->addSkill($skill);
+            }
+
+            $this->entityManager->persist($category);
+        }
     }
 
     private function importProfile(?array $row): void

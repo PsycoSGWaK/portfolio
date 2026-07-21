@@ -7,6 +7,7 @@ use App\Repository\ExperienceRepository;
 use App\Repository\EducationRepository;
 use App\Repository\ProfileRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SkillCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,10 +15,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository): Response
+    public function index(ProjectRepository $projectRepository, CertificateRepository $certificateRepository, ExperienceRepository $experienceRepository, EducationRepository $educationRepository, ProfileRepository $profileRepository, SkillCategoryRepository $skillCategoryRepository): Response
     {
-        $skills = ['PHP', 'Symfony', 'JavaScript', 'Angular', 'Git', 'Agile/Scrum'];
         $profile = $profileRepository->getSingleton();
+        $skillCategories = $skillCategoryRepository->findPublishedOrderedByPosition();
+        $skillCount = array_sum(array_map(static fn ($category) => $category->getSkills()->count(), $skillCategories));
 
         $defaultAbout = [
             "Développeur et gestionnaire de projet passionné par les solutions digitales innovantes, je combine expertise technique et vision stratégique pour concevoir des outils performants et adaptés aux besoins utilisateurs. Avec une expérience solide en développement d'applications (JavaScript, PHP, Angular) et en gestion de projet Agile, j'ai contribué à des projets ambitieux, comme la migration d'outils vers un environnement commun chez Safran Aircraft Engines, ou la création d'une application de monitoring pour le service DSI de Bel.",
@@ -33,7 +35,7 @@ class HomeController extends AbstractController
         $defaultStats = [
             ['number' => ((int) date('Y') - 2022) . '+', 'label' => 'ans chez Safran Aircraft Engines'],
             ['number' => '99,99 %', 'label' => 'de disponibilité obtenue sur Iterop'],
-            ['number' => (string) count($skills), 'label' => 'technologies maîtrisées'],
+            ['number' => (string) $skillCount, 'label' => 'compétences répertoriées'],
         ];
 
         return $this->render('home/index.html.twig', [
@@ -41,7 +43,7 @@ class HomeController extends AbstractController
             'about' => $profile && $profile->getAboutParagraphs() ? $profile->getAboutParagraphs() : $defaultAbout,
             'highlights' => $profile && $profile->getHighlightLines() ? $profile->getHighlightLines() : $defaultHighlights,
             'stats' => $profile && $profile->getStatsList() ? $profile->getStatsList() : $defaultStats,
-            'skills' => $skills,
+            'skillCategories' => $skillCategories,
             'profile' => $profile,
             'experiences' => $experienceRepository->findPublishedOrderedByPosition(),
             'educations' => $educationRepository->findPublishedOrderedByPosition(),
