@@ -72,6 +72,8 @@ final class ContentExporter
 
         return [
             'photoName' => $profile->getPhotoName(),
+            'contactEmail' => $profile->getContactEmail(),
+            'linkedinUrl' => $profile->getLinkedinUrl(),
             'aboutText' => $profile->getAboutText(),
             'aboutTextEn' => $profile->getAboutTextEn(),
             'highlights' => $profile->getHighlights(),

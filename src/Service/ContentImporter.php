@@ -75,6 +75,8 @@ final class ContentImporter
             $this->entityManager->persist($profile);
         }
         $profile->setPhotoName($row['photoName'] ?? null);
+        $profile->setContactEmail($row['contactEmail'] ?? null);
+        $profile->setLinkedinUrl($row['linkedinUrl'] ?? null);
         $profile->setAboutText($row['aboutText'] ?? null);
         $profile->setAboutTextEn($row['aboutTextEn'] ?? null);
         $profile->setHighlights($row['highlights'] ?? null);

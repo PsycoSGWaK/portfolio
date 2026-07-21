@@ -1,0 +1,18 @@
+{% import '_icon.html.twig' as icons %}
+
+{# Coordonnées en clair dans la navigation : elles restent joignables même si le
+   formulaire de contact ou l'envoi de mail tombe en panne. #}
+{% if profile and (profile.contactEmail or profile.linkedinUrl) %}
+    <div class="contact-links">
+        {% if profile.contactEmail %}
+            <a href="mailto:{{ profile.contactEmail }}" class="contact-links__item" title="{{ 'Envoyer un e-mail'|trans }}" aria-label="{{ 'Envoyer un e-mail'|trans }}">
+                {{ icons.render('mail-outline') }}
+            </a>
+        {% endif %}
+        {% if profile.linkedinUrl %}
+            <a href="{{ profile.linkedinUrl }}" target="_blank" rel="noopener" class="contact-links__item" title="LinkedIn" aria-label="LinkedIn">
+                {{ icons.render('logo-linkedin') }}
+            </a>
+        {% endif %}
+    </div>
+{% endif %}

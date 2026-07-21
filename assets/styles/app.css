@@ -1081,3 +1081,154 @@ a:hover {
         max-width: 1440px;
     }
 }
+
+/* ---------- Contact ---------- */
+
+.contact-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 1.5rem;
+}
+
+.contact-links__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
+    border-radius: 50%;
+    background-color: rgba(var(--color-text-rgb), 0.03);
+    color: var(--color-text);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.contact-links__item:hover {
+    background-color: rgba(var(--color-text-rgb), 0.08);
+    border-color: rgba(var(--color-accent-dark-rgb), 0.4);
+}
+
+.contact-links__item .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.contact {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+}
+
+.contact h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-dark);
+    margin: 0 0 1.5rem;
+}
+
+.contact__intro {
+    max-width: 640px;
+    margin: 0 0 0.75rem;
+    line-height: 1.6;
+}
+
+.contact__direct {
+    margin: 0 0 2rem;
+    font-size: 0.95rem;
+}
+
+.contact__direct a {
+    color: var(--color-accent-dark);
+    font-weight: 600;
+}
+
+.contact__flash {
+    max-width: 640px;
+    margin: 0 0 1.5rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(var(--color-accent-dark-rgb), 0.35);
+    border-radius: 0.5rem;
+    background-color: rgba(var(--color-accent-dark-rgb), 0.08);
+    color: var(--color-text);
+}
+
+.contact-form {
+    max-width: 640px;
+}
+
+.contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.contact-form__field {
+    margin-bottom: 1rem;
+}
+
+.contact-form__field label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.contact-form__field input,
+.contact-form__field textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(var(--color-text-rgb), 0.18);
+    border-radius: 0.5rem;
+    background-color: rgba(var(--color-bg-rgb), 0.6);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.95rem;
+}
+
+.contact-form__field input:focus,
+.contact-form__field textarea:focus {
+    outline: 2px solid rgba(var(--color-accent-dark-rgb), 0.5);
+    outline-offset: 1px;
+    border-color: transparent;
+}
+
+.contact-form__field textarea {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+.contact-form__field ul {
+    margin: 0.4rem 0 0;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    color: #C0392B;
+}
+
+/* Le piège à robots ne doit être vu ni des humains ni des lecteurs d'écran,
+   tout en restant rempli par les robots qui parcourent le HTML. */
+.contact-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.contact-form__legal {
+    margin: 1rem 0 0;
+    font-size: 0.8rem;
+    color: rgba(var(--color-text-rgb), 0.65);
+}
+
+@media (max-width: 640px) {
+    .contact-form__row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .contact-links {
+        margin-left: 0.75rem;
+    }
+}

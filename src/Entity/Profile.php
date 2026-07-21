@@ -17,6 +17,12 @@ class Profile
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photoName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contactEmail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedinUrl = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $aboutText = null;
 
@@ -48,6 +54,30 @@ class Profile
     public function setPhotoName(?string $photoName): static
     {
         $this->photoName = $photoName;
+
+        return $this;
+    }
+
+    public function getContactEmail(): ?string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(?string $contactEmail): static
+    {
+        $this->contactEmail = $contactEmail;
+
+        return $this;
+    }
+
+    public function getLinkedinUrl(): ?string
+    {
+        return $this->linkedinUrl;
+    }
+
+    public function setLinkedinUrl(?string $linkedinUrl): static
+    {
+        $this->linkedinUrl = $linkedinUrl;
 
         return $this;
     }
