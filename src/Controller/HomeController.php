@@ -22,11 +22,16 @@ class HomeController extends AbstractController
         $profile = $profileRepository->getSingleton();
         $skillCategories = $skillCategoryRepository->findPublishedOrderedByPosition();
 
+        $about = $profile ? $profile->getLocalizedAboutParagraphs($locale) : [];
+        $highlights = $profile ? $profile->getLocalizedHighlightLines($locale) : [];
+        $stats = $profile ? $profile->getLocalizedStatsList($locale) : [];
+
         return $this->render('home/index.html.twig', [
             'name' => 'Guillaume Hurard',
-            'about' => $profile ? $profile->getLocalizedAboutParagraphs($locale) : [],
-            'highlights' => $profile ? $profile->getLocalizedHighlightLines($locale) : [],
-            'stats' => $profile ? $profile->getLocalizedStatsList($locale) : [],
+            'about' => $about,
+            'highlights' => $highlights,
+            'stats' => $stats,
+            'hasAbout' => $about || $highlights || $stats,
             'skillCategories' => $skillCategories,
             'profile' => $profile,
             'experiences' => $experienceRepository->findPublishedOrderedByPosition(),
