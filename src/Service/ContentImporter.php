@@ -48,6 +48,9 @@ final class ContentImporter
             $this->entityManager->persist($profile);
         }
         $profile->setPhotoName($row['photoName'] ?? null);
+        $profile->setAboutText($row['aboutText'] ?? null);
+        $profile->setHighlights($row['highlights'] ?? null);
+        $profile->setStats($row['stats'] ?? null);
     }
 
     private function importProjects(array $rows): void

@@ -51,6 +51,9 @@ final class ContentExporter
 
         return [
             'photoName' => $profile->getPhotoName(),
+            'aboutText' => $profile->getAboutText(),
+            'highlights' => $profile->getHighlights(),
+            'stats' => $profile->getStats(),
         ];
     }
 
