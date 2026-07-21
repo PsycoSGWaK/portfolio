@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProfileCrudController extends AbstractCrudController
 {
@@ -39,6 +40,10 @@ class ProfileCrudController extends AbstractCrudController
             ->setUploadDir('public/uploads/profile')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setHelp('Remplace la photo affichée dans la section « À propos ». Laisse vide pour garder l\'image par défaut.');
+        yield TextField::new('contactEmail', 'E-mail de contact')
+            ->setHelp('Affiché en clair dans la navigation. Laisse vide pour ne pas l\'afficher.');
+        yield TextField::new('linkedinUrl', 'Lien LinkedIn')
+            ->setHelp('URL complète, ex : https://www.linkedin.com/in/... Laisse vide pour ne pas l\'afficher.');
         yield TextareaField::new('aboutText', 'Texte « À propos »')
             ->setHelp('Un paragraphe par ligne. Laisse vide pour garder le texte par défaut.')
             ->setFormTypeOption('attr', ['rows' => 10]);

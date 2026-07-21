@@ -69,6 +69,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(ProjectCrudController::class, 'Projets', 'fa fa-diagram-project');
         yield MenuItem::linkTo(ProjectImageCrudController::class, 'Images', 'fa fa-images');
         yield MenuItem::linkTo(CertificateCrudController::class, 'Certificats', 'fa fa-certificate');
+        yield MenuItem::section('Contact');
+        yield MenuItem::linkTo(ContactMessageCrudController::class, 'Messages reçus', 'fa fa-envelope');
         yield MenuItem::section('Données');
         yield MenuItem::linkToRoute('Exporter les données', 'fa fa-download', 'admin_data_export');
         yield MenuItem::linkToRoute('Importer des données', 'fa fa-upload', 'admin_data_import');
