@@ -8,6 +8,7 @@
         <div class="site-nav__inner">
             <a href="{{ path('home') }}" class="site-nav__name">Guillaume Hurard</a>
             <div class="site-nav__right">
+                {{ include('_contact_links.html.twig') }}
                 {{ include('_locale_switcher.html.twig') }}
                 {{ include('_theme_toggle.html.twig') }}
             </div>

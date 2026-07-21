@@ -1,0 +1,8 @@
+# Les contraintes de validation utilisent le domaine "validators", pas "messages" :
+# leurs traductions ne peuvent donc pas vivre dans messages.en.yaml.
+# Même convention que le reste du projet : la clé est le texte français.
+"Merci d'indiquer votre nom.": Please enter your name.
+"Merci d'indiquer votre adresse e-mail.": Please enter your email address.
+'Cette adresse e-mail ne semble pas valide.': This email address does not look valid.
+"Merci d'écrire un message.": Please write a message.
+'Votre message est un peu court.': Your message is a little short.

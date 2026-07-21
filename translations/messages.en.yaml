@@ -25,3 +25,19 @@
 'Démo': Demo
 'Source': Source
 'Doc technique': Technical documentation
+'Contact': Contact
+'Me contacter': Get in touch
+'Envoyer un e-mail': Send an email
+"Une opportunité, une question, ou juste envie d'échanger ? Écrivez-moi ici, ou directement par e-mail.": 'An opportunity, a question, or just want to chat? Write to me here, or email me directly.'
+'Votre nom': Your name
+'Votre e-mail': Your email
+'Société (optionnel)': Company (optional)
+'Votre message': Your message
+'Envoyer': Send
+'Merci, votre message est bien parti. Je vous réponds rapidement.': 'Thanks, your message has been sent. I will get back to you shortly.'
+'Vos informations servent uniquement à vous répondre. Elles ne sont ni revendues ni transmises à un tiers.': 'Your details are used only to reply to you. They are never sold or shared with third parties.'
+"Merci d'indiquer votre nom.": Please enter your name.
+"Merci d'indiquer votre adresse e-mail.": Please enter your email address.
+'Cette adresse e-mail ne semble pas valide.': This email address does not look valid.
+"Merci d'écrire un message.": Please write a message.
+'Votre message est un peu court.': Your message is a little short.
