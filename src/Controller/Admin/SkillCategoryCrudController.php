@@ -37,6 +37,9 @@ class SkillCategoryCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('label', 'Nom de la catégorie')
             ->setHelp('Ex : Compétences techniques, Méthodologies, Langues, Soft skills...');
+        yield TextField::new('labelEn', 'Nom de la catégorie (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le nom français si ce champ est vide.')
+            ->hideOnIndex();
         yield TextField::new('icon', 'Icône (emoji)')
             ->setHelp('Un seul emoji affiché dans le rond coloré, ex : 💻 🛠️ 🗣️. Optionnel.')
             ->hideOnIndex();

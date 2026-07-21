@@ -50,6 +50,7 @@ final class ContentExporter
         return array_map(static function (SkillCategory $category): array {
             return [
                 'label' => $category->getLabel(),
+                'labelEn' => $category->getLabelEn(),
                 'icon' => $category->getIcon(),
                 'published' => $category->isPublished(),
                 'position' => $category->getPosition(),
@@ -72,8 +73,11 @@ final class ContentExporter
         return [
             'photoName' => $profile->getPhotoName(),
             'aboutText' => $profile->getAboutText(),
+            'aboutTextEn' => $profile->getAboutTextEn(),
             'highlights' => $profile->getHighlights(),
+            'highlightsEn' => $profile->getHighlightsEn(),
             'stats' => $profile->getStats(),
+            'statsEn' => $profile->getStatsEn(),
         ];
     }
 
@@ -84,10 +88,14 @@ final class ContentExporter
                 'title' => $project->getTitle(),
                 'slug' => $project->getSlug(),
                 'description' => $project->getDescription(),
+                'descriptionEn' => $project->getDescriptionEn(),
                 'context' => $project->getContext(),
+                'contextEn' => $project->getContextEn(),
                 'role' => $project->getRole(),
                 'objectives' => $project->getObjectives(),
+                'objectivesEn' => $project->getObjectivesEn(),
                 'features' => $project->getFeatures(),
+                'featuresEn' => $project->getFeaturesEn(),
                 'stack' => $project->getStack(),
                 'tools' => $project->getTools(),
                 'sourceUrl' => $project->getSourceUrl(),
@@ -128,11 +136,13 @@ final class ContentExporter
             return [
                 'company' => $experience->getCompany(),
                 'role' => $experience->getRole(),
+                'roleEn' => $experience->getRoleEn(),
                 'period' => $experience->getPeriod(),
                 'location' => $experience->getLocation(),
                 'logoName' => $experience->getLogoName(),
                 'logoUrl' => $experience->getLogoUrl(),
                 'description' => $experience->getDescription(),
+                'descriptionEn' => $experience->getDescriptionEn(),
                 'published' => $experience->isPublished(),
                 'position' => $experience->getPosition(),
             ];
@@ -145,11 +155,13 @@ final class ContentExporter
             return [
                 'school' => $education->getSchool(),
                 'degree' => $education->getDegree(),
+                'degreeEn' => $education->getDegreeEn(),
                 'period' => $education->getPeriod(),
                 'location' => $education->getLocation(),
                 'logoName' => $education->getLogoName(),
                 'logoUrl' => $education->getLogoUrl(),
                 'description' => $education->getDescription(),
+                'descriptionEn' => $education->getDescriptionEn(),
                 'published' => $education->isPublished(),
                 'position' => $education->getPosition(),
             ];

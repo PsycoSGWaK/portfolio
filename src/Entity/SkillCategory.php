@@ -18,6 +18,9 @@ class SkillCategory
     #[ORM\Column(length: 255)]
     private ?string $label = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $labelEn = null;
+
     #[ORM\Column(length: 16, nullable: true)]
     private ?string $icon = null;
 
@@ -54,6 +57,27 @@ class SkillCategory
         $this->label = $label;
 
         return $this;
+    }
+
+    public function getLabelEn(): ?string
+    {
+        return $this->labelEn;
+    }
+
+    public function setLabelEn(?string $labelEn): static
+    {
+        $this->labelEn = $labelEn;
+
+        return $this;
+    }
+
+    public function getLocalizedLabel(string $locale): string
+    {
+        if ('en' === $locale && $this->labelEn) {
+            return $this->labelEn;
+        }
+
+        return $this->label ?? '';
     }
 
     public function getIcon(): ?string
