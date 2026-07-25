@@ -41,3 +41,9 @@
 'Cette adresse e-mail ne semble pas valide.': This email address does not look valid.
 "Merci d'écrire un message.": Please write a message.
 'Votre message est un peu court.': Your message is a little short.
+
+# Accusé de réception envoyé au visiteur
+'Votre message a bien été reçu': Your message has been received
+'Bonjour %name%,': 'Hello %name%,'
+"Merci pour votre message, je l'ai bien reçu et je vous répondrai dès que possible.": Thank you for your message. I have received it and will get back to you as soon as possible.
+'Ceci est une confirmation automatique : merci de ne pas répondre à cette adresse. Je vous recontacterai directement.': 'This is an automated confirmation — please do not reply to this address. I will get back to you directly.'
