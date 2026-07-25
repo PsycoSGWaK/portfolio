@@ -18,10 +18,7 @@ framework:
             messenger.bus.default: []
 
         routing:
-            # Les mails de contact partent en synchrone (pendant la requête) : pas de
-            # worker messenger:consume à maintenir sur l'hébergement mutualisé o2switch.
-            # L'envoi est "best effort" (le message est déjà persisté en base avant l'envoi).
-            # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
 
