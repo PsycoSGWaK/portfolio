@@ -6,11 +6,13 @@ use App\Entity\Certificate;
 use App\Entity\Education;
 use App\Entity\Experience;
 use App\Entity\Project;
+use App\Entity\SkillCategory;
 use App\Repository\CertificateRepository;
 use App\Repository\EducationRepository;
 use App\Repository\ExperienceRepository;
 use App\Repository\ProfileRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SkillCategoryRepository;
 
 /**
  * Dumps every admin-editable content entity (not the uploaded files
@@ -26,6 +28,7 @@ final class ContentExporter
         private readonly ExperienceRepository $experienceRepository,
         private readonly EducationRepository $educationRepository,
         private readonly ProfileRepository $profileRepository,
+        private readonly SkillCategoryRepository $skillCategoryRepository,
     ) {
     }
 
@@ -38,7 +41,25 @@ final class ContentExporter
             'experiences' => $this->exportExperiences(),
             'educations' => $this->exportEducations(),
             'profile' => $this->exportProfile(),
+            'skillCategories' => $this->exportSkillCategories(),
         ];
+    }
+
+    private function exportSkillCategories(): array
+    {
+        return array_map(static function (SkillCategory $category): array {
+            return [
+                'label' => $category->getLabel(),
+                'labelEn' => $category->getLabelEn(),
+                'icon' => $category->getIcon(),
+                'published' => $category->isPublished(),
+                'position' => $category->getPosition(),
+                'skills' => array_map(static fn ($skill) => [
+                    'label' => $skill->getLabel(),
+                    'position' => $skill->getPosition(),
+                ], $category->getSkills()->toArray()),
+            ];
+        }, $this->skillCategoryRepository->findAll());
     }
 
     private function exportProfile(): ?array
@@ -51,6 +72,14 @@ final class ContentExporter
 
         return [
             'photoName' => $profile->getPhotoName(),
+            'contactEmail' => $profile->getContactEmail(),
+            'linkedinUrl' => $profile->getLinkedinUrl(),
+            'aboutText' => $profile->getAboutText(),
+            'aboutTextEn' => $profile->getAboutTextEn(),
+            'highlights' => $profile->getHighlights(),
+            'highlightsEn' => $profile->getHighlightsEn(),
+            'stats' => $profile->getStats(),
+            'statsEn' => $profile->getStatsEn(),
         ];
     }
 
@@ -61,10 +90,14 @@ final class ContentExporter
                 'title' => $project->getTitle(),
                 'slug' => $project->getSlug(),
                 'description' => $project->getDescription(),
+                'descriptionEn' => $project->getDescriptionEn(),
                 'context' => $project->getContext(),
+                'contextEn' => $project->getContextEn(),
                 'role' => $project->getRole(),
                 'objectives' => $project->getObjectives(),
+                'objectivesEn' => $project->getObjectivesEn(),
                 'features' => $project->getFeatures(),
+                'featuresEn' => $project->getFeaturesEn(),
                 'stack' => $project->getStack(),
                 'tools' => $project->getTools(),
                 'sourceUrl' => $project->getSourceUrl(),
@@ -105,11 +138,13 @@ final class ContentExporter
             return [
                 'company' => $experience->getCompany(),
                 'role' => $experience->getRole(),
+                'roleEn' => $experience->getRoleEn(),
                 'period' => $experience->getPeriod(),
                 'location' => $experience->getLocation(),
                 'logoName' => $experience->getLogoName(),
                 'logoUrl' => $experience->getLogoUrl(),
                 'description' => $experience->getDescription(),
+                'descriptionEn' => $experience->getDescriptionEn(),
                 'published' => $experience->isPublished(),
                 'position' => $experience->getPosition(),
             ];
@@ -122,11 +157,13 @@ final class ContentExporter
             return [
                 'school' => $education->getSchool(),
                 'degree' => $education->getDegree(),
+                'degreeEn' => $education->getDegreeEn(),
                 'period' => $education->getPeriod(),
                 'location' => $education->getLocation(),
                 'logoName' => $education->getLogoName(),
                 'logoUrl' => $education->getLogoUrl(),
                 'description' => $education->getDescription(),
+                'descriptionEn' => $education->getDescriptionEn(),
                 'published' => $education->isPublished(),
                 'position' => $education->getPosition(),
             ];

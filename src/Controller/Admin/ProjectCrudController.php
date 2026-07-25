@@ -63,10 +63,14 @@ class ProjectCrudController extends AbstractCrudController
         $duplicate = new Project();
         $duplicate->setTitle($original->getTitle() . ' (copie)');
         $duplicate->setDescription($original->getDescription());
+        $duplicate->setDescriptionEn($original->getDescriptionEn());
         $duplicate->setContext($original->getContext());
+        $duplicate->setContextEn($original->getContextEn());
         $duplicate->setRole($original->getRole());
         $duplicate->setObjectives($original->getObjectives());
+        $duplicate->setObjectivesEn($original->getObjectivesEn());
         $duplicate->setFeatures($original->getFeatures());
+        $duplicate->setFeaturesEn($original->getFeaturesEn());
         $duplicate->setStack($original->getStack());
         $duplicate->setTools($original->getTools());
         $duplicate->setSourceUrl($original->getSourceUrl());
@@ -104,8 +108,14 @@ class ProjectCrudController extends AbstractCrudController
         yield TextField::new('title', 'Titre');
         yield TextField::new('slug')->hideOnForm();
         yield TextareaField::new('description', 'Description');
+        yield TextareaField::new('descriptionEn', 'Description (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
+            ->hideOnIndex();
         yield TextareaField::new('context', 'Contexte')
             ->setHelp('Pourquoi ce projet, pour qui (perso, scolaire, stage...).')
+            ->hideOnIndex();
+        yield TextareaField::new('contextEn', 'Contexte (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
             ->hideOnIndex();
         yield ChoiceField::new('role', 'Rôle')
             ->setChoices($this->buildRoleChoices())
@@ -117,8 +127,14 @@ class ProjectCrudController extends AbstractCrudController
         yield TextareaField::new('objectives', 'Objectifs / Cahier des charges')
             ->setHelp('Une puce par ligne : ce que le projet devait accomplir, les besoins ou contraintes à respecter (pas les étapes déjà réalisées).')
             ->hideOnIndex();
+        yield TextareaField::new('objectivesEn', 'Objectifs (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
+            ->hideOnIndex();
         yield TextareaField::new('features', 'Fonctionnalités importantes')
             ->setHelp('Une puce par ligne : les fonctionnalités clés livrées.')
+            ->hideOnIndex();
+        yield TextareaField::new('featuresEn', 'Fonctionnalités importantes (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
             ->hideOnIndex();
         yield TextField::new('stack', 'Stack technique')
             ->setHelp('Séparée par des virgules, ex : Symfony, PHP, MySQL, Docker. Un logo s\'affiche automatiquement pour les technos reconnues.');

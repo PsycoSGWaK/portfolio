@@ -1,6 +1,6 @@
 {% import '_icon.html.twig' as icons %}
 
-<button type="button" class="theme-toggle" data-controller="theme" data-action="theme#toggle" aria-label="Changer de thème">
+<button type="button" class="theme-toggle" data-controller="theme" data-action="theme#toggle" aria-label="{{ 'Changer de thème'|trans }}">
     <span class="theme-toggle__icon theme-toggle__icon--sun">{{ icons.render('sunny-outline') }}</span>
     <span class="theme-toggle__icon theme-toggle__icon--moon">{{ icons.render('moon-outline') }}</span>
 </button>

@@ -39,6 +39,9 @@ class EducationCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('school', 'École');
         yield TextField::new('degree', 'Diplôme');
+        yield TextField::new('degreeEn', 'Diplôme (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
+            ->hideOnIndex();
         yield TextField::new('period', 'Période')
             ->setHelp('Texte libre, ex : 2022 - 2024');
         yield TextField::new('location', 'Lieu')->hideOnIndex();
@@ -52,6 +55,9 @@ class EducationCrudController extends AbstractCrudController
             ->hideOnIndex();
         yield TextareaField::new('description', 'Description')
             ->setHelp('Une puce par ligne.')
+            ->hideOnIndex();
+        yield TextareaField::new('descriptionEn', 'Description (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
             ->hideOnIndex();
         yield BooleanField::new('published', 'Publié');
         yield IntegerField::new('position', 'Ordre d\'affichage')

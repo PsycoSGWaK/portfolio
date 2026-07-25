@@ -39,6 +39,9 @@ class ExperienceCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('company', 'Entreprise');
         yield TextField::new('role', 'Poste');
+        yield TextField::new('roleEn', 'Poste (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
+            ->hideOnIndex();
         yield TextField::new('period', 'Période')
             ->setHelp('Texte libre, ex : 2022 - Présent');
         yield TextField::new('location', 'Lieu')->hideOnIndex();
@@ -52,6 +55,9 @@ class ExperienceCrudController extends AbstractCrudController
             ->hideOnIndex();
         yield TextareaField::new('description', 'Description')
             ->setHelp('Une puce par ligne.')
+            ->hideOnIndex();
+        yield TextareaField::new('descriptionEn', 'Description (EN)')
+            ->setHelp('Optionnel — le site anglais affiche le texte français si ce champ est vide.')
             ->hideOnIndex();
         yield BooleanField::new('published', 'Publié');
         yield IntegerField::new('position', 'Ordre d\'affichage')

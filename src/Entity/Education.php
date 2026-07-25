@@ -20,6 +20,9 @@ class Education
     #[ORM\Column(length: 255)]
     private ?string $degree = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $degreeEn = null;
+
     #[ORM\Column(length: 255)]
     private ?string $period = null;
 
@@ -34,6 +37,9 @@ class Education
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $descriptionEn = null;
 
     #[ORM\Column]
     private bool $published = false;
@@ -70,6 +76,27 @@ class Education
         return $this;
     }
 
+    public function getDegreeEn(): ?string
+    {
+        return $this->degreeEn;
+    }
+
+    public function setDegreeEn(?string $degreeEn): static
+    {
+        $this->degreeEn = $degreeEn;
+
+        return $this;
+    }
+
+    public function getLocalizedDegree(string $locale): string
+    {
+        if ('en' === $locale && $this->degreeEn) {
+            return $this->degreeEn;
+        }
+
+        return $this->degree ?? '';
+    }
+
     public function getPeriod(): ?string
     {
         return $this->period;
@@ -80,6 +107,19 @@ class Education
         $this->period = $period;
 
         return $this;
+    }
+
+    /**
+     * La période est saisie en français ("2021 - Présent") et reste volontairement
+     * un champ unique : seul le mot "Présent" a besoin d'être traduit.
+     */
+    public function getLocalizedPeriod(string $locale): string
+    {
+        if ('en' === $locale) {
+            return str_ireplace('Présent', 'Now', (string) $this->period);
+        }
+
+        return $this->period ?? '';
     }
 
     public function getLocation(): ?string
@@ -130,12 +170,26 @@ class Education
         return $this;
     }
 
+    public function getDescriptionEn(): ?string
+    {
+        return $this->descriptionEn;
+    }
+
+    public function setDescriptionEn(?string $descriptionEn): static
+    {
+        $this->descriptionEn = $descriptionEn;
+
+        return $this;
+    }
+
     /**
      * @return string[]
      */
-    public function getDescriptionLines(): array
+    public function getLocalizedDescriptionLines(string $locale): array
     {
-        return array_values(array_filter(array_map('trim', explode("\n", (string) $this->description))));
+        $text = ('en' === $locale && $this->descriptionEn) ? $this->descriptionEn : $this->description;
+
+        return array_values(array_filter(array_map('trim', explode("\n", (string) $text))));
     }
 
     public function isPublished(): bool

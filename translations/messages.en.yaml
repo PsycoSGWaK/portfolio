@@ -1,0 +1,43 @@
+# Translation keys are the French UI text itself (Symfony falls back to
+# displaying the key verbatim when no catalogue matches, so French needs no
+# catalogue of its own). This file only needs the English override.
+'À propos': About
+'Compétences': Skills
+'Expérience': Experience
+'Formation': Education
+'Projets': Projects
+'Certificats': Certificates
+'À propos de moi': About me
+'Parcours académique': Academic background
+'Vérifier': Verify
+'Changer de thème': Toggle theme
+'Retour aux projets': Back to projects
+'Projet': Project
+'Image précédente': Previous image
+'Image suivante': Next image
+'Description': Description
+'Rôle': Role
+'Stack technique': Tech stack
+'Outils': Tools
+'Contexte': Context
+'Objectifs': Objectives
+'Fonctionnalités importantes': Key features
+'Démo': Demo
+'Source': Source
+'Doc technique': Technical documentation
+'Contact': Contact
+'Me contacter': Get in touch
+'Envoyer un e-mail': Send an email
+"Une opportunité, une question, ou juste envie d'échanger ? Écrivez-moi ici, ou directement par e-mail.": 'An opportunity, a question, or just want to chat? Write to me here, or email me directly.'
+'Votre nom': Your name
+'Votre e-mail': Your email
+'Société (optionnel)': Company (optional)
+'Votre message': Your message
+'Envoyer': Send
+'Merci, votre message est bien parti. Je vous réponds rapidement.': 'Thanks, your message has been sent. I will get back to you shortly.'
+'Vos informations servent uniquement à vous répondre. Elles ne sont ni revendues ni transmises à un tiers.': 'Your details are used only to reply to you. They are never sold or shared with third parties.'
+"Merci d'indiquer votre nom.": Please enter your name.
+"Merci d'indiquer votre adresse e-mail.": Please enter your email address.
+'Cette adresse e-mail ne semble pas valide.': This email address does not look valid.
+"Merci d'écrire un message.": Please write a message.
+'Votre message est un peu court.': Your message is a little short.

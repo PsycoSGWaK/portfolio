@@ -8,20 +8,28 @@
             <span class="site-nav__name">{{ name }}</span>
             <div class="site-nav__right">
                 <nav class="site-nav__links" data-turbo="false">
-                    <a href="#about">À propos</a>
+                    {% if hasAbout %}
+                        <a href="#about">{{ 'À propos'|trans }}</a>
+                    {% endif %}
+                    {% if skillCategories|length > 0 %}
+                        <a href="#skills">{{ 'Compétences'|trans }}</a>
+                    {% endif %}
                     {% if experiences|length > 0 %}
-                        <a href="#experience">Expérience</a>
+                        <a href="#experience">{{ 'Expérience'|trans }}</a>
                     {% endif %}
                     {% if educations|length > 0 %}
-                        <a href="#education">Formation</a>
+                        <a href="#education">{{ 'Formation'|trans }}</a>
                     {% endif %}
                     {% if projects|length > 0 %}
-                        <a href="#projects">Projets</a>
+                        <a href="#projects">{{ 'Projets'|trans }}</a>
                     {% endif %}
                     {% if certificates|length > 0 %}
-                        <a href="#certificates">Certificats</a>
+                        <a href="#certificates">{{ 'Certificats'|trans }}</a>
                     {% endif %}
+                    <a href="#contact">{{ 'Contact'|trans }}</a>
                 </nav>
+                {{ include('_contact_links.html.twig') }}
+                {{ include('_locale_switcher.html.twig') }}
                 {{ include('_theme_toggle.html.twig') }}
             </div>
         </div>
@@ -29,6 +37,7 @@
 {% endblock %}
 
 {% block body %}
+    {% if hasAbout %}
     <section class="about" id="about">
         {% if profile and profile.photoName %}
             <img class="about-photo" src="{{ asset('uploads/profile/' ~ profile.photoName) }}" alt="Photo de {{ name }}">
@@ -37,7 +46,7 @@
         {% endif %}
 
         <div class="about-content">
-            <h2>À propos de moi</h2>
+            <h2>{{ 'À propos de moi'|trans }}</h2>
             {% for paragraph in about %}
                 <p>{{ paragraph }}</p>
             {% endfor %}
@@ -61,18 +70,38 @@
             </div>
         {% endif %}
 
-        {% if skills|length > 0 %}
-            <ul class="project-card__stack about-skills">
-                {% for skill in skills %}
-                    <li>{{ skill }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
     </section>
+    {% endif %}
+
+    {% if skillCategories|length > 0 %}
+        <section class="skills" id="skills">
+            <h2>{{ 'Compétences'|trans }}</h2>
+            <div class="skills__grid">
+                {% for category in skillCategories %}
+                    {% if category.skills|length > 0 %}
+                        <article class="skill-category" style="--skill-category-color: {{ skillCategoryColor(loop.index0) }}">
+                            <div class="skill-category__header">
+                                <span class="skill-category__icon">{{ category.icon|default('🔧') }}</span>
+                                <h3>{{ category.getLocalizedLabel(app.request.locale) }}</h3>
+                            </div>
+                            <ul class="skill-category__list">
+                                {% for skill in category.skills %}
+                                    <li class="skill-pill">
+                                        <svg class="skill-pill__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+                                        {{ skill.label }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 
     {% if experiences|length > 0 %}
         <section class="experience" id="experience">
-            <h2>Expérience</h2>
+            <h2>{{ 'Expérience'|trans }}</h2>
             <div class="experience__list">
                 {% for experience in experiences %}
                     {% set logoSrc = experience.logoUrl ?: (experience.logoName ? asset('uploads/logos/' ~ experience.logoName) : null) %}
@@ -83,16 +112,17 @@
                                     <img class="experience-item__logo" src="{{ logoSrc }}" alt="">
                                 {% endif %}
                                 <div class="experience-item__heading">
-                                    <p class="experience-item__period">{{ experience.period }}</p>
-                                    <h3>{{ experience.role }}</h3>
+                                    <p class="experience-item__period">{{ experience.getLocalizedPeriod(app.request.locale) }}</p>
+                                    <h3>{{ experience.getLocalizedRole(app.request.locale) }}</h3>
                                     <p class="experience-item__company">
                                         {{ experience.company }}{% if experience.location %} · {{ experience.location }}{% endif %}
                                     </p>
                                 </div>
                             </div>
-                            {% if experience.descriptionLines|length > 0 %}
+                            {% set experienceLines = experience.getLocalizedDescriptionLines(app.request.locale) %}
+                            {% if experienceLines|length > 0 %}
                                 <ul class="experience-item__description">
-                                    {% for line in experience.descriptionLines %}
+                                    {% for line in experienceLines %}
                                         <li>{{ line }}</li>
                                     {% endfor %}
                                 </ul>
@@ -106,7 +136,7 @@
 
     {% if educations|length > 0 %}
         <section class="education" id="education">
-            <h2>Parcours académique</h2>
+            <h2>{{ 'Parcours académique'|trans }}</h2>
             <div class="education__list">
                 {% for education in educations %}
                     {% set logoSrc = education.logoUrl ?: (education.logoName ? asset('uploads/logos/' ~ education.logoName) : null) %}
@@ -117,16 +147,17 @@
                                     <img class="education-item__logo" src="{{ logoSrc }}" alt="">
                                 {% endif %}
                                 <div class="education-item__heading">
-                                    <p class="education-item__period">{{ education.period }}</p>
-                                    <h3>{{ education.degree }}</h3>
+                                    <p class="education-item__period">{{ education.getLocalizedPeriod(app.request.locale) }}</p>
+                                    <h3>{{ education.getLocalizedDegree(app.request.locale) }}</h3>
                                     <p class="education-item__school">
                                         {{ education.school }}{% if education.location %} · {{ education.location }}{% endif %}
                                     </p>
                                 </div>
                             </div>
-                            {% if education.descriptionLines|length > 0 %}
+                            {% set educationLines = education.getLocalizedDescriptionLines(app.request.locale) %}
+                            {% if educationLines|length > 0 %}
                                 <ul class="education-item__description">
-                                    {% for line in education.descriptionLines %}
+                                    {% for line in educationLines %}
                                         <li>{{ line }}</li>
                                     {% endfor %}
                                 </ul>
@@ -140,7 +171,7 @@
 
     {% if projects|length > 0 %}
         <section class="projects" id="projects">
-            <h2>Projets</h2>
+            <h2>{{ 'Projets'|trans }}</h2>
             <div class="projects__list">
                 {% for project in projects %}
                     {% set coverImage = project.images|length > 0 ? project.images|first : null %}
@@ -159,7 +190,7 @@
                             {% else %}
                                 <h3><a href="{{ path('project_show', {slug: project.slug}) }}" class="project-card__stretched-link">{{ project.title }}</a></h3>
                             {% endif %}
-                            <p>{{ project.description }}</p>
+                            <p>{{ project.getLocalizedDescription(app.request.locale) }}</p>
                             <ul class="project-card__stack">
                                 {% for tech in project.stackList %}
                                     <li>{{ tech }}</li>
@@ -177,7 +208,7 @@
 
     {% if certificates|length > 0 %}
         <section class="certificates" id="certificates">
-            <h2>Certificats</h2>
+            <h2>{{ 'Certificats'|trans }}</h2>
             <div class="certificates__list">
                 {% for certificate in certificates %}
                     <article class="certificate-card">
@@ -195,7 +226,7 @@
                                 <p class="certificate-card__date">{{ certificate.issueDate|format_date(pattern: 'MMMM yyyy') }}</p>
                             {% endif %}
                             {% if certificate.credentialUrl %}
-                                <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">Vérifier →</a>
+                                <a href="{{ certificate.credentialUrl }}" target="_blank" rel="noopener" class="certificate-card__link">{{ 'Vérifier'|trans }} →</a>
                             {% endif %}
                         </div>
                     </article>
@@ -203,4 +234,65 @@
             </div>
         </section>
     {% endif %}
+
+    <section class="contact" id="contact">
+        <h2>{{ 'Me contacter'|trans }}</h2>
+
+        {% for message in app.flashes('contact_success') %}
+            <p class="contact__flash" role="status">{{ message|trans }}</p>
+        {% endfor %}
+
+        <p class="contact__intro">
+            {{ 'Une opportunité, une question, ou juste envie d\'échanger ? Écrivez-moi ici, ou directement par e-mail.'|trans }}
+        </p>
+
+        {% if profile and (profile.contactEmail or profile.linkedinUrl) %}
+            <p class="contact__direct">
+                {% if profile.contactEmail %}
+                    <a href="mailto:{{ profile.contactEmail }}">{{ profile.contactEmail }}</a>
+                {% endif %}
+                {% if profile.contactEmail and profile.linkedinUrl %} · {% endif %}
+                {% if profile.linkedinUrl %}
+                    <a href="{{ profile.linkedinUrl }}" target="_blank" rel="noopener">LinkedIn</a>
+                {% endif %}
+            </p>
+        {% endif %}
+
+        {{ form_start(contactForm, {'attr': {'class': 'contact-form', 'novalidate': 'novalidate'}}) }}
+            <div class="contact-form__row">
+                <div class="contact-form__field">
+                    {{ form_label(contactForm.name) }}
+                    {{ form_widget(contactForm.name) }}
+                    {{ form_errors(contactForm.name) }}
+                </div>
+                <div class="contact-form__field">
+                    {{ form_label(contactForm.email) }}
+                    {{ form_widget(contactForm.email) }}
+                    {{ form_errors(contactForm.email) }}
+                </div>
+            </div>
+            <div class="contact-form__field">
+                {{ form_label(contactForm.company) }}
+                {{ form_widget(contactForm.company) }}
+                {{ form_errors(contactForm.company) }}
+            </div>
+            <div class="contact-form__field">
+                {{ form_label(contactForm.message) }}
+                {{ form_widget(contactForm.message) }}
+                {{ form_errors(contactForm.message) }}
+            </div>
+
+            {# Piège à robots : masqué en CSS, jamais rempli par un humain. #}
+            <div class="contact-form__honeypot" aria-hidden="true">
+                {{ form_label(contactForm.website) }}
+                {{ form_widget(contactForm.website) }}
+            </div>
+
+            <button type="submit" class="btn btn--primary">{{ 'Envoyer'|trans }}</button>
+
+            <p class="contact-form__legal">
+                {{ 'Vos informations servent uniquement à vous répondre. Elles ne sont ni revendues ni transmises à un tiers.'|trans }}
+            </p>
+        {{ form_end(contactForm) }}
+    </section>
 {% endblock %}
