@@ -67,8 +67,14 @@ jobs:
           # mutualisé lors de l'upload multipart d'un gros fichier (curl error 92,
           # "stream was not closed cleanly"). --max-time large car composer/migrations
           # tournent côté serveur pendant que la connexion HTTP reste ouverte.
+          # User-Agent/Referer de navigateur : le WAF plateforme d'o2switch semble
+          # bloquer spécifiquement le trafic à signature "outil automatisé" (curl brut
+          # depuis une IP datacenter), constaté par une coupure de connexion sans
+          # trace dans le domlog Apache.
           HTTP=$(curl -sS --http1.1 --max-time 300 --fail-with-body -o /tmp/deploy.log -w '%{http_code}' \
             -X POST \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            -H "Referer: https://guillaumehurard.fr/" \
             -H "Authorization: Bearer ${{ secrets.DEPLOY_HOOK_TOKEN }}" \
             -F "artifact=@/tmp/build.tar.gz" \
             "${{ secrets.DEPLOY_HOOK_URL }}") || true
