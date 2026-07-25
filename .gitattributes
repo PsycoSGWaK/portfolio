@@ -1,0 +1,2 @@
+# Les scripts shell doivent rester en LF, sinon le shebang casse en prod (Linux).
+*.sh text eol=lf
