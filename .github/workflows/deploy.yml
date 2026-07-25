@@ -77,3 +77,14 @@ jobs:
           echo ""
           echo "----- HTTP $HTTP -----"
           test "$HTTP" = "200"
+
+      # Fait depuis le runner (pas depuis le serveur o2switch lui-même) pour
+      # éviter l'auto-deadlock du pool PHP-FPM constaté quand finalize.sh
+      # s'auto-interrogeait en HTTP. Ici, échec = run rouge visible, mais PAS
+      # de rollback automatique : la release est déjà "current" à ce stade
+      # (finalize.sh a déjà vérifié que le kernel boote avant de basculer).
+      - name: Health check
+        run: |
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 https://guillaumehurard.fr/)
+          echo "HTTP $CODE"
+          test "$CODE" = "200"
