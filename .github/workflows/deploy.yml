@@ -63,7 +63,11 @@ jobs:
       # Envoi + déclenchement via HTTPS (443, ouvert). Aucun SSH entrant requis.
       - name: Deploy via HTTPS webhook
         run: |
-          HTTP=$(curl -sS --fail-with-body -o /tmp/deploy.log -w '%{http_code}' \
+          # --http1.1 : évite une erreur de protocole HTTP/2 constatée sur cet hébergement
+          # mutualisé lors de l'upload multipart d'un gros fichier (curl error 92,
+          # "stream was not closed cleanly"). --max-time large car composer/migrations
+          # tournent côté serveur pendant que la connexion HTTP reste ouverte.
+          HTTP=$(curl -sS --http1.1 --max-time 300 --fail-with-body -o /tmp/deploy.log -w '%{http_code}' \
             -X POST \
             -H "Authorization: Bearer ${{ secrets.DEPLOY_HOOK_TOKEN }}" \
             -F "artifact=@/tmp/build.tar.gz" \
