@@ -5,8 +5,17 @@
 # envoyé par GitHub Actions (voir .github/workflows/deploy.yml).
 #
 # Séquence : link du contenu partagé -> cache:clear -> migrations ->
-# bascule atomique du symlink `current` -> health-check (rollback si KO) ->
-# purge des anciennes releases.
+# vérification locale que le kernel boote -> bascule atomique du symlink
+# `current` -> purge des anciennes releases.
+#
+# Le health-check HTTP final (curl sur le vrai domaine) est fait depuis le
+# runner GitHub Actions, PAS ici. Le faire ici causait un blocage : ce script
+# tourne déjà dans une requête HTTP traitée par un worker PHP-FPM/Apache du
+# compte, et s'auto-interroger en HTTP depuis l'intérieur de cette même
+# requête peut créer un auto-deadlock si le pool de workers est restreint
+# (constaté : la connexion se coupe côté GitHub Actions avec
+# "Recv failure: Connection reset by peer", sans aucune trace dans le domlog
+# Apache, signe d'un blocage plutôt que d'un crash PHP classique).
 #
 set -euo pipefail
 
@@ -18,9 +27,6 @@ CURRENT="$BASE/current"
 
 # Binaires o2switch : le wrapper CloudLinux-selector-aware (pas /opt/alt/...).
 PHP="/usr/local/bin/php"
-
-# URL de health-check final.
-HEALTH_URL="https://guillaumehurard.fr/"
 
 echo ">> Finalisation de $RELEASE_DIR"
 
@@ -40,22 +46,16 @@ ln -sfn "$SHARED/var/share" "$RELEASE_DIR/var/share"
 "$PHP" "$RELEASE_DIR/bin/console" doctrine:migrations:migrate \
     --no-interaction --allow-no-migration --env=prod
 
-# --- 4. Bascule atomique du symlink `current` --------------------------------
-PREVIOUS="$(readlink -f "$CURRENT" 2>/dev/null || true)"
-ln -sfn "$RELEASE_DIR" "$CURRENT"
+# --- 4. Vérification locale que le kernel boote, AVANT de basculer -----------
+# Pas de requête HTTP ici (voir note en tête de fichier) : juste un boot du
+# kernel Symfony en prod, qui échoue déjà (set -e) si la config/DB est cassée.
+"$PHP" "$RELEASE_DIR/bin/console" about --env=prod > /dev/null
 
-# --- 5. Health-check ; rollback immédiat si != 200 ---------------------------
-CODE="$(curl -s -o /dev/null -w '%{http_code}' "$HEALTH_URL" || echo 000)"
-if [ "$CODE" != "200" ]; then
-    echo "!! Health-check KO (HTTP $CODE) — rollback vers ${PREVIOUS:-<aucun>}"
-    if [ -n "$PREVIOUS" ] && [ -d "$PREVIOUS" ]; then
-        ln -sfn "$PREVIOUS" "$CURRENT"
-    fi
-    exit 1
-fi
+# --- 5. Bascule atomique du symlink `current` --------------------------------
+ln -sfn "$RELEASE_DIR" "$CURRENT"
 
 # --- 6. Purge : on ne garde que les 5 releases les plus récentes -------------
 cd "$BASE/releases"
 ls -1dt */ 2>/dev/null | tail -n +6 | xargs -r rm -rf
 
-echo ">> OK — $RELEASE_DIR est en ligne (HTTP $CODE)"
+echo ">> OK — $RELEASE_DIR est en ligne (current -> $RELEASE_DIR)"
