@@ -26,13 +26,11 @@
 # Le script reste sur le serveur et peut etre reactive a la main en
 # secours si ce workflow devait etre abandonne.
 #
-# Le declenchement automatique sur push est volontairement absent tant
-# que ce workflow n'a pas fait ses preuves : on le lance a la main
-# (Run workflow) le temps de valider, puis on ajoute le trigger push.
-
 name: Deploiement o2switch
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
