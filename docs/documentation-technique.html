@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio — Documentation technique</title>
+<style>
+    :root {
+        --blue-dark:   #0b3c6e;
+        --blue:        #1c7fc4;
+        --blue-bright: #1e9bd7;
+        --blue-icon:   #29a3e0;
+        --blue-soft:   #eaf4fb;
+        --ink:         #222;
+        --muted:       #6b7785;
+        --line:        #d7dee6;
+        --code-bg:     #f4f5f7;
+        --ok:          #1f9d55;
+        --warn:        #d97706;
+        --danger:      #d63b3b;
+        --tok-kw:      #a31515;
+        --tok-str:     #8b1a1a;
+        --tok-com:     #6a8a6a;
+        --tok-fn:      #00318f;
+    }
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        margin: 0;
+        background: #fff;
+        line-height: 1.5;
+        font-size: 14px;
+    }
+    .page { max-width: 920px; margin: 0 auto; padding: 0 28px 60px; }
+
+    /* ---------- Bandeau de titre ---------- */
+    .banner {
+        background: linear-gradient(160deg, #0a2f57 0%, #0e5390 45%, #1a8fd0 100%);
+        color: #fff;
+        border-radius: 6px;
+        padding: 26px 34px 40px;
+        margin: 28px 0 34px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.12);
+    }
+    .banner .brand { display:flex; align-items:center; gap:10px; font-size:15px; opacity:.95; margin-bottom:26px; }
+    .banner .brand svg { width:26px; height:26px; }
+    .banner h1 { font-size: 38px; font-weight: 400; margin: 0 0 14px; letter-spacing:.3px; }
+    .banner .meta { font-size: 13px; opacity:.9; line-height:1.7; }
+
+    /* ---------- En-têtes de section ---------- */
+    .section-header {
+        display: flex; align-items: center; gap: 14px;
+        border: 1.5px solid var(--blue-bright);
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin: 34px 0 18px;
+    }
+    .section-header .icon {
+        flex: 0 0 auto;
+        width: 38px; height: 38px;
+        background: var(--blue-icon);
+        border-radius: 7px;
+        display:flex; align-items:center; justify-content:center;
+    }
+    .section-header .icon svg { width: 22px; height: 22px; fill:#fff; }
+    .section-header h2 {
+        margin: 0; color: var(--blue); font-size: 19px;
+        font-weight: 700; letter-spacing:.6px; text-transform: uppercase;
+    }
+
+    /* ---------- Sous-sections ---------- */
+    .subsection { display:flex; align-items:center; gap:9px; margin: 22px 0 10px; }
+    .subsection svg { width:18px; height:18px; fill: var(--blue); flex:0 0 auto; }
+    .subsection h3 { margin:0; font-size:16px; font-weight:600; color:#15334d; }
+
+    p { margin: 9px 0; }
+    .lead { color:#37475a; }
+    ul, ol { margin: 8px 0 8px; padding-left: 22px; }
+    li { margin: 3px 0; }
+    code.inl { background: var(--code-bg); border:1px solid var(--line); border-radius:4px; padding:1px 5px; font-family: "Cascadia Code","Consolas",monospace; font-size:12.5px; color:#7a1f5c; }
+    a { color: var(--blue); }
+
+    /* ---------- Cartes ---------- */
+    .card-box {
+        border:1px solid var(--line); border-radius:8px;
+        padding:14px 18px; margin:12px 0; background:#fff;
+    }
+    .card-box .card-title { font-weight:600; }
+    .card-box .req { color: var(--danger); font-weight:600; }
+    .card-box .hint { color: var(--muted); font-size:13px; margin-top:4px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+    /* ---------- Tableaux ---------- */
+    table.data { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
+    table.data th, table.data td { border:1px solid var(--line); padding:6px 9px; text-align:left; vertical-align:top; }
+    table.data th { background: var(--blue-soft); color:#10456e; font-weight:600; }
+    table.data tr:nth-child(even) td { background:#fafcfe; }
+    table.data .pk { color:var(--blue); font-weight:700; }
+    table.data .fk { color:var(--warn); font-weight:600; }
+    .tbl-title { font-weight:700; color:#10456e; margin:18px 0 4px; font-size:14.5px; }
+    .tbl-title .pill { background:var(--blue-soft); color:var(--blue); border-radius:10px; padding:1px 9px; font-size:11px; margin-left:8px; font-weight:600; }
+
+    /* ---------- Blocs de code ---------- */
+    .code-label { font-weight:600; color:#15334d; margin:14px 0 4px; }
+    .code-label span { color: var(--muted); font-weight:400; }
+    pre.code {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-family: "Cascadia Code","Consolas","Courier New",monospace;
+        font-size: 12.5px; line-height:1.55;
+        color:#1f2937; margin: 6px 0 18px;
+    }
+    pre.code .c { color: var(--tok-com); font-style: italic; }
+    pre.code .k { color: var(--tok-kw); font-weight:600; }
+    pre.code .s { color: var(--tok-str); }
+    pre.code .f { color: var(--tok-fn); font-weight:600; }
+    pre.code .n { color:#0a7d2c; }
+
+    /* ---------- Encadrés ---------- */
+    .note { border-left:4px solid var(--blue-bright); background:var(--blue-soft); padding:10px 14px; border-radius:0 6px 6px 0; margin:14px 0; }
+    .note.warn { border-left-color: var(--warn); background:#fdf6ec; }
+    .note.ok   { border-left-color: var(--ok);   background:#eef9f1; }
+    .note strong { color:#15334d; }
+
+    /* ---------- Diagrammes ---------- */
+    .diagram { border:1px solid var(--line); border-radius:8px; padding:14px; margin:16px 0; background:#fcfdff; }
+    .diagram svg { width:100%; height:auto; display:block; }
+    .diagram .cap { text-align:center; color:var(--muted); font-size:12.5px; margin-top:8px; }
+
+    .toc { columns:2; column-gap:34px; margin:10px 0 4px; }
+    .toc a { display:block; padding:3px 0; text-decoration:none; color:#22516f; }
+    .toc a b { color:var(--blue); }
+
+    /* ---------- Impression ---------- */
+    @page { size: A4; margin: 14mm 12mm; }
+    @media print {
+        .page { max-width:none; padding:0; }
+        .banner { box-shadow:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+        .section-header, .section-header .icon, table.data th, .note, .diagram,
+        pre.code, table.data tr:nth-child(even) td {
+            -webkit-print-color-adjust:exact; print-color-adjust:exact;
+        }
+        /* Un titre ne doit jamais rester seul en bas de page, coupe de ce qu'il
+           annonce. La regle porte sur les CONTENEURS et pas seulement sur les
+           h2/h3 : un h3 est enveloppe dans un div .subsection, et c'est apres
+           ce div que la coupure se produisait. Meme chose pour .tbl-title, qui
+           precede un tableau, et .code-label, qui precede un bloc de code.
+           Les proprietes page-break-* restent presentes pour les moteurs
+           d'impression qui ne connaissent pas encore break-*. */
+        h2, h3 {
+            break-after: avoid;   page-break-after: avoid;
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+        .section-header,
+        .subsection,
+        .tbl-title,
+        .code-label {
+            break-after: avoid;   page-break-after: avoid;
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+
+        /* Blocs a garder d'un seul tenant. */
+        table.data, pre.code, .diagram, .card-box, .note, .grid2, .toc, li {
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+
+        /* Solidarise reellement un titre et son bloc. break-after: avoid n'est
+           qu'une indication, que le moteur ecarte des que le bloc suivant ne
+           tient plus dans l'espace restant — et .subsection etant un conteneur
+           flex, la fragmentation y est particulierement mal geree. Envelopper
+           la paire dans un conteneur insecable est la seule methode fiable.
+           Verifie au prealable : aucune de ces paires ne depasse 830 px de
+           haut, contre environ 1010 px disponibles sur une page A4, donc elles
+           basculent proprement a la page suivante sans jamais deborder. */
+        .keep { break-inside: avoid;  page-break-inside: avoid; }
+
+        /* Ce qui suit immediatement un titre reste colle a lui. Les cinq
+           natures de blocs listees ici sont exactement celles qui suivent un
+           .subsection dans ce document : paragraphe, liste, bloc de code,
+           tableau et diagramme. */
+        .section-header + p,
+        .subsection + p,
+        .subsection + ul,
+        .subsection + pre.code,
+        .subsection + table.data,
+        .subsection + .diagram,
+        .tbl-title + table.data {
+            break-before: avoid;  page-break-before: avoid;
+        }
+
+        /* Pas de ligne unique isolee en haut ou en bas de page. */
+        p, li { orphans: 3; widows: 3; }
+
+        .sec { break-inside: auto; }
+        .pagebreak { break-before: page; page-break-before: always; }
+    }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ============================ BANDEAU ============================ -->
+<div class="banner">
+    <div class="brand">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5zm10 .5V9h3.5L14 5.5zM7 12h10v1.6H7V12zm0 3.4h10V17H7v-1.6z"/></svg>
+        Documentation
+    </div>
+    <h1>Portfolio — Documentation technique</h1>
+    <div class="meta">
+        Version : 1<br>
+        Application : portfolio personnel de Guillaume Hurard (<a href="https://guillaumehurard.fr" style="color:#cfe8ff">guillaumehurard.fr</a>)<br>
+        Stack : PHP&nbsp;8.4 / Symfony&nbsp;8.1 / MySQL (MariaDB) / Apache — EasyAdmin, AssetMapper, Stimulus&nbsp;&amp;&nbsp;Turbo<br>
+        Dernière mise à jour : 26 juillet 2026
+    </div>
+</div>
+
+<!-- Sommaire -->
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"/></svg></div>
+    <h2>Sommaire</h2>
+</div>
+<div class="toc">
+    <a href="#s1"><b>1.</b> Présentation du projet</a>
+    <a href="#s2"><b>2.</b> Architecture &amp; arborescence</a>
+    <a href="#s3"><b>3.</b> Base de données</a>
+    <a href="#s4"><b>4.</b> Authentification &amp; sécurité</a>
+    <a href="#s5"><b>5.</b> Parcours &amp; pages</a>
+    <a href="#s6"><b>6.</b> Formulaire de contact &amp; e-mails</a>
+    <a href="#s7"><b>7.</b> Internationalisation</a>
+    <a href="#s8"><b>8.</b> Installation &amp; déploiement</a>
+    <a href="#s9"><b>9.</b> Schémas &amp; diagrammes</a>
+</div>
+
+<!-- ============================ 1. PRÉSENTATION ============================ -->
+<div class="sec" id="s1">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
+    <h2>1 · Présentation du projet</h2>
+</div>
+
+<p class="lead">Portfolio professionnel présentant le parcours, les compétences et les réalisations de Guillaume Hurard. L'ensemble du contenu est <strong>administrable</strong> : rien n'est écrit en dur dans les templates, tout provient de la base et se modifie depuis une interface d'administration protégée.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg><h3>Fonctionnalités principales</h3></div>
+<ul>
+    <li><strong>Page d'accueil unique</strong> découpée en sections : à propos, compétences, expériences, formations, projets, certifications, contact.</li>
+    <li><strong>Pages projet détaillées</strong> avec galerie d'images, vidéo de couverture, contexte, objectifs, fonctionnalités et documentation téléchargeable.</li>
+    <li><strong>Bilinguisme français / anglais</strong> avec des URL distinctes et traduites.</li>
+    <li><strong>Formulaire de contact</strong> avec anti-spam, enregistrement en base, notification par e-mail et accusé de réception au visiteur.</li>
+    <li><strong>Back-office EasyAdmin</strong> couvrant les 9 entités de contenu, avec réordonnancement, publication à la carte et upload de médias.</li>
+    <li><strong>Export / import JSON</strong> de l'intégralité du contenu, pour sauvegarde ou transfert entre environnements.</li>
+    <li><strong>Thème clair / sombre</strong> mémorisé côté navigateur.</li>
+</ul>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm-8 0a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3 0-8 1.5-8 4.5V20h10v-2.5c0-1 .4-2.5 1.6-3.6A13 13 0 0 0 8 13zm8 0c-.6 0-1.3.1-2 .2 1.4 1 2 2.4 2 3.3V20h8v-2.5c0-3-5-4.5-8-4.5z"/></svg><h3>Public &amp; contexte</h3></div>
+<p>Le site s'adresse à des recruteurs, clients potentiels et pairs développeurs. Il fait aussi office de démonstration technique : l'architecture, la sécurisation et la chaîne de déploiement sont volontairement traitées comme celles d'une application de production, et non comme une simple page vitrine.</p>
+
+<div class="note"><strong>Choix structurant :</strong> le contenu est administrable plutôt qu'écrit en dur. Cela permet de mettre à jour un parcours, ajouter un projet ou publier une certification sans toucher au code ni redéployer.</div>
+</div>
+
+<!-- ============================ 2. ARCHITECTURE ============================ -->
+<div class="sec pagebreak" id="s2">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 3h8v5h-8v-5zm0-6h8v4h-8v-4z"/></svg></div>
+    <h2>2 · Architecture &amp; arborescence</h2>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"/></svg><h3>Arborescence des fichiers</h3></div>
+<pre class="code"><span class="c">portfolio/</span>
+├── .github/workflows/
+│   └── deploiement.yml        <span class="c">// Déploiement continu vers o2switch</span>
+├── assets/                    <span class="c">// Sources front (JS, CSS, contrôleurs Stimulus)</span>
+│   ├── controllers/           <span class="c">// theme, carousel, cover_video, hello</span>
+│   ├── styles/app.css
+│   └── app.js
+├── config/
+│   ├── packages/              <span class="c">// security, doctrine, monolog, mailer, messenger…</span>
+│   └── routes/
+├── docs/
+│   └── documentation-technique.html   <span class="c">// ce document</span>
+├── migrations/                <span class="c">// 21 migrations Doctrine</span>
+├── public/
+│   ├── .htaccess              <span class="c">// Réécriture + HTTPS forcé + en-têtes de sécurité</span>
+│   ├── index.php              <span class="c">// Contrôleur frontal</span>
+│   ├── assets/                <span class="c">// Assets compilés (généré, non versionné)</span>
+│   └── uploads/               <span class="c">// Médias déposés depuis l'admin</span>
+│       └── .htaccess          <span class="c">// Neutralise l'exécution PHP</span>
+├── src/
+│   ├── Controller/
+│   │   ├── Admin/             <span class="c">// 9 CRUD EasyAdmin + Dashboard + Data</span>
+│   │   ├── HomeController.php
+│   │   ├── ProjectController.php
+│   │   └── SecurityController.php
+│   ├── Entity/                <span class="c">// 10 entités</span>
+│   ├── Form/ContactMessageType.php
+│   ├── Repository/            <span class="c">// 10 repositories</span>
+│   ├── Service/
+│   │   ├── ContactNotifier.php     <span class="c">// Notification + accusé de réception</span>
+│   │   ├── ContentExporter.php     <span class="c">// Export JSON</span>
+│   │   ├── ContentImporter.php     <span class="c">// Import JSON</span>
+│   │   └── PositionReorderer.php   <span class="c">// Réordonnancement des listes</span>
+│   └── Twig/                  <span class="c">// Extensions : icônes techno, couleurs de catégories</span>
+├── templates/
+├── translations/
+│   ├── messages.en.yaml       <span class="c">// 44 clés</span>
+│   └── validators.en.yaml
+└── var/log/prod.log           <span class="c">// Logs de production (voir §8)</span></pre>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg><h3>Pile technique</h3></div>
+<table class="data">
+    <tr><th>Couche</th><th>Technologie</th><th>Rôle</th></tr>
+    <tr><td>Langage</td><td>PHP 8.4</td><td>Contrainte <code class="inl">&gt;=8.4</code> déclarée dans <code class="inl">composer.json</code></td></tr>
+    <tr><td>Framework</td><td>Symfony 8.1</td><td>Routage, sécurité, formulaires, traduction, mailer</td></tr>
+    <tr><td>ORM</td><td>Doctrine</td><td>Entités, migrations, repositories</td></tr>
+    <tr><td>Base</td><td>MySQL / MariaDB</td><td>10 tables</td></tr>
+    <tr><td>Administration</td><td>EasyAdmin</td><td>CRUD générés pour les 9 entités de contenu</td></tr>
+    <tr><td>Front</td><td>AssetMapper + importmap</td><td>Pas de build Node : les assets sont servis en modules ES natifs</td></tr>
+    <tr><td>Interactivité</td><td>Stimulus + Turbo</td><td>Thème, carrousels, vidéos de couverture</td></tr>
+    <tr><td>Serveur</td><td>Apache (o2switch)</td><td>Mutualisé, cPanel / CloudLinux</td></tr>
+</table>
+</div>
+
+<div class="note"><strong>Absence volontaire de Node :</strong> l'AssetMapper compile les assets sans chaîne de build JavaScript. Cela simplifie le déploiement — pas de <code class="inl">node_modules</code>, pas de version de Node à maintenir sur un hébergement mutualisé.</div>
+</div>
+
+<!-- ============================ 3. BASE DE DONNÉES ============================ -->
+<div class="sec pagebreak" id="s3">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2C7 2 4 3.6 4 5.5v13C4 20.4 7 22 12 22s8-1.6 8-3.5v-13C20 3.6 17 2 12 2zm6 16.5c0 .7-2.4 1.5-6 1.5s-6-.8-6-1.5V9.6C7.4 10.5 9.6 11 12 11s4.6-.5 6-1.4v8.9zM12 9C8.4 9 6 8.2 6 7.5S8.4 6 12 6s6 .8 6 1.5S15.6 9 12 9z"/></svg></div>
+    <h2>3 · Base de données</h2>
+</div>
+
+<p>La base comporte <strong>10 tables</strong> gérées par <strong>21 migrations</strong> Doctrine. Le modèle est volontairement plat : seules deux relations existent (<code class="inl">project → project_image</code> et <code class="inl">skill_category → skill</code>). Les autres entités sont indépendantes, chacune correspondant à une section du site.</p>
+
+<p>Trois conventions traversent le schéma :</p>
+<ul>
+    <li><code class="inl">published</code> — booléen de publication, permettant de préparer un contenu sans l'afficher.</li>
+    <li><code class="inl">position</code> — entier d'ordonnancement, piloté depuis l'admin par le service <code class="inl">PositionReorderer</code>.</li>
+    <li><strong>Suffixe <code class="inl">En</code></strong> — les champs traduisibles sont doublés (<code class="inl">description</code> / <code class="inl">descriptionEn</code>). Voir §7.</li>
+</ul>
+
+<div class="keep">
+<div class="tbl-title">profile <span class="pill">singleton · identité du site</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
+    <tr><td class="pk">id</td><td>int</td><td>Clé primaire (auto)</td></tr>
+    <tr><td>photoName</td><td>varchar(255)</td><td>Photo de la section « À propos »</td></tr>
+    <tr><td>contactEmail</td><td>varchar(255)</td><td>Destinataire des notifications de contact</td></tr>
+    <tr><td>linkedinUrl</td><td>varchar(255)</td><td>Lien réseau social</td></tr>
+    <tr><td>aboutText / aboutTextEn</td><td>text</td><td>Paragraphes de présentation</td></tr>
+    <tr><td>highlights / highlightsEn</td><td>text</td><td>Points saillants (une ligne par entrée)</td></tr>
+    <tr><td>stats / statsEn</td><td>text</td><td>Chiffres clés affichés en vignettes</td></tr>
+</table>
+</div>
+
+<div class="keep">
+<div class="tbl-title">project <span class="pill">réalisations</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
+    <tr><td class="pk">id</td><td>int</td><td>Clé primaire (auto)</td></tr>
+    <tr><td>title</td><td>varchar(255)</td><td>Titre affiché</td></tr>
+    <tr><td>slug</td><td>varchar(255)</td><td>Généré automatiquement depuis le titre (<code class="inl">PrePersist</code> / <code class="inl">PreUpdate</code>)</td></tr>
+    <tr><td>description / descriptionEn</td><td>text</td><td>Résumé de la carte</td></tr>
+    <tr><td>stack</td><td>varchar(255)</td><td>Technologies, séparées par des virgules</td></tr>
+    <tr><td>context · objectives · features</td><td>text</td><td>Contenu de la page détail (+ variantes <code class="inl">En</code>)</td></tr>
+    <tr><td>role</td><td>json</td><td>Rôles tenus sur le projet</td></tr>
+    <tr><td>tools</td><td>varchar(255)</td><td>Outils, séparés par des virgules</td></tr>
+    <tr><td>sourceUrl / demoUrl</td><td>varchar(255)</td><td>Dépôt et démonstration</td></tr>
+    <tr><td>techDocName</td><td>varchar(255)</td><td>PDF de documentation technique</td></tr>
+    <tr><td>coverVideoName</td><td>varchar(255)</td><td>Clip de couverture (mp4/webm)</td></tr>
+    <tr><td>featured</td><td>bool</td><td>Mise en avant sur l'accueil</td></tr>
+    <tr><td>wip</td><td>bool</td><td>« Work in progress » : la carte ne mène à aucune page détail</td></tr>
+    <tr><td>published · position · createdAt</td><td>bool / int / datetime</td><td>Conventions communes</td></tr>
+</table>
+</div>
+
+<div class="grid2">
+<div>
+<div class="keep">
+<div class="tbl-title">project_image <span class="pill">galerie</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td class="fk">project</td><td>int → project (NOT NULL)</td></tr>
+    <tr><td>imageName</td><td>varchar</td></tr>
+    <tr><td>position</td><td>int</td></tr>
+</table>
+</div>
+</div>
+<div>
+<div class="keep">
+<div class="tbl-title">skill <span class="pill">compétences</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td class="fk">category</td><td>int → skill_category (NOT NULL)</td></tr>
+    <tr><td>label</td><td>varchar(255)</td></tr>
+    <tr><td>position</td><td>int</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="tbl-title">skill_category <span class="pill">regroupement de compétences</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
+    <tr><td class="pk">id</td><td>int</td><td>Clé primaire (auto)</td></tr>
+    <tr><td>label / labelEn</td><td>varchar(255)</td><td>Nom de la catégorie</td></tr>
+    <tr><td>icon</td><td>varchar(16)</td><td>Identifiant d'icône, colorisé par une extension Twig</td></tr>
+    <tr><td>published · position</td><td>bool / int</td><td>Conventions communes</td></tr>
+</table>
+</div>
+
+<div class="grid2">
+<div>
+<div class="keep">
+<div class="tbl-title">experience <span class="pill">parcours pro</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td>company / role / roleEn</td><td>varchar(255)</td></tr>
+    <tr><td>period / location</td><td>varchar(255)</td></tr>
+    <tr><td>logoName / logoUrl</td><td>varchar(255)</td></tr>
+    <tr><td>description(En)</td><td>text</td></tr>
+    <tr><td>published / position</td><td>bool / int</td></tr>
+</table>
+</div>
+</div>
+<div>
+<div class="keep">
+<div class="tbl-title">education <span class="pill">formations</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td>school / degree / degreeEn</td><td>varchar(255)</td></tr>
+    <tr><td>period / location</td><td>varchar(255)</td></tr>
+    <tr><td>logoName / logoUrl</td><td>varchar(255)</td></tr>
+    <tr><td>description(En)</td><td>text</td></tr>
+    <tr><td>published / position</td><td>bool / int</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="grid2">
+<div>
+<div class="keep">
+<div class="tbl-title">certificate <span class="pill">certifications</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td>title / issuer</td><td>varchar(255)</td></tr>
+    <tr><td>issueDate</td><td>date</td></tr>
+    <tr><td>credentialUrl</td><td>varchar(255)</td></tr>
+    <tr><td>badgeImageName</td><td>varchar(255)</td></tr>
+    <tr><td>published / position</td><td>bool / int</td></tr>
+</table>
+</div>
+</div>
+<div>
+<div class="keep">
+<div class="tbl-title">user <span class="pill">compte admin</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th></tr>
+    <tr><td class="pk">id</td><td>int</td></tr>
+    <tr><td>email</td><td>varchar(180), unique</td></tr>
+    <tr><td>roles</td><td>json</td></tr>
+    <tr><td>password</td><td>varchar (hash)</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="tbl-title">contact_message <span class="pill">messages reçus</span></div>
+<table class="data">
+    <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
+    <tr><td class="pk">id</td><td>int</td><td>Clé primaire (auto)</td></tr>
+    <tr><td>name / email</td><td>varchar(255)</td><td>Identité du visiteur</td></tr>
+    <tr><td>company</td><td>varchar(255)</td><td>Optionnel</td></tr>
+    <tr><td>message</td><td>text</td><td>Corps du message</td></tr>
+    <tr><td>handled</td><td>bool</td><td>Marqué comme traité depuis l'admin</td></tr>
+    <tr><td>createdAt</td><td>datetime</td><td>Horodatage de réception</td></tr>
+    <tr><td>ipAddress</td><td>varchar(45)</td><td>IPv4 ou IPv6, utilisée par l'anti-flood</td></tr>
+</table>
+</div>
+<p style="font-size:13px;color:var(--muted);margin-top:2px">Index composite <code class="inl">idx_contact_message_ip_created</code> sur <code class="inl">(ip_address, created_at)</code> — il sert la requête de comptage de l'anti-flood, qui s'exécute à chaque soumission.</p>
+
+<div class="note warn"><strong>Donnée personnelle :</strong> <code class="inl">ipAddress</code> est une donnée à caractère personnel au sens du RGPD. Elle est nécessaire à l'anti-spam, mais <strong>aucune politique de purge n'est encore en place</strong> : les adresses sont conservées sans limite de durée. Point identifié comme à traiter.</div>
+</div>
+
+<!-- ============================ 4. SÉCURITÉ ============================ -->
+<div class="sec pagebreak" id="s4">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5 3.8 9.4 9 11 5.2-1.6 9-6 9-11V5l-9-4zm0 10.9h7c-.5 4-3.3 7.6-7 8.8V12H5V6.3l7-3.1V11.9z"/></svg></div>
+    <h2>4 · Authentification &amp; sécurité</h2>
+</div>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 17a2 2 0 0 0 2-2 2 2 0 1 0-4 0 2 2 0 0 0 2 2zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 7a3 3 0 0 1 6 0v3H9V7z"/></svg><h3>Connexion &amp; contrôle d'accès</h3></div>
+<p>Un seul pare-feu applicatif (<code class="inl">main</code>) couvre le site, avec un fournisseur d'utilisateurs Doctrine indexé sur l'e-mail. Les mots de passe utilisent l'algorithme <code class="inl">auto</code> de Symfony, qui sélectionne le meilleur disponible. L'accès à l'administration est verrouillé par une règle unique&nbsp;: <code class="inl">^/admin</code> exige <code class="inl">ROLE_ADMIN</code>.</p>
+
+<pre class="code"><span class="c"># config/packages/security.yaml</span>
+<span class="f">firewalls</span>:
+    <span class="f">main</span>:
+        <span class="f">form_login</span>:
+            <span class="f">enable_csrf</span>: <span class="k">true</span>
+        <span class="c"># Sans cela, /login accepte un nombre illimité de tentatives.</span>
+        <span class="f">login_throttling</span>:
+            <span class="f">max_attempts</span>: <span class="n">5</span>
+            <span class="f">interval</span>: <span class="s">'15 minutes'</span>
+
+<span class="f">access_control</span>:
+    - { <span class="f">path</span>: <span class="s">^/admin</span>, <span class="f">roles</span>: <span class="s">ROLE_ADMIN</span> }</pre>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5 3.8 9.4 9 11 5.2-1.6 9-6 9-11V5l-9-4z"/></svg><h3>Transport &amp; en-têtes</h3></div>
+<p>Le trafic est intégralement chiffré : <code class="inl">public/.htaccess</code> redirige le port 80 vers HTTPS en 301 et émet un en-tête HSTS d'un an, uniquement sur les réponses déjà chiffrées. Les hôtes locaux sont exclus de la redirection pour ne pas gêner le développement.</p>
+<table class="data">
+    <tr><th>En-tête</th><th>Valeur</th><th>Protège de</th></tr>
+    <tr><td>Strict-Transport-Security</td><td>max-age=31536000; includeSubDomains</td><td>Rétrogradation vers HTTP</td></tr>
+    <tr><td>X-Frame-Options</td><td>SAMEORIGIN</td><td>Clickjacking</td></tr>
+    <tr><td>X-Content-Type-Options</td><td>nosniff</td><td>Interprétation abusive du type MIME</td></tr>
+    <tr><td>Referrer-Policy</td><td>strict-origin-when-cross-origin</td><td>Fuite d'URL vers les tiers</td></tr>
+    <tr><td>Content-Security-Policy</td><td>voir ci-dessous</td><td>Injection de ressources, détournement de formulaire</td></tr>
+</table>
+
+<div class="note warn"><strong>Limite assumée de la CSP :</strong> <code class="inl">script-src</code> doit conserver <code class="inl">'unsafe-inline'</code> et <code class="inl">data:</code>. L'AssetMapper génère un bloc <code class="inl">&lt;script type="importmap"&gt;</code> en ligne, et fait pointer les entrées CSS vers un module <code class="inl">data:application/javascript,</code> vide. Sans ces autorisations, <strong>tout le JavaScript du site cesse de fonctionner silencieusement</strong>, protection CSRF côté client comprise. L'apport anti-XSS de la CSP est donc partiel ; la protection réelle contre le XSS reste l'échappement automatique de Twig, qui n'est contourné nulle part (aucun filtre <code class="inl">|raw</code> dans les templates). Le gain concret porte sur <code class="inl">frame-ancestors</code>, <code class="inl">object-src 'none'</code>, <code class="inl">base-uri</code> et <code class="inl">form-action</code>.</div>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 4.5 3.4 8.6 8 10 4.6-1.4 8-5.5 8-10V6l-8-4zm-1 13-3-3 1.4-1.4L11 12.2l4.6-4.6L17 9l-6 6z"/></svg><h3>Protection CSRF</h3></div>
+<p>Les formulaires Symfony intègrent un jeton CSRF par défaut : c'est le cas du formulaire de contact et du formulaire de connexion (<code class="inl">enable_csrf: true</code>). L'import de données, qui n'utilise pas le composant Form, valide son jeton manuellement.</p>
+<pre class="code"><span class="c">// src/Controller/Admin/DataController.php — import destructif, triple garde</span>
+<span class="k">if</span> (!$csrfTokenManager-&gt;<span class="f">isTokenValid</span>(<span class="k">new</span> <span class="f">CsrfToken</span>(<span class="s">'admin_data_import'</span>, $token))) { <span class="c">/* refus */</span> }
+<span class="k">if</span> (!$request-&gt;request-&gt;<span class="f">getBoolean</span>(<span class="s">'confirm'</span>))                       { <span class="c">/* case de confirmation */</span> }
+<span class="c">// + l'attribut #[IsGranted('ROLE_ADMIN')] sur la classe entière</span></pre>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" transform="rotate(45 12 12)"/></svg><h3>Uploads</h3></div>
+<p>Les médias déposés depuis l'administration présentent deux risques : un nom de fichier contrôlé par l'utilisateur, et l'exécution du fichier déposé. Les deux sont traités.</p>
+<ul>
+    <li><strong>Renommage systématique</strong> : <code class="inl">setUploadedFileNamePattern('[randomhash].[extension]')</code>, le nom d'origine n'est jamais réutilisé.</li>
+    <li><strong>Contraintes de type</strong> sur les 7 champs d'upload : images limitées à JPEG, PNG, WebP et GIF (4 Mo), vidéos à MP4 et WebM, documentation au PDF. Le <strong>SVG est volontairement exclu</strong> car il peut embarquer du script et serait servi depuis notre propre domaine.</li>
+    <li><strong>Exécution neutralisée</strong> : <code class="inl">public/uploads/.htaccess</code> supprime tout handler PHP et refuse l'accès aux extensions exécutables.</li>
+</ul>
+<div class="note warn"><strong>Vérifié en conditions réelles :</strong> avant ajout de ce <code class="inl">.htaccess</code>, un fichier PHP déposé dans <code class="inl">public/uploads/</code> était <strong>réellement exécuté</strong> par le serveur. La protection a été validée par un test : le fichier renvoie désormais 404 tandis que les images légitimes continuent d'être servies. L'upload étant réservé aux administrateurs, il s'agit de défense en profondeur — la chaîne devient dangereuse seulement si un compte admin est compromis.</div>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2zm8 1.5V8h4.5L14 3.5z"/></svg><h3>Exposition des fichiers &amp; secrets</h3></div>
+<p>La racine web ne pointe pas sur le dépôt mais sur son seul dossier <code class="inl">public/</code>, via un lien symbolique (voir §8). Le code source, <code class="inl">vendor/</code>, les logs et les fichiers d'environnement sont donc hors d'atteinte : une requête sur <code class="inl">/.env</code>, <code class="inl">/.git/config</code> ou <code class="inl">/composer.json</code> renvoie 403 ou 404.</p>
+<p>Les secrets de production (<code class="inl">APP_SECRET</code>, accès base, <code class="inl">MAILER_DSN</code>) vivent dans un <code class="inl">.env.local</code> présent uniquement sur le serveur, en permissions <code class="inl">600</code>, jamais versionné. Le <code class="inl">.env</code> du dépôt ne contient que des valeurs par défaut inoffensives (<code class="inl">MAILER_DSN=null://null</code>).</p>
+
+<div class="note ok"><strong>Contrôlé sans anomalie :</strong> aucune vulnérabilité connue dans les dépendances (<code class="inl">composer audit</code>), aucun <code class="inl">|raw</code> dans les templates, requêtes exclusivement via Doctrine (pas de SQL concaténé), cookie de session en <code class="inl">secure; httponly; samesite=lax</code>.</div>
+</div>
+
+<!-- ============================ 5. PARCOURS & PAGES ============================ -->
+<div class="sec pagebreak" id="s5">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4V4zm0 6h7v10H4V10zm9 0h7v10h-7V10z"/></svg></div>
+    <h2>5 · Parcours &amp; pages</h2>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg><h3>Côté public</h3></div>
+<table class="data">
+    <tr><th>Route</th><th>URL (fr / en)</th><th>Contrôleur</th><th>Rôle</th></tr>
+    <tr><td>home</td><td><code class="inl">/</code> · <code class="inl">/en</code></td><td>HomeController::index</td><td>Page unique, toutes sections + formulaire de contact</td></tr>
+    <tr><td>project_show</td><td><code class="inl">/projets/{slug}</code> · <code class="inl">/en/projects/{slug}</code></td><td>ProjectController::show</td><td>Page détail d'un projet</td></tr>
+    <tr><td>app_login</td><td><code class="inl">/login</code></td><td>SecurityController::login</td><td>Connexion à l'administration</td></tr>
+    <tr><td>app_logout</td><td><code class="inl">/logout</code></td><td>SecurityController::logout</td><td>Déconnexion</td></tr>
+</table>
+</div>
+
+<p>La page d'accueil charge en une seule requête l'ensemble des contenus publiés, chaque repository exposant une méthode <code class="inl">findPublishedOrderedByPosition()</code>. Les sections vides sont masquées automatiquement : si aucun texte « À propos » n'est renseigné, la section n'est pas rendue.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3V3zm0 6h18v4H3V9zm0 6h18v4H3v-4z"/></svg><h3>Côté administration</h3></div>
+<p>Le back-office EasyAdmin est accessible sur <code class="inl">/admin</code>. Il expose un CRUD par entité de contenu, plus deux écrans spécifiques.</p>
+<table class="data">
+    <tr><th>Écran</th><th>Contenu</th></tr>
+    <tr><td>Dashboard</td><td>Point d'entrée et menu</td></tr>
+    <tr><td>Profil</td><td>Identité du site, photo, e-mail de contact, textes « À propos »</td></tr>
+    <tr><td>Projets · Images de projet</td><td>Réalisations et galeries associées</td></tr>
+    <tr><td>Catégories de compétences · Compétences</td><td>Compétences regroupées par catégorie</td></tr>
+    <tr><td>Expériences · Formations · Certifications</td><td>Parcours</td></tr>
+    <tr><td>Messages de contact</td><td>Consultation des messages reçus, marquage « traité »</td></tr>
+    <tr><td>Export / Import</td><td>Sauvegarde et restauration JSON du contenu</td></tr>
+</table>
+
+<div class="note warn"><strong>L'import est destructif :</strong> il remplace l'intégralité du contenu existant. D'où la triple garde décrite en §4 (rôle, jeton CSRF, case de confirmation). Il ne transfère pas les fichiers uploadés, qui doivent être copiés séparément.</div>
+</div>
+
+<!-- ============================ 6. CONTACT & MAILS ============================ -->
+<div class="sec pagebreak" id="s6">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+    <h2>6 · Formulaire de contact &amp; e-mails</h2>
+</div>
+
+<p>C'est le seul point d'entrée où un visiteur non authentifié écrit en base. Il combine trois protections et déclenche deux envois d'e-mail indépendants.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5 3.8 9.4 9 11 5.2-1.6 9-6 9-11V5l-9-4z"/></svg><h3>Anti-spam</h3></div>
+<ul>
+    <li><strong>Jeton CSRF</strong> — fourni par le composant Form.</li>
+    <li><strong>Honeypot</strong> — un champ <code class="inl">website</code> invisible ; s'il est rempli, c'est un robot.</li>
+    <li><strong>Anti-flood par IP</strong> — 3 messages maximum par tranche de 10 minutes, comptés via l'index composite de <code class="inl">contact_message</code>.</li>
+</ul>
+<p>En cas de détection, le site affiche <strong>le même message de succès</strong> que pour un envoi valide, sans rien enregistrer. C'est délibéré : indiquer au robot ce qui l'a bloqué lui permettrait d'ajuster sa stratégie.</p>
+
+<pre class="code"><span class="c">// src/Controller/HomeController.php</span>
+$isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</span>(<span class="s">'website'</span>)-&gt;<span class="f">getData</span>()
+    || $contactMessageRepository-&gt;<span class="f">countRecentFromIp</span>($ip, <span class="n">10</span>) &gt;= <span class="n">3</span>;
+
+<span class="k">if</span> (!$isSpam) {
+    $entityManager-&gt;<span class="f">persist</span>($contactMessage);
+    $entityManager-&gt;<span class="f">flush</span>();          <span class="c">// la trace en base précède les envois</span>
+
+    $contactNotifier-&gt;<span class="f">notify</span>($contactMessage, $profile?-&gt;<span class="f">getContactEmail</span>());
+    $contactNotifier-&gt;<span class="f">acknowledge</span>($contactMessage, $locale);
+}</pre>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M2 12h4l3 8 6-16 3 8h4"/><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg><h3>Deux envois strictement indépendants</h3></div>
+<table class="data">
+    <tr><th></th><th>Notification</th><th>Accusé de réception</th></tr>
+    <tr><td>Destinataire</td><td>Guillaume (champ <code class="inl">contactEmail</code> du profil)</td><td>Le visiteur</td></tr>
+    <tr><td>Expéditeur</td><td><code class="inl">contact@guillaumehurard.fr</code></td><td><code class="inl">no.reply@guillaumehurard.fr</code></td></tr>
+    <tr><td>Variable</td><td><code class="inl">CONTACT_FROM_EMAIL</code></td><td><code class="inl">CONTACT_ACK_FROM_EMAIL</code></td></tr>
+    <tr><td>Langue</td><td>Français</td><td>Celle de la page (<code class="inl">$request->getLocale()</code>)</td></tr>
+    <tr><td>Méthode</td><td><code class="inl">ContactNotifier::notify()</code></td><td><code class="inl">ContactNotifier::acknowledge()</code></td></tr>
+</table>
+</div>
+<p>Les deux méthodes sont appelées séparément, chacune protégée par son propre <code class="inl">try/catch</code>. L'échec de l'une n'empêche jamais l'autre, et aucune ne peut faire échouer la requête : le message est déjà persisté avant le premier envoi. Les deux expéditeurs sont volontairement distincts — l'adresse de réponse réelle d'un côté, une adresse dédiée jamais relevée de l'autre.</p>
+
+<div class="note ok"><strong>Envoi via le sendmail local, pas en SMTP authentifié.</strong> <code class="inl">MAILER_DSN="native://default"</code>. L'application tourne sur le même serveur que la messagerie : s'authentifier en SMTP auprès de <code class="inl">mail.guillaumehurard.fr</code> depuis cette même machine n'apporte rien et introduit un mot de passe à gérer. Une tentative en SMTP authentifié a d'ailleurs échoué durablement en <code class="inl">535 Incorrect authentication data</code> ; le passage au sendmail local a supprimé le problème plutôt que de le résoudre.</div>
+
+<div class="note warn"><strong>Piège à connaître :</strong> <code class="inl">ContactNotifier</code> dépend de <code class="inl">MailerInterface</code> et est injecté dans <code class="inl">HomeController::index()</code>. Un <code class="inl">MAILER_DSN</code> invalide fait donc échouer <strong>toute la page d'accueil</strong> en erreur 500, et pas seulement la soumission du formulaire.</div>
+
+<div class="note"><strong>Mailer en mode synchrone.</strong> Le routage de <code class="inl">SendEmailMessage</code> vers le transport <code class="inl">async</code> est commenté dans <code class="inl">messenger.yaml</code>. Sur un hébergement mutualisé, aucun worker <code class="inl">messenger:consume</code> ne tourne : les messages resteraient indéfiniment en file d'attente en base. L'envoi se fait donc pendant la requête.</div>
+</div>
+
+<!-- ============================ 7. I18N ============================ -->
+<div class="sec pagebreak" id="s7">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-3a15.7 15.7 0 0 0-1.4-3.6A8 8 0 0 1 18.9 8zM12 4c.8 1.2 1.4 2.5 1.8 4h-3.6c.4-1.5 1-2.8 1.8-4zM4.3 14a8 8 0 0 1 0-4h3.4a16.6 16.6 0 0 0 0 4H4.3zm.8 2h3a15.7 15.7 0 0 0 1.4 3.6A8 8 0 0 1 5.1 16zm3-8h-3a8 8 0 0 1 4.4-3.6A15.7 15.7 0 0 0 8.1 8zM12 20c-.8-1.2-1.4-2.5-1.8-4h3.6c-.4 1.5-1 2.8-1.8 4zm2.2-6H9.8a14.7 14.7 0 0 1 0-4h4.4a14.7 14.7 0 0 1 0 4zm.3 5.6c.6-1.1 1-2.3 1.4-3.6h3a8 8 0 0 1-4.4 3.6zm1.8-5.6a16.6 16.6 0 0 0 0-4h3.4a8 8 0 0 1 0 4h-3.4z"/></svg></div>
+    <h2>7 · Internationalisation</h2>
+</div>
+
+<p>Le site est bilingue français / anglais, le français étant la langue par défaut. Deux mécanismes coexistent, selon la nature du texte.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3V3zm0 6h18v4H3V9zm0 6h12v4H3v-4z"/></svg><h3>Textes d'interface : fichiers de traduction</h3></div>
+<p>Les libellés de l'interface passent par le translator, avec une convention inhabituelle mais assumée : <strong>les clés de traduction sont le texte français lui-même</strong>. Il n'existe donc pas de <code class="inl">messages.fr.yaml</code> — en français, le mécanisme de repli affiche la clé, qui est déjà le bon texte. Seul <code class="inl">messages.en.yaml</code> existe (44 clés), plus <code class="inl">validators.en.yaml</code> pour les messages de validation.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2C7 2 4 3.6 4 5.5v13C4 20.4 7 22 12 22s8-1.6 8-3.5v-13C20 3.6 17 2 12 2z"/></svg><h3>Contenus éditoriaux : colonnes doublées</h3></div>
+<p>Les contenus saisis en administration ne peuvent pas vivre dans des fichiers de traduction. Chaque champ traduisible est donc doublé en base avec un suffixe <code class="inl">En</code> : <code class="inl">description</code> / <code class="inl">descriptionEn</code>, <code class="inl">aboutText</code> / <code class="inl">aboutTextEn</code>, etc. Les entités exposent des accesseurs localisés (<code class="inl">getLocalizedAboutParagraphs($locale)</code>) qui retombent sur le français si la version anglaise est vide — un contenu non traduit reste donc affiché plutôt que de laisser un trou.</p>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><h3>URL localisées</h3></div>
+<p>La locale n'est pas transportée par un paramètre de requête mais inscrite dans la route elle-même, ce qui donne des URL propres et indexables séparément.</p>
+<pre class="code"><span class="c">// Une seule route, deux chemins : la locale est déduite de l'URL empruntée.</span>
+#[<span class="f">Route</span>(path: [<span class="s">'fr'</span> =&gt; <span class="s">'/'</span>,             <span class="s">'en'</span> =&gt; <span class="s">'/en'</span>],              name: <span class="s">'home'</span>)]
+#[<span class="f">Route</span>(path: [<span class="s">'fr'</span> =&gt; <span class="s">'/projets/{slug}'</span>, <span class="s">'en'</span> =&gt; <span class="s">'/en/projects/{slug}'</span>], name: <span class="s">'project_show'</span>)]</pre>
+<p>C'est ce qui permet à l'accusé de réception du formulaire de contact d'être rédigé dans la bonne langue sans aucune détection supplémentaire : <code class="inl">$request-&gt;getLocale()</code> suffit.</p>
+</div>
+
+<!-- ============================ 8. INSTALLATION & DÉPLOIEMENT ============================ -->
+<div class="sec pagebreak" id="s8">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg></div>
+    <h2>8 · Installation &amp; déploiement</h2>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4z"/></svg><h3>Environnement local</h3></div>
+<pre class="code"><span class="f">git clone</span> git@github.com:PsycoSGWaK/portfolio.git
+<span class="f">composer install</span>
+<span class="c"># Renseigner DATABASE_URL et APP_SECRET dans .env.local</span>
+<span class="f">php</span> bin/console doctrine:database:create
+<span class="f">php</span> bin/console doctrine:migrations:migrate
+<span class="f">symfony</span> serve                <span class="c"># http://localhost:8000</span></pre>
+</div>
+<div class="note warn"><strong>PHP 8.4 obligatoire.</strong> Sur cette machine, Apache/WAMP tourne encore en PHP 8.3 : servir le projet par Apache en local échoue en erreur 500. Le serveur Symfony (<code class="inl">symfony serve</code>), lui, utilise le PHP 8.4 du <code class="inl">PATH</code> et fonctionne. Conséquence pratique : le <code class="inl">.htaccess</code> ne peut pas être testé localement, seulement sur le serveur.</div>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4z"/></svg><h3>Hébergement de production</h3></div>
+<p>Le site est hébergé chez o2switch, sur un mutualisé cPanel / CloudLinux. Le point important de la configuration est la séparation entre le dépôt et la racine web :</p>
+<table class="data">
+    <tr><th>Élément</th><th>Emplacement</th></tr>
+    <tr><td>Dépôt complet</td><td><code class="inl">~/repositories/guillaumehurard</code> — invisible du web</td></tr>
+    <tr><td>Racine web</td><td><code class="inl">~/public_html/guillaumehurard/public</code> → <strong>lien symbolique</strong> vers <code class="inl">~/repositories/guillaumehurard/public</code></td></tr>
+    <tr><td>Secrets</td><td><code class="inl">.env.local</code> sur le serveur, permissions 600, non versionné</td></tr>
+    <tr><td>Logs applicatifs</td><td><code class="inl">var/log/prod.log</code></td></tr>
+</table>
+<div class="note"><strong>Pourquoi les logs ne vont pas sur <code class="inl">stderr</code> :</strong> la configuration Symfony par défaut envoie les logs de production vers <code class="inl">php://stderr</code>, qui n'atterrit nulle part de consultable sur ce compte — ni <code class="inl">error_log</code>, ni les journaux agrégés du cPanel, et <code class="inl">/var/log/exim_mainlog</code> est inaccessible (CageFS). <code class="inl">monolog.yaml</code> a donc été modifié pour écrire dans un vrai fichier, sans quoi tout diagnostic en production est impossible.</div>
+
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><h3>Déploiement continu</h3></div>
+<p>Tout push sur <code class="inl">main</code> déclenche le workflow <code class="inl">.github/workflows/deploiement.yml</code>. Le principe directeur : <strong>tout ce qui est coûteux ou fragile s'exécute sur le runner GitHub, jamais sur le mutualisé</strong>.</p>
+<ol>
+    <li><strong>Build sur le runner</strong> — <code class="inl">composer install --no-dev</code> puis <code class="inl">asset-map:compile</code>, avec PHP 8.4.</li>
+    <li><strong>Ouverture de l'accès SSH</strong> — l'IP du runner est ajoutée à la liste blanche du pare-feu via l'API cPanel <code class="inl">SshWhitelist</code>.</li>
+    <li><strong>Sauvegarde</strong> du <code class="inl">.env.local</code> de production.</li>
+    <li><strong>Mise à jour du code</strong> — <code class="inl">git fetch</code> + <code class="inl">reset --hard origin/main</code> côté serveur.</li>
+    <li><strong>Transfert des artefacts</strong> — rsync de <code class="inl">vendor/</code>, <code class="inl">public/assets/</code> et <code class="inl">assets/vendor/</code> uniquement.</li>
+    <li><strong>Migrations</strong> et reconstruction du cache.</li>
+    <li><strong>Health check</strong> — <code class="inl">/</code> et <code class="inl">/en</code> doivent renvoyer 200, sinon le job échoue.</li>
+    <li><strong>Fermeture de l'accès</strong> et effacement de la clé, exécutés quoi qu'il arrive.</li>
+</ol>
+
+<div class="note"><strong>Pourquoi cette répartition git / rsync ?</strong> Le code source arrive par git et seuls les artefacts non versionnés transitent par rsync. Cela évite tout <code class="inl">--delete</code> à la racine du projet — le <code class="inl">.env.local</code> ne peut donc pas être détruit par une erreur de configuration du transfert.</div>
+
+<div class="note warn"><strong>Deux contraintes de la liste blanche SSH.</strong> Le pare-feu d'o2switch filtre par IP source et n'accepte que <strong>5 exceptions</strong>. Comme l'API ne permet pas de distinguer l'IP d'un runner de celle d'un poste de travail, le workflow commence par un <code class="inl">remove_all</code>. Conséquence directe : <strong>chaque déploiement supprime aussi l'IP personnelle</strong>, et l'accès SSH manuel doit être ré-autorisé depuis cPanel. Une suppression met environ cinq minutes à devenir effective.</div>
+
+<div class="note"><strong>Mécanisme précédent, conservé en secours :</strong> un script <code class="inl">~/deploy_guillaumehurard.sh</code> déclenché par cron toutes les 10 minutes assurait le déploiement avant la mise en place du workflow. Sa ligne est <strong>commentée</strong> dans la crontab — les deux mécanismes ne peuvent pas cohabiter, le cron se réveillant potentiellement en plein rsync. Le script reste sur le serveur : décommenter la ligne suffit à revenir en arrière.</div>
+</div>
+
+<!-- ============================ 9. SCHÉMAS ============================ -->
+<div class="sec pagebreak" id="s9">
+<div class="section-header">
+    <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3V3zm11 0h7v4h-7V3zm0 6h7v12h-7V9zM3 12h7v9H3v-9z"/></svg></div>
+    <h2>9 · Schémas &amp; diagrammes</h2>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg><h3>9.1 · Modèle conceptuel</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
+    <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1c7fc4"/></marker></defs>
+
+    <rect x="20" y="20" width="150" height="52" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="95" y="42" text-anchor="middle" font-weight="600" fill="#10456e">PROFILE</text>
+    <text x="95" y="60" text-anchor="middle" fill="#6b7785">identité du site</text>
+
+    <rect x="20" y="110" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="95" y="132" text-anchor="middle" font-weight="600" fill="#10456e">EXPERIENCE</text>
+    <text x="95" y="150" text-anchor="middle" fill="#6b7785">parcours pro</text>
+
+    <rect x="20" y="200" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="95" y="222" text-anchor="middle" font-weight="600" fill="#10456e">EDUCATION</text>
+    <text x="95" y="240" text-anchor="middle" fill="#6b7785">formations</text>
+
+    <rect x="215" y="110" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="290" y="132" text-anchor="middle" font-weight="600" fill="#10456e">CERTIFICATE</text>
+    <text x="290" y="150" text-anchor="middle" fill="#6b7785">certifications</text>
+
+    <rect x="215" y="200" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="290" y="222" text-anchor="middle" font-weight="600" fill="#10456e">CONTACT_MESSAGE</text>
+    <text x="290" y="240" text-anchor="middle" fill="#6b7785">messages reçus</text>
+
+    <rect x="215" y="20" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="290" y="42" text-anchor="middle" font-weight="600" fill="#10456e">USER</text>
+    <text x="290" y="60" text-anchor="middle" fill="#6b7785">compte admin</text>
+
+    <rect x="450" y="40" width="160" height="52" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="530" y="62" text-anchor="middle" font-weight="600" fill="#10456e">PROJECT</text>
+    <text x="530" y="80" text-anchor="middle" fill="#6b7785">réalisations</text>
+
+    <rect x="690" y="40" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="765" y="62" text-anchor="middle" font-weight="600" fill="#10456e">PROJECT_IMAGE</text>
+    <text x="765" y="80" text-anchor="middle" fill="#6b7785">galerie</text>
+
+    <line x1="610" y1="66" x2="684" y2="66" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a1)"/>
+    <text x="647" y="58" text-anchor="middle" fill="#1c7fc4" font-size="11">1,N</text>
+
+    <rect x="450" y="180" width="160" height="52" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="530" y="202" text-anchor="middle" font-weight="600" fill="#10456e">SKILL_CATEGORY</text>
+    <text x="530" y="220" text-anchor="middle" fill="#6b7785">catégories</text>
+
+    <rect x="690" y="180" width="150" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="765" y="202" text-anchor="middle" font-weight="600" fill="#10456e">SKILL</text>
+    <text x="765" y="220" text-anchor="middle" fill="#6b7785">compétences</text>
+
+    <line x1="610" y1="206" x2="684" y2="206" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a1)"/>
+    <text x="647" y="198" text-anchor="middle" fill="#1c7fc4" font-size="11">1,N</text>
+
+    <text x="20" y="285" text-anchor="start" fill="#6b7785" font-size="11">Entités indépendantes — une par section du site</text>
+</svg>
+<div class="cap">Seules deux associations existent. Les autres entités sont autonomes.</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M3 5h18v3H3V5zm0 5h18v3H3v-3zm0 5h18v3H3v-3z"/></svg><h3>9.2 · Modèle logique</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
+    <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#d97706"/></marker></defs>
+
+    <rect x="30" y="30" width="230" height="106" rx="6" fill="#fff" stroke="#1c7fc4"/>
+    <rect x="30" y="30" width="230" height="24" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="145" y="47" text-anchor="middle" font-weight="700" fill="#10456e">project</text>
+    <text x="42" y="72" fill="#1c7fc4" font-weight="700">id</text><text x="70" y="72" fill="#333">INT · PK</text>
+    <text x="42" y="90" fill="#333">slug</text><text x="120" y="90" fill="#6b7785">VARCHAR(255)</text>
+    <text x="42" y="108" fill="#333">published</text><text x="120" y="108" fill="#6b7785">BOOL</text>
+    <text x="42" y="126" fill="#333">position</text><text x="120" y="126" fill="#6b7785">INT</text>
+
+    <rect x="360" y="30" width="230" height="106" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <rect x="360" y="30" width="230" height="24" rx="6" fill="#eaf4fb" stroke="#d7dee6"/>
+    <text x="475" y="47" text-anchor="middle" font-weight="700" fill="#10456e">project_image</text>
+    <text x="372" y="72" fill="#1c7fc4" font-weight="700">id</text><text x="400" y="72" fill="#333">INT · PK</text>
+    <text x="372" y="90" fill="#d97706" font-weight="700">project_id</text><text x="460" y="90" fill="#333">INT · FK</text>
+    <text x="372" y="108" fill="#333">image_name</text><text x="470" y="108" fill="#6b7785">VARCHAR</text>
+    <text x="372" y="126" fill="#333">position</text><text x="470" y="126" fill="#6b7785">INT</text>
+
+    <line x1="260" y1="83" x2="354" y2="90" stroke="#d97706" stroke-width="1.5" marker-end="url(#a2)"/>
+    <text x="307" y="76" text-anchor="middle" fill="#d97706" font-size="11">1 → N</text>
+
+    <rect x="30" y="160" width="230" height="70" rx="6" fill="#fff" stroke="#1c7fc4"/>
+    <rect x="30" y="160" width="230" height="24" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="145" y="177" text-anchor="middle" font-weight="700" fill="#10456e">skill_category</text>
+    <text x="42" y="202" fill="#1c7fc4" font-weight="700">id</text><text x="70" y="202" fill="#333">INT · PK</text>
+    <text x="42" y="220" fill="#333">label · label_en · icon</text>
+
+    <rect x="360" y="160" width="230" height="70" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <rect x="360" y="160" width="230" height="24" rx="6" fill="#eaf4fb" stroke="#d7dee6"/>
+    <text x="475" y="177" text-anchor="middle" font-weight="700" fill="#10456e">skill</text>
+    <text x="372" y="202" fill="#1c7fc4" font-weight="700">id</text><text x="400" y="202" fill="#333">INT · PK</text>
+    <text x="372" y="220" fill="#d97706" font-weight="700">category_id</text><text x="470" y="220" fill="#333">INT · FK</text>
+
+    <line x1="260" y1="200" x2="354" y2="207" stroke="#d97706" stroke-width="1.5" marker-end="url(#a2)"/>
+    <text x="307" y="193" text-anchor="middle" fill="#d97706" font-size="11">1 → N</text>
+
+    <rect x="640" y="30" width="190" height="200" rx="6" fill="#fcfdff" stroke="#d7dee6" stroke-dasharray="4 3"/>
+    <text x="735" y="52" text-anchor="middle" font-weight="700" fill="#10456e">tables autonomes</text>
+    <text x="735" y="78" text-anchor="middle" fill="#6b7785">profile</text>
+    <text x="735" y="98" text-anchor="middle" fill="#6b7785">experience</text>
+    <text x="735" y="118" text-anchor="middle" fill="#6b7785">education</text>
+    <text x="735" y="138" text-anchor="middle" fill="#6b7785">certificate</text>
+    <text x="735" y="158" text-anchor="middle" fill="#6b7785">contact_message</text>
+    <text x="735" y="178" text-anchor="middle" fill="#6b7785">user</text>
+    <text x="735" y="208" text-anchor="middle" fill="#6b7785" font-size="10.5">aucune clé étrangère</text>
+</svg>
+<div class="cap">Les deux seules clés étrangères du schéma, toutes deux NOT NULL.</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg><h3>9.3 · Architecture technique — flux d'une requête</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 240" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
+    <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1c7fc4"/></marker></defs>
+
+    <rect x="20" y="90" width="105" height="50" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="72" y="112" text-anchor="middle" font-weight="600" fill="#10456e">Navigateur</text>
+    <text x="72" y="128" text-anchor="middle" fill="#6b7785" font-size="10.5">HTTPS</text>
+
+    <rect x="155" y="80" width="115" height="70" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="212" y="102" text-anchor="middle" font-weight="600" fill="#10456e">Apache</text>
+    <text x="212" y="119" text-anchor="middle" fill="#6b7785" font-size="10.5">.htaccess</text>
+    <text x="212" y="134" text-anchor="middle" fill="#6b7785" font-size="10.5">301 + en-têtes</text>
+
+    <rect x="300" y="80" width="115" height="70" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="357" y="102" text-anchor="middle" font-weight="600" fill="#10456e">index.php</text>
+    <text x="357" y="119" text-anchor="middle" fill="#6b7785" font-size="10.5">Kernel</text>
+    <text x="357" y="134" text-anchor="middle" fill="#6b7785" font-size="10.5">Router</text>
+
+    <rect x="445" y="30" width="120" height="46" rx="6" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="505" y="49" text-anchor="middle" font-weight="600" fill="#8a5a00">Firewall</text>
+    <text x="505" y="65" text-anchor="middle" fill="#8a5a00" font-size="10.5">^/admin → ROLE_ADMIN</text>
+
+    <rect x="445" y="95" width="120" height="55" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="505" y="117" text-anchor="middle" font-weight="600" fill="#10456e">Contrôleur</text>
+    <text x="505" y="134" text-anchor="middle" fill="#6b7785" font-size="10.5">Home · Project</text>
+
+    <rect x="600" y="30" width="115" height="50" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="657" y="52" text-anchor="middle" font-weight="600" fill="#10456e">Doctrine</text>
+    <text x="657" y="68" text-anchor="middle" fill="#6b7785" font-size="10.5">Repositories</text>
+
+    <rect x="745" y="30" width="95" height="50" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="792" y="58" text-anchor="middle" font-weight="600" fill="#10456e">MySQL</text>
+
+    <rect x="600" y="105" width="115" height="50" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="657" y="127" text-anchor="middle" font-weight="600" fill="#10456e">Twig</text>
+    <text x="657" y="143" text-anchor="middle" fill="#6b7785" font-size="10.5">échappement auto</text>
+
+    <rect x="600" y="175" width="240" height="46" rx="6" fill="#fcfdff" stroke="#d7dee6" stroke-dasharray="4 3"/>
+    <text x="720" y="194" text-anchor="middle" font-weight="600" fill="#10456e">AssetMapper</text>
+    <text x="720" y="210" text-anchor="middle" fill="#6b7785" font-size="10.5">public/assets — modules ES, sans Node</text>
+
+    <line x1="125" y1="115" x2="150" y2="115" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="270" y1="115" x2="295" y2="115" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="415" y1="105" x2="440" y2="60" stroke="#d97706" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="415" y1="122" x2="440" y2="122" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="565" y1="110" x2="595" y2="65" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="715" y1="55" x2="740" y2="55" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+    <line x1="565" y1="130" x2="595" y2="130" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a3)"/>
+</svg>
+<div class="cap">Le pare-feu n'intercepte que les routes <code>/admin</code> ; le reste du site est public.</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg><h3>9.4 · Séquence — soumission du formulaire de contact</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
+    <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1c7fc4"/></marker>
+           <marker id="a4o" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1f9d55"/></marker></defs>
+
+    <rect x="20" y="14" width="120" height="34" rx="5" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="80" y="36" text-anchor="middle" font-weight="600" fill="#10456e">Visiteur</text>
+    <rect x="230" y="14" width="130" height="34" rx="5" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="295" y="36" text-anchor="middle" font-weight="600" fill="#10456e">HomeController</text>
+    <rect x="450" y="14" width="130" height="34" rx="5" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="515" y="36" text-anchor="middle" font-weight="600" fill="#10456e">Base de données</text>
+    <rect x="670" y="14" width="150" height="34" rx="5" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="745" y="36" text-anchor="middle" font-weight="600" fill="#10456e">ContactNotifier</text>
+
+    <line x1="80" y1="48" x2="80" y2="315" stroke="#c9d4de" stroke-dasharray="3 3"/>
+    <line x1="295" y1="48" x2="295" y2="315" stroke="#c9d4de" stroke-dasharray="3 3"/>
+    <line x1="515" y1="48" x2="515" y2="315" stroke="#c9d4de" stroke-dasharray="3 3"/>
+    <line x1="745" y1="48" x2="745" y2="315" stroke="#c9d4de" stroke-dasharray="3 3"/>
+
+    <line x1="80" y1="75" x2="288" y2="75" stroke="#1c7fc4" stroke-width="1.4" marker-end="url(#a4)"/>
+    <text x="184" y="68" text-anchor="middle" fill="#37475a">POST du formulaire</text>
+
+    <rect x="215" y="90" width="330" height="52" rx="5" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="380" y="109" text-anchor="middle" fill="#8a5a00" font-weight="600">Contrôles : jeton CSRF · honeypot · anti-flood IP</text>
+    <text x="380" y="128" text-anchor="middle" fill="#8a5a00" font-size="10.5">si rejeté → même message de succès, rien n'est enregistré</text>
+
+    <line x1="295" y1="163" x2="508" y2="163" stroke="#1c7fc4" stroke-width="1.4" marker-end="url(#a4)"/>
+    <text x="401" y="156" text-anchor="middle" fill="#37475a">persist + flush</text>
+
+    <line x1="295" y1="200" x2="738" y2="200" stroke="#1c7fc4" stroke-width="1.4" marker-end="url(#a4)"/>
+    <text x="516" y="193" text-anchor="middle" fill="#37475a">notify() → Guillaume · try/catch isolé</text>
+
+    <line x1="295" y1="232" x2="738" y2="232" stroke="#1c7fc4" stroke-width="1.4" marker-end="url(#a4)"/>
+    <text x="516" y="225" text-anchor="middle" fill="#37475a">acknowledge() → visiteur, dans la langue de la page</text>
+
+    <rect x="600" y="248" width="240" height="34" rx="5" fill="#eef9f1" stroke="#1f9d55"/>
+    <text x="720" y="269" text-anchor="middle" fill="#14603a" font-size="10.5">sendmail local — aucun mot de passe</text>
+
+    <line x1="288" y1="303" x2="86" y2="303" stroke="#1f9d55" stroke-width="1.4" marker-end="url(#a4o)"/>
+    <text x="187" y="296" text-anchor="middle" fill="#14603a">redirection + message de confirmation</text>
+</svg>
+<div class="cap">Le message est enregistré avant tout envoi : un échec d'e-mail ne perd jamais le message.</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/></svg><h3>9.5 · Pipeline de déploiement</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11">
+    <defs><marker id="a5" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1c7fc4"/></marker></defs>
+
+    <rect x="15" y="30" width="120" height="46" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="75" y="50" text-anchor="middle" font-weight="600" fill="#10456e">push sur main</text>
+    <text x="75" y="66" text-anchor="middle" fill="#6b7785" font-size="10">GitHub</text>
+
+    <rect x="170" y="20" width="150" height="66" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="245" y="40" text-anchor="middle" font-weight="600" fill="#10456e">Build sur runner</text>
+    <text x="245" y="57" text-anchor="middle" fill="#6b7785" font-size="10">composer install</text>
+    <text x="245" y="72" text-anchor="middle" fill="#6b7785" font-size="10">asset-map:compile</text>
+
+    <rect x="355" y="20" width="155" height="66" rx="6" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="432" y="40" text-anchor="middle" font-weight="600" fill="#8a5a00">Ouverture SSH</text>
+    <text x="432" y="57" text-anchor="middle" fill="#8a5a00" font-size="10">API SshWhitelist</text>
+    <text x="432" y="72" text-anchor="middle" fill="#8a5a00" font-size="10">remove_all puis add</text>
+
+    <rect x="545" y="20" width="150" height="66" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="620" y="40" text-anchor="middle" font-weight="600" fill="#10456e">Transfert</text>
+    <text x="620" y="57" text-anchor="middle" fill="#6b7785" font-size="10">git reset --hard</text>
+    <text x="620" y="72" text-anchor="middle" fill="#6b7785" font-size="10">rsync des artefacts</text>
+
+    <rect x="730" y="20" width="115" height="66" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="787" y="40" text-anchor="middle" font-weight="600" fill="#10456e">Migrations</text>
+    <text x="787" y="57" text-anchor="middle" fill="#6b7785" font-size="10">+ cache:clear</text>
+
+    <line x1="135" y1="53" x2="165" y2="53" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+    <line x1="320" y1="53" x2="350" y2="53" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+    <line x1="510" y1="53" x2="540" y2="53" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+    <line x1="695" y1="53" x2="725" y2="53" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+
+    <path d="M787 86 L787 120 L432 120" fill="none" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+
+    <rect x="290" y="130" width="285" height="50" rx="6" fill="#eef9f1" stroke="#1f9d55"/>
+    <text x="432" y="150" text-anchor="middle" font-weight="600" fill="#14603a">Health check</text>
+    <text x="432" y="167" text-anchor="middle" fill="#14603a" font-size="10">/ et /en doivent renvoyer 200, sinon le job échoue</text>
+
+    <path d="M290 155 L120 155 L120 195" fill="none" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a5)"/>
+    <rect x="20" y="195" width="200" height="44" rx="6" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="120" y="214" text-anchor="middle" font-weight="600" fill="#8a5a00">Fermeture de l'accès</text>
+    <text x="120" y="230" text-anchor="middle" fill="#8a5a00" font-size="10">exécutée quoi qu'il arrive</text>
+
+    <text x="620" y="205" text-anchor="middle" fill="#6b7785" font-size="10.5">Le build ne touche jamais le mutualisé :</text>
+    <text x="620" y="222" text-anchor="middle" fill="#6b7785" font-size="10.5">plus aucune dépendance aux extensions PHP du serveur.</text>
+</svg>
+<div class="cap">Le <code>remove_all</code> initial libère une place dans une liste blanche plafonnée à 5 entrées.</div>
+</div>
+</div>
+
+<div class="keep">
+<div class="subsection"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v4h12V6H6z"/></svg><h3>9.6 · Plan de navigation</h3></div>
+<div class="diagram">
+<svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
+    <defs><marker id="a6" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#1c7fc4"/></marker></defs>
+
+    <rect x="30" y="100" width="150" height="52" rx="6" fill="#eaf4fb" stroke="#1c7fc4"/>
+    <text x="105" y="122" text-anchor="middle" font-weight="600" fill="#10456e">Accueil</text>
+    <text x="105" y="139" text-anchor="middle" fill="#6b7785" font-size="10.5">/ · /en</text>
+
+    <rect x="250" y="18" width="230" height="116" rx="6" fill="#fcfdff" stroke="#d7dee6" stroke-dasharray="4 3"/>
+    <text x="365" y="38" text-anchor="middle" font-weight="600" fill="#10456e">Sections de la page</text>
+    <text x="365" y="58" text-anchor="middle" fill="#6b7785">À propos · Compétences</text>
+    <text x="365" y="76" text-anchor="middle" fill="#6b7785">Expériences · Formations</text>
+    <text x="365" y="94" text-anchor="middle" fill="#6b7785">Projets · Certifications</text>
+    <text x="365" y="118" text-anchor="middle" fill="#6b7785">Contact (formulaire)</text>
+
+    <rect x="250" y="160" width="230" height="52" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="365" y="182" text-anchor="middle" font-weight="600" fill="#10456e">Détail d'un projet</text>
+    <text x="365" y="199" text-anchor="middle" fill="#6b7785" font-size="10.5">/projets/{slug} · /en/projects/{slug}</text>
+
+    <line x1="180" y1="112" x2="245" y2="90" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a6)"/>
+    <line x1="180" y1="140" x2="245" y2="180" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a6)"/>
+    <text x="205" y="170" fill="#6b7785" font-size="10">carte projet</text>
+
+    <rect x="560" y="60" width="130" height="46" rx="6" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="625" y="79" text-anchor="middle" font-weight="600" fill="#8a5a00">/login</text>
+    <text x="625" y="95" text-anchor="middle" fill="#8a5a00" font-size="10">5 essais / 15 min</text>
+
+    <rect x="560" y="150" width="130" height="46" rx="6" fill="#fdf6ec" stroke="#d97706"/>
+    <text x="625" y="169" text-anchor="middle" font-weight="600" fill="#8a5a00">/admin</text>
+    <text x="625" y="185" text-anchor="middle" fill="#8a5a00" font-size="10">ROLE_ADMIN</text>
+
+    <line x1="625" y1="106" x2="625" y2="145" stroke="#d97706" stroke-width="1.5" marker-end="url(#a6)"/>
+
+    <rect x="730" y="150" width="110" height="46" rx="6" fill="#fff" stroke="#d7dee6"/>
+    <text x="785" y="169" text-anchor="middle" font-weight="600" fill="#10456e">CRUD</text>
+    <text x="785" y="185" text-anchor="middle" fill="#6b7785" font-size="10">9 entités</text>
+    <line x1="690" y1="173" x2="725" y2="173" stroke="#1c7fc4" stroke-width="1.5" marker-end="url(#a6)"/>
+
+    <text x="625" y="228" text-anchor="middle" fill="#6b7785" font-size="10.5">Tout accès à /admin sans session valide est redirigé vers /login.</text>
+</svg>
+<div class="cap">Le site public tient en deux pages ; l'administration est la seule zone protégée.</div>
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
