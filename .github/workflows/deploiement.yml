@@ -1,0 +1,178 @@
+# Deploiement continu vers o2switch (etape 2 du chantier CI/CD).
+#
+# Principe : tout ce qui est couteux ou fragile (composer install,
+# compilation des assets) tourne sur le runner GitHub, jamais sur
+# l'hebergement mutualise. C'etait la motivation initiale du chantier :
+# les extensions PHP d'o2switch se reinitialisent aux mises a jour de
+# build et cassaient regulierement composer.
+#
+# L'acces SSH est ouvert a la volee : le pare-feu d'o2switch filtre par
+# IP source, et l'API cPanel SshWhitelist permet d'y ajouter l'IP du
+# runner pour la duree du job. Valide par le workflow test-acces-ssh.yml.
+#
+# Repartition volontaire des roles :
+#   - le code source arrive par git (reset --hard sur origin/main) ;
+#   - seuls les artefacts gitignores (vendor, assets compiles) arrivent
+#     par rsync.
+# Faire avancer le HEAD git du serveur est indispensable : le cron
+# deploy_guillaumehurard.sh compare HEAD a origin/main, et redeploierait
+# a l'ancienne s'il le trouvait en retard.
+#
+# PREREQUIS : la ligne cron deploy_guillaumehurard.sh doit etre desactivee
+# avant d'utiliser ce workflow. Les deux mecanismes ne peuvent pas
+# cohabiter : le cron se reveille toutes les 10 minutes et lancerait un
+# git reset --hard suivi d'un composer install pendant que ce workflow
+# transfere vendor/, ce qui laisserait le site dans un etat incoherent.
+# Le script reste sur le serveur et peut etre reactive a la main en
+# secours si ce workflow devait etre abandonne.
+#
+# Le declenchement automatique sur push est volontairement absent tant
+# que ce workflow n'a pas fait ses preuves : on le lance a la main
+# (Run workflow) le temps de valider, puis on ajoute le trigger push.
+
+name: Deploiement o2switch
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  # Deux deploiements simultanes se marcheraient dessus, et la liste
+  # blanche SSH est un etat partage limite a 5 entrees.
+  group: o2switch-deploy
+  cancel-in-progress: false
+
+env:
+  REPO_DISTANT: repositories/guillaumehurard
+  PHP_DISTANT: /usr/local/bin/php
+
+jobs:
+  deploiement:
+    name: Construit puis deploie
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Recupere le code
+        uses: actions/checkout@v4
+
+      - name: Installe PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, dom, intl, mbstring, pdo_mysql, zip
+          coverage: none
+
+      - name: Installe les dependances PHP
+        env:
+          APP_ENV: prod
+          # Valeur bidon : elle ne sert qu'a faire demarrer le kernel
+          # pendant le build. Le vrai secret vit dans le .env.local du
+          # serveur, et var/cache n'est jamais transfere.
+          APP_SECRET: build-uniquement-non-utilise-en-production
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+      - name: Compile les assets
+        env:
+          APP_ENV: prod
+          APP_SECRET: build-uniquement-non-utilise-en-production
+        run: php bin/console asset-map:compile --no-interaction
+
+      - name: Recupere l'IP publique du runner
+        id: ip
+        run: |
+          IP="$(curl -fsS --retry 3 --retry-delay 2 -m 15 https://api.ipify.org)"
+          if [ -z "$IP" ]; then
+            echo "::error::Impossible de determiner l'IP publique du runner."
+            exit 1
+          fi
+          echo "IP du runner : $IP"
+          echo "ipv4=$IP" >> "$GITHUB_OUTPUT"
+
+      - name: Ouvre l'acces SSH pour l'IP du runner
+        id: whitelist
+        run: |
+          # Appel pseudo-bloquant : ne repond qu'une fois la regle active.
+          REPONSE="$(curl -sS -m 60 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22")"
+          echo "Reponse API : $REPONSE"
+          echo "ajoutee=true" >> "$GITHUB_OUTPUT"
+          echo "$REPONSE" | jq -e '.status == 1' > /dev/null \
+            || { echo "::error::L'ajout en liste blanche a echoue."; exit 1; }
+
+      - name: Installe la cle SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.O2SWITCH_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          cat > ~/.ssh/config <<EOF
+          Host cible
+            HostName ${{ secrets.CPANEL_SERVER }}
+            User ${{ secrets.CPANEL_USERNAME }}
+            IdentityFile ~/.ssh/id_deploy
+            IdentitiesOnly yes
+            StrictHostKeyChecking accept-new
+            ConnectTimeout 20
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Sauvegarde la configuration de production
+        # Filet de securite : .env.local contient l'APP_SECRET, les acces
+        # base de donnees et le MAILER_DSN, et n'est pas versionne.
+        run: |
+          ssh cible "cp ~/$REPO_DISTANT/.env.local ~/.env.local.guillaumehurard.sauvegarde && chmod 600 ~/.env.local.guillaumehurard.sauvegarde && echo 'Sauvegarde effectuee.'"
+
+      - name: Met le code source a jour depuis git
+        run: |
+          ssh cible "set -e
+            cd ~/$REPO_DISTANT
+            git fetch origin main --quiet
+            git reset --hard origin/main --quiet
+            rm -rf var/cache/*
+            echo \"Code source sur \$(git rev-parse --short HEAD)\""
+
+      - name: Transfere les dependances PHP
+        run: |
+          rsync -az --delete --timeout=120 \
+            vendor/ cible:"$REPO_DISTANT/vendor/"
+
+      - name: Transfere les assets compiles
+        run: |
+          rsync -az --delete --timeout=120 \
+            public/assets/ cible:"$REPO_DISTANT/public/assets/"
+          if [ -d assets/vendor ]; then
+            rsync -az --delete --timeout=120 \
+              assets/vendor/ cible:"$REPO_DISTANT/assets/vendor/"
+          fi
+
+      - name: Applique les migrations et reconstruit le cache
+        run: |
+          ssh cible "set -e
+            cd ~/$REPO_DISTANT
+            $PHP_DISTANT bin/console doctrine:migrations:migrate --no-interaction
+            $PHP_DISTANT bin/console cache:clear --env=prod --no-debug"
+
+      - name: Verifie que le site repond
+        run: |
+          for PAGE in "https://guillaumehurard.fr/" "https://guillaumehurard.fr/en"; do
+            CODE="$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 -m 30 "$PAGE")"
+            echo "$PAGE -> $CODE"
+            [ "$CODE" = "200" ] || { echo "::error::$PAGE renvoie $CODE au lieu de 200."; exit 1; }
+          done
+
+      - name: Referme l'acces SSH
+        # Toujours executee : la liste blanche est limitee a 5 entrees,
+        # on n'y laisse pas s'accumuler des IP de runners disparus.
+        if: always() && steps.whitelist.outputs.ajoutee == 'true'
+        run: |
+          # Suppression ciblee, surtout pas remove_all : cela effacerait
+          # aussi l'IP personnelle dont depend l'acces SSH manuel.
+          REPONSE="$(curl -sS -m 45 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove?address=${{ steps.ip.outputs.ipv4 }}&port=22&direction=in")"
+          echo "Reponse API : $REPONSE"
+
+      - name: Efface la cle SSH
+        if: always()
+        run: rm -rf ~/.ssh/id_deploy ~/.ssh/config
