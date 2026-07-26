@@ -88,17 +88,42 @@ jobs:
           echo "IP du runner : $IP"
           echo "ipv4=$IP" >> "$GITHUB_OUTPUT"
 
+      - name: Vide la liste blanche SSH
+        # La liste est plafonnee a 5 entrees et se remplit d'IP de runners
+        # disparues, ce qui finit par bloquer tout deploiement. On repart
+        # donc d'une liste vide a chaque execution.
+        #
+        # Choix assume : cela efface aussi l'IP personnelle, dont depend
+        # l'acces SSH manuel. Il faut la re-autoriser depuis cPanel apres
+        # un deploiement. L'exemple officiel d'o2switch procede pareil,
+        # faute de pouvoir distinguer une IP de runner d'une autre.
+        run: |
+          REPONSE="$(curl -sS -m 60 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all")"
+          echo "Reponse API : $REPONSE"
+          echo "$REPONSE" | jq -e '.status == 1' > /dev/null \
+            || { echo "::error::Le vidage de la liste blanche a echoue."; exit 1; }
+
       - name: Ouvre l'acces SSH pour l'IP du runner
         id: whitelist
         run: |
           # Appel pseudo-bloquant : ne repond qu'une fois la regle active.
-          REPONSE="$(curl -sS -m 60 \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22")"
-          echo "Reponse API : $REPONSE"
-          echo "ajoutee=true" >> "$GITHUB_OUTPUT"
-          echo "$REPONSE" | jq -e '.status == 1' > /dev/null \
-            || { echo "::error::L'ajout en liste blanche a echoue."; exit 1; }
+          # Quelques tentatives car une suppression met, d'apres la
+          # documentation, jusqu'a quelques minutes a liberer sa place.
+          for TENTATIVE in 1 2 3; do
+            REPONSE="$(curl -sS -m 60 \
+              -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+              "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22")"
+            echo "Tentative $TENTATIVE - reponse API : $REPONSE"
+            if echo "$REPONSE" | jq -e '.status == 1' > /dev/null; then
+              echo "ajoutee=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            [ "$TENTATIVE" -lt 3 ] && sleep 45
+          done
+          echo "::error::L'ajout en liste blanche a echoue apres 3 tentatives."
+          exit 1
 
       - name: Installe la cle SSH
         run: |
@@ -166,12 +191,15 @@ jobs:
         # on n'y laisse pas s'accumuler des IP de runners disparus.
         if: always() && steps.whitelist.outputs.ajoutee == 'true'
         run: |
-          # Suppression ciblee, surtout pas remove_all : cela effacerait
-          # aussi l'IP personnelle dont depend l'acces SSH manuel.
           REPONSE="$(curl -sS -m 45 \
             -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
             "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove?address=${{ steps.ip.outputs.ipv4 }}&port=22&direction=in")"
           echo "Reponse API : $REPONSE"
+          # Verifiee, et non plus seulement affichee : une suppression qui
+          # echoue en silence remplit la liste jusqu'au blocage complet.
+          # C'est precisement ce qui a fait echouer le premier deploiement.
+          echo "$REPONSE" | jq -e '.status == 1' > /dev/null \
+            || echo "::warning::La suppression de l'IP du runner a echoue. Le prochain deploiement videra la liste, mais verifiez cPanel si le probleme persiste."
 
       - name: Efface la cle SSH
         if: always()
