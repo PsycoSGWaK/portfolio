@@ -49,7 +49,10 @@ class HomeController extends AbstractController
                 $entityManager->flush();
 
                 // Le message est déjà en base : l'échec d'envoi n'est pas bloquant.
+                // Les deux envois sont indépendants : l'accusé au visiteur part même
+                // si la notification à Guillaume échoue.
                 $contactNotifier->notify($contactMessage, $profile?->getContactEmail());
+                $contactNotifier->acknowledge($contactMessage, $locale);
             }
 
             $this->addFlash('contact_success', 'Merci, votre message est bien parti. Je vous réponds rapidement.');
