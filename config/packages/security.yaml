@@ -23,6 +23,11 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
+            # Sans cela, /login accepte un nombre illimite de tentatives de
+            # mot de passe. Le comptage se fait par IP et par identifiant.
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
             logout:
                 path: app_logout
                 # where to redirect after logout

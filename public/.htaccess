@@ -15,8 +15,51 @@ DirectoryIndex index.php
     Options -MultiViews
 </IfModule>
 
+# En-tetes de securite.
+#
+# script-src est volontairement permissif, pour deux raisons imposees par
+# l'AssetMapper de Symfony :
+#   - 'unsafe-inline' : la page contient un bloc <script type="importmap">
+#     genere a la volee, impossible a signer sans nonce ;
+#   - data: : l'importmap fait pointer les entrees CSS vers un module
+#     JavaScript vide "data:application/javascript,". Sans cette
+#     autorisation l'import echoue et TOUT le JavaScript du site casse
+#     silencieusement (verifie : le selecteur de theme ne repondait plus).
+#
+# L'apport anti-XSS de la CSP est donc limite, et la vraie protection reste
+# l'echappement automatique de Twig. Le gain concret porte sur
+# frame-ancestors (anti-clickjacking), object-src, base-uri et form-action.
+#
+# img-src autorise https: car des logos d'ecoles et d'entreprises sont
+# charges depuis des domaines externes.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'"
+
+    # HSTS uniquement sur les reponses HTTPS : l'envoyer en clair n'a aucun
+    # sens et le navigateur l'ignore.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Force HTTPS. Sans cette regle le site repond aussi en clair sur le
+    # port 80 : un login soumis depuis une URL en http:// enverrait le mot
+    # de passe en clair sur le reseau.
+    #
+    # Les hotes locaux sont exclus, sinon le developpement sous WAMP serait
+    # redirige vers un https://localhost inexistant.
+    # La condition sur X-Forwarded-Proto couvre un proxy terminant le TLS
+    # en amont, cas dans lequel %{HTTPS} vaut off cote Apache.
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
+    RewriteCond %{HTTP_HOST} !\.local$ [NC]
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
