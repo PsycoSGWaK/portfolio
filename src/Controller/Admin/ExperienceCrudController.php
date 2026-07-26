@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ExperienceCrudController extends AbstractCrudController
 {
@@ -49,6 +50,9 @@ class ExperienceCrudController extends AbstractCrudController
             ->setBasePath('/uploads/logos')
             ->setUploadDir('public/uploads/logos')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
+            // Le SVG est volontairement exclu : il peut embarquer du script,
+            // et il serait servi depuis notre propre domaine.
+            ->setFileConstraints(new Assert\Image(mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxSize: '4M'))
             ->hideOnIndex();
         yield UrlField::new('logoUrl', 'ou lien vers un logo')
             ->setHelp('Alternative à l\'upload : URL d\'une image déjà hébergée ailleurs. Prioritaire sur le logo uploadé si les deux sont renseignés.')

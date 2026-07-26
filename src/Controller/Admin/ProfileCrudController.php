@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProfileCrudController extends AbstractCrudController
 {
@@ -39,6 +40,9 @@ class ProfileCrudController extends AbstractCrudController
             ->setBasePath('/uploads/profile')
             ->setUploadDir('public/uploads/profile')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
+            // Le SVG est volontairement exclu : il peut embarquer du script,
+            // et il serait servi depuis notre propre domaine.
+            ->setFileConstraints(new Assert\Image(mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], maxSize: '4M'))
             ->setHelp('Remplace la photo affichée dans la section « À propos ». Laisse vide pour garder l\'image par défaut.');
         yield TextField::new('contactEmail', 'E-mail de contact')
             ->setHelp('Affiché en clair dans la navigation. Laisse vide pour ne pas l\'afficher.');
