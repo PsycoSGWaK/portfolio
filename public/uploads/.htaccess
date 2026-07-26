@@ -1,0 +1,30 @@
+# Ce dossier ne contient que des fichiers deposes depuis l'administration
+# (images, logos, videos, PDF). Aucun d'eux ne doit jamais etre execute.
+#
+# Sans cette protection, un fichier .php depose ici serait interprete par
+# Apache et donnerait une execution de code sur le serveur. L'upload est
+# reserve aux administrateurs, mais c'est precisement le genre de chemin
+# qu'une compromission du compte admin transformerait en prise de controle
+# complete : on coupe la chaine ici aussi.
+
+# Neutralise tout handler PHP, quelle que soit la version installee.
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phar
+
+# Ceinture et bretelles : refuse l'acces aux extensions executables, y
+# compris si un handler etait reintroduit ailleurs dans la configuration.
+<FilesMatch "\.(php|phtml|php[3-8]|phar|cgi|pl|py|sh|htaccess)$">
+    Require all denied
+</FilesMatch>
+
+# Les fichiers legitimes sont servis tels quels, sans negociation de contenu
+# (qui pourrait faire resoudre "photo.png" vers "photo.png.php").
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+Options -ExecCGI -Indexes
