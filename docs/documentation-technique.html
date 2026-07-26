@@ -144,11 +144,49 @@
         pre.code, table.data tr:nth-child(even) td {
             -webkit-print-color-adjust:exact; print-color-adjust:exact;
         }
-        h2, h3 { break-after: avoid; }
-        .section-header { break-after: avoid; break-inside: avoid; }
-        table.data, pre.code, .diagram, .card-box { break-inside: avoid; }
+        /* Un titre ne doit jamais rester seul en bas de page, coupe de ce qu'il
+           annonce. La regle porte sur les CONTENEURS et pas seulement sur les
+           h2/h3 : un h3 est enveloppe dans un div .subsection, et c'est apres
+           ce div que la coupure se produisait. Meme chose pour .tbl-title, qui
+           precede un tableau, et .code-label, qui precede un bloc de code.
+           Les proprietes page-break-* restent presentes pour les moteurs
+           d'impression qui ne connaissent pas encore break-*. */
+        h2, h3 {
+            break-after: avoid;   page-break-after: avoid;
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+        .section-header,
+        .subsection,
+        .tbl-title,
+        .code-label {
+            break-after: avoid;   page-break-after: avoid;
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+
+        /* Blocs a garder d'un seul tenant. */
+        table.data, pre.code, .diagram, .card-box, .note, .grid2, .toc, li {
+            break-inside: avoid;  page-break-inside: avoid;
+        }
+
+        /* Ce qui suit immediatement un titre reste colle a lui. Les cinq
+           natures de blocs listees ici sont exactement celles qui suivent un
+           .subsection dans ce document : paragraphe, liste, bloc de code,
+           tableau et diagramme. */
+        .section-header + p,
+        .subsection + p,
+        .subsection + ul,
+        .subsection + pre.code,
+        .subsection + table.data,
+        .subsection + .diagram,
+        .tbl-title + table.data {
+            break-before: avoid;  page-break-before: avoid;
+        }
+
+        /* Pas de ligne unique isolee en haut ou en bas de page. */
+        p, li { orphans: 3; widows: 3; }
+
         .sec { break-inside: auto; }
-        .pagebreak { break-before: page; }
+        .pagebreak { break-before: page; page-break-before: always; }
     }
 </style>
 </head>
