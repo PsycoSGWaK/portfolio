@@ -168,6 +168,16 @@
             break-inside: avoid;  page-break-inside: avoid;
         }
 
+        /* Solidarise reellement un titre et son bloc. break-after: avoid n'est
+           qu'une indication, que le moteur ecarte des que le bloc suivant ne
+           tient plus dans l'espace restant — et .subsection etant un conteneur
+           flex, la fragmentation y est particulierement mal geree. Envelopper
+           la paire dans un conteneur insecable est la seule methode fiable.
+           Verifie au prealable : aucune de ces paires ne depasse 830 px de
+           haut, contre environ 1010 px disponibles sur une page A4, donc elles
+           basculent proprement a la page suivante sans jamais deborder. */
+        .keep { break-inside: avoid;  page-break-inside: avoid; }
+
         /* Ce qui suit immediatement un titre reste colle a lui. Les cinq
            natures de blocs listees ici sont exactement celles qui suivent un
            .subsection dans ce document : paragraphe, liste, bloc de code,
@@ -258,6 +268,7 @@
     <h2>2 · Architecture &amp; arborescence</h2>
 </div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"/></svg><h3>Arborescence des fichiers</h3></div>
 <pre class="code"><span class="c">portfolio/</span>
 ├── .github/workflows/
@@ -298,7 +309,9 @@
 │   ├── messages.en.yaml       <span class="c">// 44 clés</span>
 │   └── validators.en.yaml
 └── var/log/prod.log           <span class="c">// Logs de production (voir §8)</span></pre>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg><h3>Pile technique</h3></div>
 <table class="data">
     <tr><th>Couche</th><th>Technologie</th><th>Rôle</th></tr>
@@ -311,6 +324,7 @@
     <tr><td>Interactivité</td><td>Stimulus + Turbo</td><td>Thème, carrousels, vidéos de couverture</td></tr>
     <tr><td>Serveur</td><td>Apache (o2switch)</td><td>Mutualisé, cPanel / CloudLinux</td></tr>
 </table>
+</div>
 
 <div class="note"><strong>Absence volontaire de Node :</strong> l'AssetMapper compile les assets sans chaîne de build JavaScript. Cela simplifie le déploiement — pas de <code class="inl">node_modules</code>, pas de version de Node à maintenir sur un hébergement mutualisé.</div>
 </div>
@@ -331,6 +345,7 @@
     <li><strong>Suffixe <code class="inl">En</code></strong> — les champs traduisibles sont doublés (<code class="inl">description</code> / <code class="inl">descriptionEn</code>). Voir §7.</li>
 </ul>
 
+<div class="keep">
 <div class="tbl-title">profile <span class="pill">singleton · identité du site</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
@@ -342,7 +357,9 @@
     <tr><td>highlights / highlightsEn</td><td>text</td><td>Points saillants (une ligne par entrée)</td></tr>
     <tr><td>stats / statsEn</td><td>text</td><td>Chiffres clés affichés en vignettes</td></tr>
 </table>
+</div>
 
+<div class="keep">
 <div class="tbl-title">project <span class="pill">réalisations</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
@@ -361,9 +378,11 @@
     <tr><td>wip</td><td>bool</td><td>« Work in progress » : la carte ne mène à aucune page détail</td></tr>
     <tr><td>published · position · createdAt</td><td>bool / int / datetime</td><td>Conventions communes</td></tr>
 </table>
+</div>
 
 <div class="grid2">
 <div>
+<div class="keep">
 <div class="tbl-title">project_image <span class="pill">galerie</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -373,7 +392,9 @@
     <tr><td>position</td><td>int</td></tr>
 </table>
 </div>
+</div>
 <div>
+<div class="keep">
 <div class="tbl-title">skill <span class="pill">compétences</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -384,7 +405,9 @@
 </table>
 </div>
 </div>
+</div>
 
+<div class="keep">
 <div class="tbl-title">skill_category <span class="pill">regroupement de compétences</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
@@ -393,9 +416,11 @@
     <tr><td>icon</td><td>varchar(16)</td><td>Identifiant d'icône, colorisé par une extension Twig</td></tr>
     <tr><td>published · position</td><td>bool / int</td><td>Conventions communes</td></tr>
 </table>
+</div>
 
 <div class="grid2">
 <div>
+<div class="keep">
 <div class="tbl-title">experience <span class="pill">parcours pro</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -407,7 +432,9 @@
     <tr><td>published / position</td><td>bool / int</td></tr>
 </table>
 </div>
+</div>
 <div>
+<div class="keep">
 <div class="tbl-title">education <span class="pill">formations</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -420,9 +447,11 @@
 </table>
 </div>
 </div>
+</div>
 
 <div class="grid2">
 <div>
+<div class="keep">
 <div class="tbl-title">certificate <span class="pill">certifications</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -434,7 +463,9 @@
     <tr><td>published / position</td><td>bool / int</td></tr>
 </table>
 </div>
+</div>
 <div>
+<div class="keep">
 <div class="tbl-title">user <span class="pill">compte admin</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th></tr>
@@ -445,7 +476,9 @@
 </table>
 </div>
 </div>
+</div>
 
+<div class="keep">
 <div class="tbl-title">contact_message <span class="pill">messages reçus</span></div>
 <table class="data">
     <tr><th>Colonne</th><th>Type</th><th>Note</th></tr>
@@ -457,6 +490,7 @@
     <tr><td>createdAt</td><td>datetime</td><td>Horodatage de réception</td></tr>
     <tr><td>ipAddress</td><td>varchar(45)</td><td>IPv4 ou IPv6, utilisée par l'anti-flood</td></tr>
 </table>
+</div>
 <p style="font-size:13px;color:var(--muted);margin-top:2px">Index composite <code class="inl">idx_contact_message_ip_created</code> sur <code class="inl">(ip_address, created_at)</code> — il sert la requête de comptage de l'anti-flood, qui s'exécute à chaque soumission.</p>
 
 <div class="note warn"><strong>Donnée personnelle :</strong> <code class="inl">ipAddress</code> est une donnée à caractère personnel au sens du RGPD. Elle est nécessaire à l'anti-spam, mais <strong>aucune politique de purge n'est encore en place</strong> : les adresses sont conservées sans limite de durée. Point identifié comme à traiter.</div>
@@ -528,6 +562,7 @@
     <h2>5 · Parcours &amp; pages</h2>
 </div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg><h3>Côté public</h3></div>
 <table class="data">
     <tr><th>Route</th><th>URL (fr / en)</th><th>Contrôleur</th><th>Rôle</th></tr>
@@ -536,6 +571,7 @@
     <tr><td>app_login</td><td><code class="inl">/login</code></td><td>SecurityController::login</td><td>Connexion à l'administration</td></tr>
     <tr><td>app_logout</td><td><code class="inl">/logout</code></td><td>SecurityController::logout</td><td>Déconnexion</td></tr>
 </table>
+</div>
 
 <p>La page d'accueil charge en une seule requête l'ensemble des contenus publiés, chaque repository exposant une méthode <code class="inl">findPublishedOrderedByPosition()</code>. Les sections vides sont masquées automatiquement : si aucun texte « À propos » n'est renseigné, la section n'est pas rendue.</p>
 
@@ -584,6 +620,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
     $contactNotifier-&gt;<span class="f">acknowledge</span>($contactMessage, $locale);
 }</pre>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M2 12h4l3 8 6-16 3 8h4"/><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg><h3>Deux envois strictement indépendants</h3></div>
 <table class="data">
     <tr><th></th><th>Notification</th><th>Accusé de réception</th></tr>
@@ -593,6 +630,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
     <tr><td>Langue</td><td>Français</td><td>Celle de la page (<code class="inl">$request->getLocale()</code>)</td></tr>
     <tr><td>Méthode</td><td><code class="inl">ContactNotifier::notify()</code></td><td><code class="inl">ContactNotifier::acknowledge()</code></td></tr>
 </table>
+</div>
 <p>Les deux méthodes sont appelées séparément, chacune protégée par son propre <code class="inl">try/catch</code>. L'échec de l'une n'empêche jamais l'autre, et aucune ne peut faire échouer la requête : le message est déjà persisté avant le premier envoi. Les deux expéditeurs sont volontairement distincts — l'adresse de réponse réelle d'un côté, une adresse dédiée jamais relevée de l'autre.</p>
 
 <div class="note ok"><strong>Envoi via le sendmail local, pas en SMTP authentifié.</strong> <code class="inl">MAILER_DSN="native://default"</code>. L'application tourne sur le même serveur que la messagerie : s'authentifier en SMTP auprès de <code class="inl">mail.guillaumehurard.fr</code> depuis cette même machine n'apporte rien et introduit un mot de passe à gérer. Une tentative en SMTP authentifié a d'ailleurs échoué durablement en <code class="inl">535 Incorrect authentication data</code> ; le passage au sendmail local a supprimé le problème plutôt que de le résoudre.</div>
@@ -632,6 +670,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
     <h2>8 · Installation &amp; déploiement</h2>
 </div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 18c1.1 0 2-.9 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4z"/></svg><h3>Environnement local</h3></div>
 <pre class="code"><span class="f">git clone</span> git@github.com:PsycoSGWaK/portfolio.git
 <span class="f">composer install</span>
@@ -639,6 +678,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 <span class="f">php</span> bin/console doctrine:database:create
 <span class="f">php</span> bin/console doctrine:migrations:migrate
 <span class="f">symfony</span> serve                <span class="c"># http://localhost:8000</span></pre>
+</div>
 <div class="note warn"><strong>PHP 8.4 obligatoire.</strong> Sur cette machine, Apache/WAMP tourne encore en PHP 8.3 : servir le projet par Apache en local échoue en erreur 500. Le serveur Symfony (<code class="inl">symfony serve</code>), lui, utilise le PHP 8.4 du <code class="inl">PATH</code> et fonctionne. Conséquence pratique : le <code class="inl">.htaccess</code> ne peut pas être testé localement, seulement sur le serveur.</div>
 
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4z"/></svg><h3>Hébergement de production</h3></div>
@@ -679,6 +719,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
     <h2>9 · Schémas &amp; diagrammes</h2>
 </div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg><h3>9.1 · Modèle conceptuel</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="12">
@@ -734,7 +775,9 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 </svg>
 <div class="cap">Seules deux associations existent. Les autres entités sont autonomes.</div>
 </div>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M3 5h18v3H3V5zm0 5h18v3H3v-3zm0 5h18v3H3v-3z"/></svg><h3>9.2 · Modèle logique</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
@@ -786,7 +829,9 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 </svg>
 <div class="cap">Les deux seules clés étrangères du schéma, toutes deux NOT NULL.</div>
 </div>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg><h3>9.3 · Architecture technique — flux d'une requête</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 240" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
@@ -839,7 +884,9 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 </svg>
 <div class="cap">Le pare-feu n'intercepte que les routes <code>/admin</code> ; le reste du site est public.</div>
 </div>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg><h3>9.4 · Séquence — soumission du formulaire de contact</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 330" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
@@ -884,7 +931,9 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 </svg>
 <div class="cap">Le message est enregistré avant tout envoi : un échec d'e-mail ne perd jamais le message.</div>
 </div>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/></svg><h3>9.5 · Pipeline de déploiement</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11">
@@ -934,7 +983,9 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
 </svg>
 <div class="cap">Le <code>remove_all</code> initial libère une place dans une liste blanche plafonnée à 5 entrées.</div>
 </div>
+</div>
 
+<div class="keep">
 <div class="subsection"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v4h12V6H6z"/></svg><h3>9.6 · Plan de navigation</h3></div>
 <div class="diagram">
 <svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif" font-size="11.5">
@@ -977,6 +1028,7 @@ $isSpam = (<span class="k">bool</span>) $contactForm-&gt;<span class="f">get</sp
     <text x="625" y="228" text-anchor="middle" fill="#6b7785" font-size="10.5">Tout accès à /admin sans session valide est redirigé vers /login.</text>
 </svg>
 <div class="cap">Le site public tient en deux pages ; l'administration est la seule zone protégée.</div>
+</div>
 </div>
 </div>
 
